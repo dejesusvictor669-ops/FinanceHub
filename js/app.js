@@ -35,7 +35,7 @@ document.getElementById("formLogin").addEventListener("submit", (evento) => {
 // CONTROLADOR DE NAVEGAÇÃO
 // ======================================
 
-const links = document.querySelectorAll("nav a");
+const links = document.querySelectorAll("nav a[data-page]");
 const paginas = document.querySelectorAll(".page");
 
 function mostrarPagina(nomePagina) {
@@ -62,6 +62,7 @@ links.forEach((link) => {
     link.addEventListener("click", () => {
         const pagina = link.getAttribute("data-page");
         mostrarPagina(pagina);
+        fecharMenu();
     });
 });
 
@@ -101,11 +102,42 @@ function iniciarApp() {
 }
 
 // ======================================
-// INICIALIZAÇÃO
+// MENU MOBILE (sidebar retrátil)
 // ======================================
 
-verificarLogin();
+const botaoMenu = document.getElementById("botaoMenu");
+const sidebar = document.getElementById("sidebar");
+const overlayMenu = document.getElementById("overlayMenu");
+
+function abrirMenu() {
+    if (sidebar) sidebar.classList.add("aberta");
+    if (overlayMenu) overlayMenu.classList.add("ativo");
+}
+
+function fecharMenu() {
+    if (sidebar) sidebar.classList.remove("aberta");
+    if (overlayMenu) overlayMenu.classList.remove("ativo");
+}
+
+if (botaoMenu) {
+    botaoMenu.addEventListener("click", abrirMenu);
+}
+
+if (overlayMenu) {
+    overlayMenu.addEventListener("click", fecharMenu);
+}
+
+// ======================================
+// BOTÃO SAIR
+// ======================================
+
 document.getElementById("botaoSair").addEventListener("click", () => {
     sairUsuario();
     location.reload();
 });
+
+// ======================================
+// INICIALIZAÇÃO
+// ======================================
+
+verificarLogin();

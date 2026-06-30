@@ -35,7 +35,7 @@ function renderizarGastos() {
         lista.appendChild(item);
     });
 
-    document.querySelectorAll(".excluir").forEach((botao) => {
+    document.querySelectorAll("#listaGastos .excluir").forEach((botao) => {
         botao.addEventListener("click", () => {
             excluirGasto(botao.getAttribute("data-id"));
         });

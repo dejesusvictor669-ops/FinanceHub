@@ -37,7 +37,9 @@
 
     <div class="container hidden" id="appContainer">
 
-        <aside class="sidebar">
+        <div id="overlayMenu" class="overlay-menu"></div>
+
+        <aside class="sidebar" id="sidebar">
 
             <div class="logo">
                 <i class="fa-solid fa-wallet"></i>
@@ -75,13 +77,12 @@
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Sair
             </a>
-            </nav>
 
         </aside>
 
         <main class="content">
 
-           <header>
+            <header>
                 <button id="botaoMenu" class="botao-menu">
                     <i class="fa-solid fa-bars"></i>
                 </button>
@@ -90,9 +91,6 @@
                     <p id="dataAtual"></p>
                 </div>
             </header>
-            <div class="container hidden" id="appContainer">
-
-        <aside class="sidebar">
 
             <!-- PÁGINA: VISÃO GERAL -->
             <section class="page" id="page-visao-geral">
@@ -124,9 +122,10 @@
 
                 </section>
 
-               <div class="card" style="margin-top:25px;">
+                <div class="card" style="margin-top:25px;">
                     <h3>⚙️ Configurações</h3>
-<form id="formConfig" class="form-gasto">
+
+                    <form id="formConfig" class="form-gasto">
 
                         <input type="number" id="configSalario" placeholder="Salário / renda mensal (R$)" step="0.01" required>
 
