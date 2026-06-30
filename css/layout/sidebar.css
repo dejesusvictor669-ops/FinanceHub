@@ -85,11 +85,15 @@ nav .active{
         display: block;
     }
 
-    .content {
+   .content {
         padding: 25px 18px;
     }
 
     header {
         align-items: center;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
     }
 }
