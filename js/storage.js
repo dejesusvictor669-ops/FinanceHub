@@ -1,3 +1,4 @@
+console.log("carregou: app.js");
 // ======================================
 // USUÁRIO (login simples, sem backend)
 // ======================================

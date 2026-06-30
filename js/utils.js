@@ -1,3 +1,4 @@
+console.log("carregou: app.js");
 // ======================================
 // FUNÇÕES AUXILIARES (usadas em todo o sistema)
 // ======================================

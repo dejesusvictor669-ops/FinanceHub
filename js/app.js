@@ -1,3 +1,4 @@
+console.log("carregou: app.js");
 // ======================================
 // LOGIN (sem backend, salvo no localStorage)
 // ======================================

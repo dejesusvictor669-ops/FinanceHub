@@ -1,3 +1,4 @@
+console.log("carregou: app.js");
 // ======================================
 // RENDERIZAÇÃO DA VISÃO GERAL (DASHBOARD)
 // ======================================
