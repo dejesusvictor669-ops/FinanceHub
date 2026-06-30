@@ -1,0 +1,73 @@
+.card{
+
+    background:var(--card);
+
+    padding:28px;
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+    transition:.35s;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+    width:5px;
+
+    height:100%;
+
+    background:var(--primary);
+
+}
+
+.card.green::before{
+
+    background:var(--success);
+
+}
+
+.card.red::before{
+
+    background:var(--danger);
+
+}
+
+.card h3{
+
+    color:var(--gray);
+
+    margin-bottom:18px;
+
+    font-size:15px;
+
+    font-weight:500;
+
+}
+
+.card h2{
+
+    font-size:34px;
+
+    font-weight:700;
+
+}

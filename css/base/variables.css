@@ -1,0 +1,35 @@
+:root{
+
+/* CORES */
+
+--bg:#0F172A;
+
+--sidebar:#162033;
+
+--card:#1E293B;
+
+--primary:#2563EB;
+
+--success:#22C55E;
+
+--danger:#EF4444;
+
+--warning:#F59E0B;
+
+--text:#F8FAFC;
+
+--gray:#94A3B8;
+
+
+/* ESPAÇAMENTOS */
+
+--radius:18px;
+
+--transition:.30s;
+
+
+/* SOMBRAS */
+
+--shadow:0 10px 30px rgba(0,0,0,.20);
+
+}
