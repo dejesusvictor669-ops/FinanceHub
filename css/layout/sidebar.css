@@ -77,3 +77,52 @@ background:var(--primary);
 color:white;
 
 }
+.botao-menu {
+    display: none;
+    background: none;
+    color: var(--text);
+    font-size: 22px;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.overlay-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 998;
+}
+
+@media (max-width: 900px) {
+
+    .botao-menu {
+        display: block;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        z-index: 999;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar.aberta {
+        transform: translateX(0);
+    }
+
+    .overlay-menu.ativo {
+        display: block;
+    }
+
+    .content {
+        padding: 25px 18px;
+    }
+
+    header {
+        align-items: center;
+    }
+}
