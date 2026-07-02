@@ -128,8 +128,8 @@ function iniciarListenerConfig() {
         const lazerMensal = parseFloat(document.getElementById("configLazer").value);
         const metaReserva = parseFloat(document.getElementById("configMetaReserva").value) || 0;
 
-        if (isNaN(salario) || isNaN(lazerMensal)) {
-            alert("Preencha salário e lazer corretamente.");
+        if (isNaN(salario)) {
+            alert("Preencha salário  corretamente.");
             return;
         }
 
