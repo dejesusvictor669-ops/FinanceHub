@@ -193,6 +193,10 @@ function abrirRelatorio(ano, mes) {
 
     }
 
+    // store currently opened report so control buttons can act on it
+    window.currentRelatorioAno = r.ano;
+    window.currentRelatorioMes = r.mes;
+
     painel.innerHTML = `
 
 <div class="cardResumo">
@@ -344,6 +348,17 @@ window.addEventListener("load",()=>{
 });
 function reabrirMes(ano, mes) {
 
+    // if no args provided, use the currently opened report
+    if (ano === undefined || mes === undefined) {
+        ano = window.currentRelatorioAno;
+        mes = window.currentRelatorioMes;
+    }
+
+    if (ano === undefined || mes === undefined) {
+        alert("Nenhum relatório selecionado.");
+        return;
+    }
+
     if (!confirm("Deseja realmente reabrir este mês?"))
         return;
 
@@ -357,7 +372,13 @@ function reabrirMes(ano, mes) {
 
     carregarRelatorios();
 
-    document.getElementById("dashboardHistorico").innerHTML = "";
+    const painel = document.getElementById("dashboardHistorico");
+    if (painel)
+        painel.innerHTML = "";
+
+    // clear current selection
+    window.currentRelatorioAno = undefined;
+    window.currentRelatorioMes = undefined;
 
     alert("Mês reaberto com sucesso!");
 
