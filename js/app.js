@@ -3,55 +3,121 @@ console.log("carregou: app.js");
 const telaLogin = document.getElementById("telaLogin");
 const appContainer = document.getElementById("appContainer");
 
-function verificarLogin() {
-    const nomeUsuario = obterUsuario();
+// ======================================
+// VERIFICAR SESSÃO AO CARREGAR
+// ======================================
 
-    if (nomeUsuario) {
-        telaLogin.classList.add("hidden");
-        appContainer.classList.remove("hidden");
-        iniciarApp();
+async function inicializar() {
+    const logado = await verificarSessao();
+
+    if (logado) {
+        mostrarApp();
     } else {
-        telaLogin.classList.remove("hidden");
-        appContainer.classList.add("hidden");
+        mostrarTelaLogin();
     }
 }
 
-document.getElementById("formLogin").addEventListener("submit", (evento) => {
-    evento.preventDefault();
-    const nome = document.getElementById("loginNome").value.trim();
-    if (!nome) return;
-    salvarUsuario(nome);
-    verificarLogin();
+function mostrarTelaLogin() {
+    telaLogin.classList.remove("hidden");
+    appContainer.classList.add("hidden");
+}
+
+function mostrarApp() {
+    telaLogin.classList.add("hidden");
+    appContainer.classList.remove("hidden");
+    iniciarApp();
+}
+
+// ======================================
+// FORMULÁRIO DE LOGIN / CADASTRO
+// ======================================
+
+const formLogin = document.getElementById("formLogin");
+const formCadastro = document.getElementById("formCadastro");
+const linkParaCadastro = document.getElementById("linkParaCadastro");
+const linkParaLogin = document.getElementById("linkParaLogin");
+
+linkParaCadastro.addEventListener("click", (e) => {
+    e.preventDefault();
+    formLogin.classList.add("hidden");
+    formCadastro.classList.remove("hidden");
 });
+
+linkParaLogin.addEventListener("click", (e) => {
+    e.preventDefault();
+    formCadastro.classList.add("hidden");
+    formLogin.classList.remove("hidden");
+});
+
+formLogin.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("loginEmail").value.trim();
+    const senha = document.getElementById("loginSenha").value;
+    const btn = formLogin.querySelector("button");
+
+    btn.textContent = "Entrando...";
+    btn.disabled = true;
+
+    try {
+        await loginUsuario(email, senha);
+        mostrarApp();
+    } catch (err) {
+        alert("Erro ao entrar: " + err.message);
+        btn.textContent = "Entrar";
+        btn.disabled = false;
+    }
+});
+
+formCadastro.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const nome = document.getElementById("cadastroNome").value.trim();
+    const email = document.getElementById("cadastroEmail").value.trim();
+    const senha = document.getElementById("cadastroSenha").value;
+    const btn = formCadastro.querySelector("button");
+
+    if (senha.length < 6) {
+        alert("A senha precisa ter pelo menos 6 caracteres.");
+        return;
+    }
+
+    btn.textContent = "Criando conta...";
+    btn.disabled = true;
+
+    try {
+        await cadastrarUsuario(nome, email, senha);
+        mostrarApp();
+    } catch (err) {
+        alert("Erro ao criar conta: " + err.message);
+        btn.textContent = "Criar conta";
+        btn.disabled = false;
+    }
+});
+
+// ======================================
+// NAVEGAÇÃO
+// ======================================
 
 const links = document.querySelectorAll("nav a[data-page]");
 const paginas = document.querySelectorAll(".page");
 
 function mostrarPagina(nomePagina) {
-
     paginas.forEach((p) => p.classList.add("hidden"));
 
     const paginaAtiva = document.getElementById("page-" + nomePagina);
-
-    if (paginaAtiva)
-        paginaAtiva.classList.remove("hidden");
+    if (paginaAtiva) paginaAtiva.classList.remove("hidden");
 
     links.forEach((l) => l.classList.remove("active"));
-
-    const linkAtivo = document.querySelector(`nav a[data-page="${nomePagina}"`);
-
-    if (linkAtivo)
-        linkAtivo.classList.add("active");
+    const linkAtivo = document.querySelector(`nav a[data-page="${nomePagina}"]`);
+    if (linkAtivo) linkAtivo.classList.add("active");
 
     if (nomePagina === "graficos") {
-
         renderizarGraficos();
-
         carregarRelatorios();
-
     }
-
 }
+
 links.forEach((link) => {
     link.addEventListener("click", () => {
         mostrarPagina(link.getAttribute("data-page"));
@@ -59,12 +125,16 @@ links.forEach((link) => {
     });
 });
 
-function iniciarApp() {
+// ======================================
+// INICIAR APP APÓS LOGIN
+// ======================================
+
+async function iniciarApp() {
     const hora = new Date().getHours();
     const saudacao = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
-    const nomeUsuario = obterUsuario();
+    const nome = obterNomeUsuario();
 
-    document.getElementById("saudacao").innerHTML = `${saudacao}, ${nomeUsuario} 👋`;
+    document.getElementById("saudacao").innerHTML = `${saudacao}, ${nome} 👋`;
 
     const hoje = new Date();
     document.getElementById("dataAtual").innerHTML =
@@ -75,13 +145,17 @@ function iniciarApp() {
             year: "numeric"
         });
 
-    renderizarDashboard();
-    renderizarRendas();
-    renderizarGastos();
-    renderizarCartoes();
-    renderizarInvestimentos();
-    renderizarMetas();
+    await renderizarDashboard();
+    await renderizarRendas();
+    await renderizarGastos();
+    await renderizarCartoes();
+    await renderizarInvestimentos();
+    await renderizarMetas();
 }
+
+// ======================================
+// MENU MOBILE
+// ======================================
 
 const botaoMenu = document.getElementById("botaoMenu");
 const sidebar = document.getElementById("sidebar");
@@ -100,9 +174,17 @@ function fecharMenu() {
 if (botaoMenu) botaoMenu.addEventListener("click", abrirMenu);
 if (overlayMenu) overlayMenu.addEventListener("click", fecharMenu);
 
-document.getElementById("botaoSair").addEventListener("click", () => {
-    sairUsuario();
+// ======================================
+// BOTÃO SAIR
+// ======================================
+
+document.getElementById("botaoSair").addEventListener("click", async () => {
+    await sairUsuario();
     location.reload();
 });
 
-verificarLogin();
+// ======================================
+// INICIALIZAÇÃO
+// ======================================
+
+inicializar();

@@ -1,7 +1,7 @@
 console.log("carregou: dashboard.js");
 
-function calcularTotais() {
-    const dados = carregarDados();
+async function calcularTotais() {
+    const dados = await carregarDados();
 
     const totalRendaExtra = (dados.rendasExtras || []).reduce((soma, r) => soma + r.valor, 0);
     const rendaTotal = dados.salario + totalRendaExtra;
@@ -45,8 +45,8 @@ function calcularTotais() {
     };
 }
 
-function renderizarDashboard() {
-    const t = calcularTotais();
+async function renderizarDashboard() {
+    const t = await calcularTotais();
 
     document.getElementById("saldo").innerHTML = formatarMoeda(t.saldo);
     document.getElementById("investimentos").innerHTML = formatarMoeda(t.totalInvestimentos);
@@ -121,9 +121,9 @@ function iniciarListenerConfig() {
     const formConfig = document.getElementById("formConfig");
     if (!formConfig) return;
 
-    formConfig.addEventListener("submit", (evento) => {
+    formConfig.addEventListener("submit", async (evento) => {
         evento.preventDefault();
-
+        const dados = await carregarDados();
         const salario = parseFloat(document.getElementById("configSalario").value);
         const lazerMensal = parseFloat(document.getElementById("configLazer").value);
         const metaReserva = parseFloat(document.getElementById("configMetaReserva").value) || 0;

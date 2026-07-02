@@ -25,13 +25,35 @@
     <div id="telaLogin" class="tela-login">
         <div class="login-box">
             <i class="fa-solid fa-wallet" style="font-size:40px; color:var(--primary); margin-bottom:15px;"></i>
-            <h2>Bem-vindo ao FinanceHub</h2>
-            <p>Digite seu nome para começar</p>
+            <h2>FinanceHub</h2>
+
+            <!-- FORM LOGIN -->
             <form id="formLogin">
-                <input type="text" id="loginNome" placeholder="Seu nome" required>
+                <p style="color:var(--gray); margin-bottom:15px;">Entre na sua conta</p>
+                <input type="email" id="loginEmail" placeholder="Seu email" required>
+                <input type="password" id="loginSenha" placeholder="Sua senha" required>
                 <button type="submit" class="btn">Entrar</button>
+                <p style="margin-top:10px; color:var(--gray); font-size:13px;">
+                    Não tem conta?
+                    <a href="#" id="linkParaCadastro" style="color:var(--primary);">Criar conta</a>
+                </p>
             </form>
+
+            <!-- FORM CADASTRO -->
+            <form id="formCadastro" class="hidden">
+                <p style="color:var(--gray); margin-bottom:15px;">Criar nova conta</p>
+                <input type="text" id="cadastroNome" placeholder="Seu nome" required>
+                <input type="email" id="cadastroEmail" placeholder="Seu email" required>
+                <input type="password" id="cadastroSenha" placeholder="Senha (mín. 6 caracteres)" required>
+                <button type="submit" class="btn">Criar conta</button>
+                <p style="margin-top:10px; color:var(--gray); font-size:13px;">
+                    Já tem conta?
+                    <a href="#" id="linkParaLogin" style="color:var(--primary);">Entrar</a>
+                </p>
+            </form>
+
         </div>
+    </div>
     </div>
 
     <div class="container hidden" id="appContainer">
@@ -339,6 +361,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/dashboard.js"></script>

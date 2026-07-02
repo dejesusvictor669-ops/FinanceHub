@@ -3,8 +3,8 @@ console.log("carregou: app.js");
 // PÁGINA: GASTOS
 // ======================================
 
-function renderizarGastos() {
-    const dados = carregarDados();
+async function renderizarGastos() {
+    const dados = await carregarDados();
     const lista = document.getElementById("listaGastos");
 
     lista.innerHTML = "";
@@ -43,16 +43,22 @@ function renderizarGastos() {
     });
 }
 
-function excluirGasto(id) {
-    const dados = carregarDados();
+async function excluirGasto(id) {
+    const dados = await carregarDados();
     dados.gastos = dados.gastos.filter((g) => g.id !== id);
-    salvarDados(dados);
-    renderizarGastos();
-    renderizarDashboard();
+    await salvarDados(dados);
+    await renderizarGastos();
+    await renderizarDashboard();
 }
 
-document.getElementById("formGasto").addEventListener("submit", (evento) => {
-    evento.preventDefault();
+document.getElementById("formGasto").addEventListener("submit", async (evento) => {
+    ...
+    const dados = await carregarDados();
+    ...
+    await salvarDados(dados);
+    await renderizarGastos();
+    await renderizarDashboard();
+});
 
     const descricao = document.getElementById("gastoDescricao").value.trim();
     const valor = parseFloat(document.getElementById("gastoValor").value);
@@ -62,7 +68,7 @@ document.getElementById("formGasto").addEventListener("submit", (evento) => {
 
     if (!descricao || isNaN(valor) || valor <= 0) return;
 
-    const dados = carregarDados();
+    const dados = await carregarDados();
 
     dados.gastos.push({
         id: gerarId(),
@@ -72,8 +78,7 @@ document.getElementById("formGasto").addEventListener("submit", (evento) => {
         data
     });
 
-    salvarDados(dados);
+    await salvarDados(dados);
     document.getElementById("formGasto").reset();
-    renderizarGastos();
-    renderizarDashboard();
-});
+    await renderizarGastos();
+    await renderizarDashboard();
