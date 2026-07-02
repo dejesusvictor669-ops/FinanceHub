@@ -296,66 +296,41 @@
             </section>
 
             <!-- PÁGINA: RELATÓRIOS -->
-           <section class="page hidden" id="page-graficos">
+            <section class="page hidden" id="page-graficos">
 
-    <!-- CONTROLE -->
-    <div class="card" style="margin-bottom:25px;">
+                <div class="card" style="margin-bottom:25px;">
+                    <h2>📊 Central de Relatórios</h2>
+                    <br>
+                    <div style="display:flex;gap:15px;flex-wrap:wrap;align-items:center;">
+                        <button class="btn" onclick="fecharMes()">💾 Fechar mês atual</button>
+                        <select id="anoRelatorio" onchange="carregarRelatorios()" style="padding:12px;border-radius:12px;background:var(--bg);color:var(--text);min-width:120px;"></select>
+                    </div>
+                </div>
 
-        <h2>📊 Central de Relatórios</h2>
+                <div class="card" style="margin-bottom:25px;">
+                    <h3>📅 Histórico Mensal</h3>
+                    <div id="calendarioRelatorios" class="calendario-relatorios"></div>
+                </div>
 
-        <br>
+                <div class="card" style="margin-bottom:25px; display:none;" id="cardComparacao">
+                    <h3>📈 Comparativo anual</h3>
+                    <p style="color:var(--gray);font-size:13px;margin-bottom:15px;">Receita vs Gastos vs Saldo mês a mês</p>
+                    <canvas id="graficoComparacao" height="120"></canvas>
+                </div>
 
-        <button class="btn" onclick="fecharMes()">
-            💾 Fechar mês atual
-        </button>
-        <button class="btn" onclick="reabrirMes()">
-            🔓 Reabrir mês
-        </button>
-        
-        <select id="anoRelatorio" onchange="carregarRelatorios()" style="margin-top:15px;width:200px;">
-        </select>
+                <div id="dashboardHistorico"></div>
 
-    </div>
+                <div class="card" style="margin-top:25px;">
+                    <h3>📅 Gastos por mês (atual)</h3>
+                    <canvas id="graficoMensal" height="120"></canvas>
+                </div>
 
-    <!-- CALENDÁRIO -->
+                <div class="card" style="margin-top:25px;">
+                    <h3>🗂️ Gastos por categoria (atual)</h3>
+                    <canvas id="graficoCategoria" height="120"></canvas>
+                </div>
 
-    <div class="card" style="margin-bottom:25px;">
-
-        <h3>📅 Histórico Mensal</h3>
-
-        <div id="calendarioRelatorios" class="calendario-relatorios"></div>
-
-    </div>
-
-    <!-- DASHBOARD -->
-
-    <div class="card" style="margin-bottom:25px;">
-
-        <h3>📈 Dashboard do mês</h3>
-
-        <div id="dashboardHistorico"></div>
-
-    </div>
-
-    <!-- GRAFICOS -->
-
-    <div class="card" style="margin-bottom:25px;">
-
-        <h3>📅 Gastos por mês</h3>
-
-        <canvas id="graficoMensal"></canvas>
-
-    </div>
-
-    <div class="card">
-
-        <h3>🗂 Gastos por categoria</h3>
-
-        <canvas id="graficoCategoria"></canvas>
-
-    </div>
-
-</section>
+            </section>
 
         </main>
     </div>

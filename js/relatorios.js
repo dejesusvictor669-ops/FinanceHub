@@ -5,12 +5,15 @@ const MESES = [
     "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"
 ];
 
+let graficoRelatorioInstance = null;
+let graficoComparacaoInstance = null;
+
 // ======================================
-// FECHAR MÊS — salva um snapshot dos dados atuais
+// FECHAR MÊS
 // ======================================
 
-function fecharMes() {
-    const dados = carregarDados();
+async function fecharMes() {
+    const dados = await carregarDados();
     if (!dados.relatorios) dados.relatorios = [];
 
     const hoje = new Date();
@@ -23,11 +26,10 @@ function fecharMes() {
         return;
     }
 
-    const t = calcularTotais();
+    const t = await calcularTotais();
 
     dados.relatorios.push({
-        ano,
-        mes,
+        ano, mes,
         fechadoEm: hoje.toLocaleDateString("pt-BR"),
         salario: t.dados.salario,
         rendaExtra: t.totalRendaExtra,
@@ -46,39 +48,38 @@ function fecharMes() {
         qtdMetas: t.dados.metas.length
     });
 
-    salvarDados(dados);
+    await salvarDados(dados);
     alert(`${MESES[mes]} ${ano} fechado com sucesso!`);
-    carregarRelatorios();
+    await carregarRelatorios();
 }
 
 // ======================================
 // REABRIR MÊS
 // ======================================
 
-function reabrirMes(ano, mes) {
+async function reabrirMes(ano, mes) {
     if (!confirm(`Reabrir ${MESES[mes]} ${ano}?`)) return;
 
-    const dados = carregarDados();
+    const dados = await carregarDados();
     dados.relatorios = dados.relatorios.filter(r => !(r.ano === ano && r.mes === mes));
-    salvarDados(dados);
+    await salvarDados(dados);
 
     document.getElementById("dashboardHistorico").innerHTML = "";
-    carregarRelatorios();
+    await carregarRelatorios();
     alert("Mês reaberto.");
 }
 
 // ======================================
-// CALENDÁRIO — grade dos 12 meses
+// CALENDÁRIO
 // ======================================
 
-function carregarRelatorios() {
-    const dados = carregarDados();
+async function carregarRelatorios() {
+    const dados = await carregarDados();
     if (!dados.relatorios) dados.relatorios = [];
 
     const calendario = document.getElementById("calendarioRelatorios");
     if (!calendario) return;
 
-    // monta o select de ano se ainda não tiver
     const anoSelect = document.getElementById("anoRelatorio");
     if (anoSelect && anoSelect.options.length === 0) {
         const anoAtual = new Date().getFullYear();
@@ -105,14 +106,16 @@ function carregarRelatorios() {
             </div>
         `;
     }
+
+    await renderizarGraficoComparacao(dados.relatorios, ano);
 }
 
 // ======================================
-// ABRIR RELATÓRIO DE UM MÊS
+// ABRIR RELATÓRIO
 // ======================================
 
-function abrirRelatorio(ano, mes) {
-    const dados = carregarDados();
+async function abrirRelatorio(ano, mes) {
+    const dados = await carregarDados();
     const r = dados.relatorios ? dados.relatorios.find(x => x.ano === ano && x.mes === mes) : null;
 
     const painel = document.getElementById("dashboardHistorico");
@@ -160,6 +163,11 @@ function abrirRelatorio(ano, mes) {
             <p>🎯 ${r.qtdMetas} metas</p>
         </div>
 
+        <div class="cardResumo" style="grid-column:1/-1;">
+            <h3>📊 Distribuição do mês</h3>
+            <canvas id="graficoRelatorio" height="100"></canvas>
+        </div>
+
         <div class="cardResumo">
             <h3>⚙️ Ações</h3>
             <button class="btn" onclick="reabrirMes(${r.ano}, ${r.mes})">
@@ -167,4 +175,146 @@ function abrirRelatorio(ano, mes) {
             </button>
         </div>
     `;
+
+    renderizarGraficoRelatorio(r);
+}
+
+// ======================================
+// GRÁFICO DE PIZZA — distribuição do mês
+// ======================================
+
+function renderizarGraficoRelatorio(r) {
+    const ctx = document.getElementById("graficoRelatorio");
+    if (!ctx) return;
+
+    if (graficoRelatorioInstance) {
+        graficoRelatorioInstance.destroy();
+    }
+
+    const labels = ["Gastos", "Lazer", "Cartões", "Investimentos", "Reserva", "Saldo"];
+    const valores = [
+        r.gastosNormais,
+        r.gastosLazer,
+        r.cartoes,
+        r.investimentos,
+        r.reserva,
+        Math.max(r.saldo, 0)
+    ];
+    const cores = ["#EF4444","#F59E0B","#EC4899","#2563EB","#8B5CF6","#22C55E"];
+
+    graficoRelatorioInstance = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+            labels,
+            datasets: [{
+                data: valores,
+                backgroundColor: cores,
+                borderColor: "#1E293B",
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "bottom",
+                    labels: { color: "#F8FAFC", padding: 15 }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: (ctx) => {
+                            const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                            const pct = total > 0 ? ((ctx.raw / total) * 100).toFixed(1) : 0;
+                            return ` ${formatarMoeda(ctx.raw)} (${pct}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// ======================================
+// GRÁFICO DE BARRAS — comparação anual
+// ======================================
+
+async function renderizarGraficoComparacao(relatorios, ano) {
+    const ctx = document.getElementById("graficoComparacao");
+    if (!ctx) return;
+
+    if (graficoComparacaoInstance) {
+        graficoComparacaoInstance.destroy();
+    }
+
+    const relDoAno = relatorios
+        .filter(r => r.ano === ano)
+        .sort((a, b) => a.mes - b.mes);
+
+    //const card = document.getElementById("cardComparacao");
+
+    const card = document.getElementById("cardComparacao");
+
+    if (relDoAno.length === 0) {
+        if (card) card.style.display = "none";
+        return;
+    }
+
+    if (card) card.style.display = "block";
+
+    const labels = relDoAno.map(r => MESES[r.mes].substring(0, 3));
+    const receitas = relDoAno.map(r => r.receita);
+    const gastos = relDoAno.map(r => r.gastosNormais + r.gastosLazer + r.cartoes);
+    const saldos = relDoAno.map(r => r.saldo);
+
+    graficoComparacaoInstance = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: "Receita",
+                    data: receitas,
+                    backgroundColor: "rgba(34, 197, 94, 0.7)",
+                    borderColor: "#22C55E",
+                    borderWidth: 2,
+                    borderRadius: 6
+                },
+                {
+                    label: "Gastos totais",
+                    data: gastos,
+                    backgroundColor: "rgba(239, 68, 68, 0.7)",
+                    borderColor: "#EF4444",
+                    borderWidth: 2,
+                    borderRadius: 6
+                },
+                {
+                    label: "Saldo final",
+                    data: saldos,
+                    backgroundColor: "rgba(37, 99, 235, 0.7)",
+                    borderColor: "#2563EB",
+                    borderWidth: 2,
+                    borderRadius: 6,
+                    type: "line"
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { labels: { color: "#F8FAFC" } },
+                tooltip: {
+                    callbacks: {
+                        label: (ctx) => ` ${ctx.dataset.label}: ${formatarMoeda(ctx.raw)}`
+                    }
+                }
+            },
+            scales: {
+                x: { ticks: { color: "#94A3B8" }, grid: { color: "rgba(255,255,255,0.05)" } },
+                y: {
+                    ticks: { color: "#94A3B8", callback: (v) => "R$ " + v.toFixed(0) },
+                    grid: { color: "rgba(255,255,255,0.05)" }
+                }
+            }
+        }
+    });
 }
