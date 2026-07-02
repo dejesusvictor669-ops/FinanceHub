@@ -133,13 +133,13 @@ function iniciarListenerConfig() {
             return;
         }
 
-        const dados = carregarDados();
-        dados.salario = salario;
-        dados.lazerMensal = lazerMensal;
-        dados.metaReserva = metaReserva;
-        salvarDados(dados);
+       const dados = carregarDados();
 
+        if (!isNaN(salario) && salario > 0) dados.salario = salario;
+        if (!isNaN(lazerMensal) && lazerMensal >= 0) dados.lazerMensal = lazerMensal;
+        if (!isNaN(metaReserva) && metaReserva >= 0) dados.metaReserva = metaReserva;
         renderizarDashboard();
+        
         alert("Configurações salvas!");
     });
 }
