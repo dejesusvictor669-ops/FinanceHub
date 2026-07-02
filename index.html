@@ -286,7 +286,12 @@
         <button class="btn" onclick="fecharMes()">
             💾 Fechar mês atual
         </button>
-
+        <button class="btn" onclick="reabrirMes(${r.ano},${r.mes})">
+            🔓 Reabrir mês
+        </button>
+        <button class="btn" onclick="imprimirRelatorio()">
+        🖨️ Imprimir / PDF
+         </button>
         <select id="anoRelatorio" onchange="carregarRelatorios()" style="margin-top:15px;width:200px;">
         </select>
 

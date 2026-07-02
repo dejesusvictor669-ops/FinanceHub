@@ -342,3 +342,28 @@ window.addEventListener("load",()=>{
     },300);
 
 });
+function reabrirMes(ano, mes) {
+
+    if (!confirm("Deseja realmente reabrir este mês?"))
+        return;
+
+    const dados = carregarDados();
+
+    dados.relatorios = dados.relatorios.filter(r =>
+        !(r.ano == ano && r.mes == mes)
+    );
+
+    salvarDados(dados);
+
+    carregarRelatorios();
+
+    document.getElementById("dashboardHistorico").innerHTML = "";
+
+    alert("Mês reaberto com sucesso!");
+
+}
+function imprimirRelatorio() {
+
+    window.print();
+
+}
