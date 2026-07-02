@@ -28,18 +28,30 @@ const links = document.querySelectorAll("nav a[data-page]");
 const paginas = document.querySelectorAll(".page");
 
 function mostrarPagina(nomePagina) {
+
     paginas.forEach((p) => p.classList.add("hidden"));
 
     const paginaAtiva = document.getElementById("page-" + nomePagina);
-    if (paginaAtiva) paginaAtiva.classList.remove("hidden");
+
+    if (paginaAtiva)
+        paginaAtiva.classList.remove("hidden");
 
     links.forEach((l) => l.classList.remove("active"));
-    const linkAtivo = document.querySelector(`nav a[data-page="${nomePagina}"]`);
-    if (linkAtivo) linkAtivo.classList.add("active");
 
-    if (nomePagina === "graficos") renderizarGraficos();
+    const linkAtivo = document.querySelector(`nav a[data-page="${nomePagina}"`);
+
+    if (linkAtivo)
+        linkAtivo.classList.add("active");
+
+    if (nomePagina === "graficos") {
+
+        renderizarGraficos();
+
+        carregarRelatorios();
+
+    }
+
 }
-
 links.forEach((link) => {
     link.addEventListener("click", () => {
         mostrarPagina(link.getAttribute("data-page"));
