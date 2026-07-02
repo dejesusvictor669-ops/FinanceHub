@@ -1,6 +1,5 @@
-console.log("carregou: app.js");
 // ======================================
-// LOGIN (sem backend, salvo no localStorage)
+// LOGIN
 // ======================================
 
 const telaLogin = document.getElementById("telaLogin");
@@ -21,48 +20,37 @@ function verificarLogin() {
 
 document.getElementById("formLogin").addEventListener("submit", (evento) => {
     evento.preventDefault();
-
     const nome = document.getElementById("loginNome").value.trim();
-
-    if (!nome) {
-        return;
-    }
-
+    if (!nome) return;
     salvarUsuario(nome);
     verificarLogin();
 });
 
 // ======================================
-// CONTROLADOR DE NAVEGAÇÃO
+// NAVEGAÇÃO
 // ======================================
 
 const links = document.querySelectorAll("nav a[data-page]");
 const paginas = document.querySelectorAll(".page");
 
 function mostrarPagina(nomePagina) {
-    paginas.forEach((pagina) => {
-        pagina.classList.add("hidden");
-    });
+    paginas.forEach((p) => p.classList.add("hidden"));
 
     const paginaAtiva = document.getElementById("page-" + nomePagina);
-    if (paginaAtiva) {
-        paginaAtiva.classList.remove("hidden");
-    }
+    if (paginaAtiva) paginaAtiva.classList.remove("hidden");
 
-    links.forEach((link) => {
-        link.classList.remove("active");
-    });
-
+    links.forEach((l) => l.classList.remove("active"));
     const linkAtivo = document.querySelector(`nav a[data-page="${nomePagina}"]`);
-    if (linkAtivo) {
-        linkAtivo.classList.add("active");
+    if (linkAtivo) linkAtivo.classList.add("active");
+
+    if (nomePagina === "graficos") {
+        renderizarGraficos();
     }
 }
 
 links.forEach((link) => {
     link.addEventListener("click", () => {
-        const pagina = link.getAttribute("data-page");
-        mostrarPagina(pagina);
+        mostrarPagina(link.getAttribute("data-page"));
         fecharMenu();
     });
 });
@@ -73,17 +61,9 @@ links.forEach((link) => {
 
 function iniciarApp() {
     const hora = new Date().getHours();
-    let saudacao = "";
-
-    if (hora < 12) {
-        saudacao = "Bom dia";
-    } else if (hora < 18) {
-        saudacao = "Boa tarde";
-    } else {
-        saudacao = "Boa noite";
-    }
-
+    let saudacao = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
     const nomeUsuario = obterUsuario();
+
     document.getElementById("saudacao").innerHTML = `${saudacao}, ${nomeUsuario} 👋`;
 
     const hoje = new Date();
@@ -103,7 +83,7 @@ function iniciarApp() {
 }
 
 // ======================================
-// MENU MOBILE (sidebar retrátil)
+// MENU MOBILE
 // ======================================
 
 const botaoMenu = document.getElementById("botaoMenu");
@@ -120,13 +100,8 @@ function fecharMenu() {
     if (overlayMenu) overlayMenu.classList.remove("ativo");
 }
 
-if (botaoMenu) {
-    botaoMenu.addEventListener("click", abrirMenu);
-}
-
-if (overlayMenu) {
-    overlayMenu.addEventListener("click", fecharMenu);
-}
+if (botaoMenu) botaoMenu.addEventListener("click", abrirMenu);
+if (overlayMenu) overlayMenu.addEventListener("click", fecharMenu);
 
 // ======================================
 // BOTÃO SAIR

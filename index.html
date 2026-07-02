@@ -27,7 +27,6 @@
             <i class="fa-solid fa-wallet" style="font-size:40px; color:var(--primary); margin-bottom:15px;"></i>
             <h2>Bem-vindo ao FinanceHub</h2>
             <p>Digite seu nome para começar</p>
-
             <form id="formLogin">
                 <input type="text" id="loginNome" placeholder="Seu nome" required>
                 <button type="submit" class="btn">Entrar</button>
@@ -51,25 +50,25 @@
                     <i class="fa-solid fa-house"></i>
                     Visão Geral
                 </a>
-
                 <a data-page="gastos">
                     <i class="fa-solid fa-money-bill-wave"></i>
                     Gastos
                 </a>
-
                 <a data-page="cartoes">
                     <i class="fa-solid fa-credit-card"></i>
                     Cartões
                 </a>
-
                 <a data-page="investimentos">
                     <i class="fa-solid fa-chart-line"></i>
                     Investimentos
                 </a>
-
                 <a data-page="metas">
                     <i class="fa-solid fa-bullseye"></i>
                     Metas
+                </a>
+                <a data-page="graficos">
+                    <i class="fa-solid fa-chart-bar"></i>
+                    Relatórios
                 </a>
             </nav>
 
@@ -98,7 +97,7 @@
                 <section class="cards">
 
                     <div class="card green">
-                        <h3>💰 Saldo do mês</h3>
+                        <h3>💰 Saldo disponível</h3>
                         <h2 id="saldo"></h2>
                     </div>
 
@@ -108,7 +107,7 @@
                     </div>
 
                     <div class="card">
-                        <h3>🎯 Reserva</h3>
+                        <h3>🛡️ Reserva de emergência</h3>
                         <h2 id="reserva"></h2>
                         <div class="progress">
                             <span id="barraReserva"></span>
@@ -116,26 +115,30 @@
                     </div>
 
                     <div class="card red">
-                        <h3>🍔 Lazer disponível</h3>
+                        <h3>🍔 Orçamento de lazer</h3>
                         <h2 id="lazer"></h2>
                     </div>
 
                 </section>
 
+                <!-- RESUMO DE DESCONTOS -->
+                <div class="card" style="margin-top:25px;">
+                    <h3>📊 Resumo do mês</h3>
+                    <ul class="lista-itens" id="resumoMes"></ul>
+                </div>
+
+                <!-- CONFIGURAÇÕES -->
                 <div class="card" style="margin-top:25px;">
                     <h3>⚙️ Configurações</h3>
-
                     <form id="formConfig" class="form-gasto">
-
                         <input type="number" id="configSalario" placeholder="Salário / renda mensal (R$)" step="0.01" required>
-
-                        <input type="number" id="configLazer" placeholder="Valor de lazer mensal (R$)" step="0.01" required>
-
+                        <input type="number" id="configLazer" placeholder="Orçamento de lazer (R$)" step="0.01" required>
+                        <input type="number" id="configMetaReserva" placeholder="Meta de reserva (R$)" step="0.01">
                         <button type="submit" class="btn">Salvar configurações</button>
-
                     </form>
                 </div>
 
+                <!-- METAS RESUMO -->
                 <div class="card" style="margin-top:25px;">
                     <h3>🎯 Metas em andamento</h3>
                     <ul id="listaMetasResumo" class="lista-itens"></ul>
@@ -148,13 +151,9 @@
 
                 <div class="card" style="margin-bottom:25px;">
                     <h3>➕ Novo gasto</h3>
-
                     <form id="formGasto" class="form-gasto">
-
                         <input type="text" id="gastoDescricao" placeholder="Descrição (ex: Mercado)" required>
-
                         <input type="number" id="gastoValor" placeholder="Valor (R$)" step="0.01" required>
-
                         <select id="gastoCategoria">
                             <option value="moradia">🏠 Moradia</option>
                             <option value="contas">💡 Contas</option>
@@ -163,9 +162,8 @@
                             <option value="cartao">💳 Cartão</option>
                             <option value="outros">📦 Outros</option>
                         </select>
-
+                        <input type="date" id="gastoData">
                         <button type="submit" class="btn">Adicionar</button>
-
                     </form>
                 </div>
 
@@ -181,24 +179,20 @@
 
                 <div class="card" style="margin-bottom:25px;">
                     <h3>➕ Nova compra no cartão</h3>
-
                     <form id="formCartao" class="form-gasto">
-
                         <input type="text" id="cartaoDescricao" placeholder="Descrição (ex: Placa de vídeo)" required>
-
                         <input type="number" id="cartaoValor" placeholder="Valor total (R$)" step="0.01" required>
-
                         <input type="number" id="cartaoParcelas" placeholder="Nº de parcelas" min="1" value="1" required>
-
                         <input type="text" id="cartaoNome" placeholder="Cartão (ex: Nubank)" required>
-
                         <button type="submit" class="btn">Adicionar</button>
-
                     </form>
                 </div>
 
                 <div class="card">
                     <h3>💳 Compras parceladas</h3>
+                    <p style="color:var(--gray); font-size:13px; margin-top:5px; margin-bottom:10px;">
+                        O valor da parcela mensal de cada compra é descontado automaticamente do seu saldo.
+                    </p>
                     <ul id="listaCartoes" class="lista-itens"></ul>
                 </div>
 
@@ -209,13 +203,12 @@
 
                 <div class="card" style="margin-bottom:25px;">
                     <h3>➕ Novo aporte</h3>
-
+                    <p style="color:var(--gray); font-size:13px; margin-top:5px; margin-bottom:10px;">
+                        Aportes de <strong>Reserva de emergência</strong> aparecem no card de Reserva. Os demais aparecem em Investimentos.
+                    </p>
                     <form id="formInvestimento" class="form-gasto">
-
                         <input type="text" id="investDescricao" placeholder="Onde (ex: Tesouro Selic)" required>
-
                         <input type="number" id="investValor" placeholder="Valor aportado (R$)" step="0.01" required>
-
                         <select id="investTipo">
                             <option value="reserva">🛡️ Reserva de emergência</option>
                             <option value="renda-fixa">📄 Renda fixa</option>
@@ -223,9 +216,7 @@
                             <option value="etf-eua">🌎 ETF EUA</option>
                             <option value="cripto">₿ Cripto</option>
                         </select>
-
                         <button type="submit" class="btn">Adicionar</button>
-
                     </form>
                 </div>
 
@@ -241,17 +232,11 @@
 
                 <div class="card" style="margin-bottom:25px;">
                     <h3>🎯 Nova meta</h3>
-
                     <form id="formMeta" class="form-gasto">
-
-                        <input type="text" id="metaNome" placeholder="Nome da meta (ex: Reserva, Viagem)" required>
-
+                        <input type="text" id="metaNome" placeholder="Nome da meta (ex: Viagem, Carro)" required>
                         <input type="number" id="metaValorAlvo" placeholder="Valor alvo (R$)" step="0.01" required>
-
                         <input type="number" id="metaValorAtual" placeholder="Valor já guardado (R$)" step="0.01" value="0">
-
                         <button type="submit" class="btn">Adicionar</button>
-
                     </form>
                 </div>
 
@@ -262,9 +247,28 @@
 
             </section>
 
+            <!-- PÁGINA: RELATÓRIOS -->
+            <section class="page hidden" id="page-graficos">
+
+                <div class="card" style="margin-bottom:25px;">
+                    <h3>📅 Gastos por mês</h3>
+                    <p style="color:var(--gray); font-size:13px; margin-top:5px; margin-bottom:20px;">
+                        Compare seus gastos mês a mês e veja onde está gastando mais.
+                    </p>
+                    <canvas id="graficoMensal" height="120"></canvas>
+                </div>
+
+                <div class="card">
+                    <h3>🗂️ Gastos por categoria</h3>
+                    <canvas id="graficoCategoria" height="120"></canvas>
+                </div>
+
+            </section>
+
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/dashboard.js"></script>
@@ -272,6 +276,7 @@
     <script src="js/cartoes.js"></script>
     <script src="js/investimentos.js"></script>
     <script src="js/metas.js"></script>
+    <script src="js/graficos.js"></script>
     <script src="js/app.js"></script>
 
 </body>

@@ -1,5 +1,3 @@
-console.log("carregou: app.js");
-
 // ======================================
 // PÁGINA: GASTOS
 // ======================================
@@ -48,7 +46,6 @@ function excluirGasto(id) {
     const dados = carregarDados();
     dados.gastos = dados.gastos.filter((g) => g.id !== id);
     salvarDados(dados);
-
     renderizarGastos();
     renderizarDashboard();
 }
@@ -59,25 +56,23 @@ document.getElementById("formGasto").addEventListener("submit", (evento) => {
     const descricao = document.getElementById("gastoDescricao").value.trim();
     const valor = parseFloat(document.getElementById("gastoValor").value);
     const categoria = document.getElementById("gastoCategoria").value;
+    const dataInput = document.getElementById("gastoData").value;
+    const data = dataInput || hojeISO();
 
-    if (!descricao || isNaN(valor) || valor <= 0) {
-        return;
-    }
+    if (!descricao || isNaN(valor) || valor <= 0) return;
 
     const dados = carregarDados();
 
     dados.gastos.push({
         id: gerarId(),
-        descricao: descricao,
-        valor: valor,
-        categoria: categoria,
-        data: hojeISO()
+        descricao,
+        valor,
+        categoria,
+        data
     });
 
     salvarDados(dados);
-
     document.getElementById("formGasto").reset();
-
     renderizarGastos();
     renderizarDashboard();
 });
