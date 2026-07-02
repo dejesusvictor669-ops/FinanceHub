@@ -1,12 +1,8 @@
-console.log("carregou: app.js");
-// ======================================
-// PÁGINA: GASTOS
-// ======================================
+console.log("carregou: gastos.js");
 
 async function renderizarGastos() {
     const dados = await carregarDados();
     const lista = document.getElementById("listaGastos");
-
     lista.innerHTML = "";
 
     if (dados.gastos.length === 0) {
@@ -19,27 +15,21 @@ async function renderizarGastos() {
     gastosOrdenados.forEach((gasto) => {
         const item = document.createElement("li");
         item.className = "item-linha";
-
         item.innerHTML = `
             <div class="info">
                 <span>${gasto.descricao}</span>
                 <small>${gasto.categoria} • ${formatarData(gasto.data)}</small>
             </div>
-            <div style="display:flex; align-items:center; gap:15px;">
+            <div style="display:flex;align-items:center;gap:15px;">
                 <strong>${formatarMoeda(gasto.valor)}</strong>
-                <button class="excluir" data-id="${gasto.id}">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
+                <button class="excluir" data-id="${gasto.id}"><i class="fa-solid fa-trash"></i></button>
             </div>
         `;
-
         lista.appendChild(item);
     });
 
     document.querySelectorAll("#listaGastos .excluir").forEach((botao) => {
-        botao.addEventListener("click", () => {
-            excluirGasto(botao.getAttribute("data-id"));
-        });
+        botao.addEventListener("click", () => excluirGasto(botao.getAttribute("data-id")));
     });
 }
 
@@ -52,13 +42,7 @@ async function excluirGasto(id) {
 }
 
 document.getElementById("formGasto").addEventListener("submit", async (evento) => {
-    ...
-    const dados = await carregarDados();
-    ...
-    await salvarDados(dados);
-    await renderizarGastos();
-    await renderizarDashboard();
-});
+    evento.preventDefault();
 
     const descricao = document.getElementById("gastoDescricao").value.trim();
     const valor = parseFloat(document.getElementById("gastoValor").value);
@@ -69,16 +53,10 @@ document.getElementById("formGasto").addEventListener("submit", async (evento) =
     if (!descricao || isNaN(valor) || valor <= 0) return;
 
     const dados = await carregarDados();
-
-    dados.gastos.push({
-        id: gerarId(),
-        descricao,
-        valor,
-        categoria,
-        data
-    });
-
+    dados.gastos.push({ id: gerarId(), descricao, valor, categoria, data });
     await salvarDados(dados);
+
     document.getElementById("formGasto").reset();
     await renderizarGastos();
     await renderizarDashboard();
+});

@@ -31,17 +31,9 @@ async function calcularTotais() {
     const saldo = rendaTotal - gastosNormais - totalCartoesMensal - totalInvestimentos - totalReserva - lazerOrcamento;
 
     return {
-        dados,
-        rendaTotal,
-        totalRendaExtra,
-        saldo,
-        gastosNormais,
-        gastosLazer,
-        totalCartoesMensal,
-        totalInvestimentos,
-        totalReserva,
-        lazerOrcamento,
-        lazerRestante
+        dados, rendaTotal, totalRendaExtra, saldo,
+        gastosNormais, gastosLazer, totalCartoesMensal,
+        totalInvestimentos, totalReserva, lazerOrcamento, lazerRestante
     };
 }
 
@@ -66,47 +58,23 @@ async function renderizarDashboard() {
 
 function renderizarResumoMes(t) {
     const resumo = document.getElementById("resumoMes");
-
     resumo.innerHTML = `
-        <li class="item-linha">
-            <span>💼 Salário base</span>
-            <strong style="color:var(--success)">${formatarMoeda(t.dados.salario)}</strong>
+        <li class="item-linha"><span>💼 Salário base</span><strong style="color:var(--success)">${formatarMoeda(t.dados.salario)}</strong></li>
+        <li class="item-linha"><span>💵 Rendas extras</span><strong style="color:var(--success)">+ ${formatarMoeda(t.totalRendaExtra)}</strong></li>
+        <li class="item-linha" style="border-top:1px solid rgba(255,255,255,0.05);padding-top:12px;margin-top:4px;">
+            <span>🧾 Gastos lançados</span><strong style="color:var(--danger)">− ${formatarMoeda(t.gastosNormais)}</strong>
         </li>
-        <li class="item-linha">
-            <span>💵 Rendas extras</span>
-            <strong style="color:var(--success)">+ ${formatarMoeda(t.totalRendaExtra)}</strong>
-        </li>
-        <li class="item-linha" style="border-top:1px solid rgba(255,255,255,0.05); padding-top:12px; margin-top:4px;">
-            <span>🧾 Gastos lançados</span>
-            <strong style="color:var(--danger)">− ${formatarMoeda(t.gastosNormais)}</strong>
-        </li>
-        <li class="item-linha">
-            <span>💳 Parcelas do cartão (mês)</span>
-            <strong style="color:var(--danger)">− ${formatarMoeda(t.totalCartoesMensal)}</strong>
-        </li>
-        <li class="item-linha">
-            <span>📈 Investimentos</span>
-            <strong style="color:var(--warning)">− ${formatarMoeda(t.totalInvestimentos)}</strong>
-        </li>
-        <li class="item-linha">
-            <span>🛡️ Reserva de emergência</span>
-            <strong style="color:var(--warning)">− ${formatarMoeda(t.totalReserva)}</strong>
-        </li>
-        <li class="item-linha">
-            <span>🍔 Orçamento de lazer</span>
-            <strong style="color:var(--warning)">− ${formatarMoeda(t.lazerOrcamento)}</strong>
-        </li>
-        <li class="item-linha" style="border-top:1px solid rgba(255,255,255,0.08); padding-top:14px; margin-top:4px;">
+        <li class="item-linha"><span>💳 Parcelas do cartão (mês)</span><strong style="color:var(--danger)">− ${formatarMoeda(t.totalCartoesMensal)}</strong></li>
+        <li class="item-linha"><span>📈 Investimentos</span><strong style="color:var(--warning)">− ${formatarMoeda(t.totalInvestimentos)}</strong></li>
+        <li class="item-linha"><span>🛡️ Reserva de emergência</span><strong style="color:var(--warning)">− ${formatarMoeda(t.totalReserva)}</strong></li>
+        <li class="item-linha"><span>🍔 Orçamento de lazer</span><strong style="color:var(--warning)">− ${formatarMoeda(t.lazerOrcamento)}</strong></li>
+        <li class="item-linha" style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;margin-top:4px;">
             <span><strong>💰 Saldo disponível</strong></span>
-            <strong style="color:${t.saldo >= 0 ? 'var(--success)' : 'var(--danger)'}; font-size:18px;">
-                ${formatarMoeda(t.saldo)}
-            </strong>
+            <strong style="color:${t.saldo >= 0 ? 'var(--success)' : 'var(--danger)'};font-size:18px;">${formatarMoeda(t.saldo)}</strong>
         </li>
         <li class="item-linha" style="margin-top:4px;">
             <span><strong>🍔 Lazer restante</strong></span>
-            <strong style="color:${t.lazerRestante >= 0 ? 'var(--success)' : 'var(--danger)'};">
-                ${formatarMoeda(t.lazerRestante)}
-            </strong>
+            <strong style="color:${t.lazerRestante >= 0 ? 'var(--success)' : 'var(--danger)'};">${formatarMoeda(t.lazerRestante)}</strong>
         </li>
     `;
 }
@@ -123,20 +91,19 @@ function iniciarListenerConfig() {
 
     formConfig.addEventListener("submit", async (evento) => {
         evento.preventDefault();
-        const dados = await carregarDados();
+
         const salario = parseFloat(document.getElementById("configSalario").value);
         const lazerMensal = parseFloat(document.getElementById("configLazer").value);
         const metaReserva = parseFloat(document.getElementById("configMetaReserva").value) || 0;
 
-        const dados = carregarDados();
+        const dados = await carregarDados();
 
         if (!isNaN(salario) && salario >= 0) dados.salario = salario;
         if (!isNaN(lazerMensal) && lazerMensal >= 0) dados.lazerMensal = lazerMensal;
         if (!isNaN(metaReserva) && metaReserva >= 0) dados.metaReserva = metaReserva;
 
-        salvarDados(dados); // ← estava faltando isso
-
-        renderizarDashboard();
+        await salvarDados(dados);
+        await renderizarDashboard();
         alert("Configurações salvas!");
     });
 }

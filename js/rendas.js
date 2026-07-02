@@ -1,9 +1,8 @@
 console.log("carregou: rendas.js");
 
-function renderizarRendas() {
-    const dados = carregarDados();
+async function renderizarRendas() {
+    const dados = await carregarDados();
     const lista = document.getElementById("listaRendas");
-
     lista.innerHTML = "";
 
     if (dados.rendasExtras.length === 0) {
@@ -16,39 +15,33 @@ function renderizarRendas() {
     ordenadas.forEach((renda) => {
         const item = document.createElement("li");
         item.className = "item-linha";
-
         item.innerHTML = `
             <div class="info">
                 <span>${renda.descricao}</span>
                 <small>${formatarData(renda.data)}</small>
             </div>
-            <div style="display:flex; align-items:center; gap:15px;">
+            <div style="display:flex;align-items:center;gap:15px;">
                 <strong style="color:var(--success)">${formatarMoeda(renda.valor)}</strong>
-                <button class="excluir" data-id="${renda.id}">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
+                <button class="excluir" data-id="${renda.id}"><i class="fa-solid fa-trash"></i></button>
             </div>
         `;
-
         lista.appendChild(item);
     });
 
     document.querySelectorAll("#listaRendas .excluir").forEach((botao) => {
-        botao.addEventListener("click", () => {
-            excluirRenda(botao.getAttribute("data-id"));
-        });
+        botao.addEventListener("click", () => excluirRenda(botao.getAttribute("data-id")));
     });
 }
 
-function excluirRenda(id) {
-    const dados = carregarDados();
+async function excluirRenda(id) {
+    const dados = await carregarDados();
     dados.rendasExtras = dados.rendasExtras.filter((r) => r.id !== id);
-    salvarDados(dados);
-    renderizarRendas();
-    renderizarDashboard();
+    await salvarDados(dados);
+    await renderizarRendas();
+    await renderizarDashboard();
 }
 
-document.getElementById("formRenda").addEventListener("submit", (evento) => {
+document.getElementById("formRenda").addEventListener("submit", async (evento) => {
     evento.preventDefault();
 
     const descricao = document.getElementById("rendaDescricao").value.trim();
@@ -58,17 +51,11 @@ document.getElementById("formRenda").addEventListener("submit", (evento) => {
 
     if (!descricao || isNaN(valor) || valor <= 0) return;
 
-    const dados = carregarDados();
+    const dados = await carregarDados();
+    dados.rendasExtras.push({ id: gerarId(), descricao, valor, data });
+    await salvarDados(dados);
 
-    dados.rendasExtras.push({
-        id: gerarId(),
-        descricao,
-        valor,
-        data
-    });
-
-    salvarDados(dados);
     document.getElementById("formRenda").reset();
-    renderizarRendas();
-    renderizarDashboard();
+    await renderizarRendas();
+    await renderizarDashboard();
 });

@@ -1,33 +1,24 @@
-console.log("carregou: app.js");
-// ======================================
-// PÁGINA: METAS
-// ======================================
+console.log("carregou: metas.js");
 
 function montarHtmlMeta(meta) {
     const porcentagem = Math.min((meta.valorAtual / meta.valorAlvo) * 100, 100);
-
     return `
         <li class="meta-linha">
             <div class="topo">
                 <span>${meta.nome}</span>
-                <button class="excluir" data-id="${meta.id}">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
+                <button class="excluir-meta" data-id="${meta.id}"><i class="fa-solid fa-trash"></i></button>
             </div>
-            <div class="progress">
-                <span style="width:${porcentagem}%"></span>
-            </div>
+            <div class="progress"><span style="width:${porcentagem}%"></span></div>
             <small>${formatarMoeda(meta.valorAtual)} de ${formatarMoeda(meta.valorAlvo)} (${porcentagem.toFixed(0)}%)</small>
         </li>
     `;
 }
 
-function renderizarMetas() {
-    const dados = carregarDados();
+async function renderizarMetas() {
+    const dados = await carregarDados();
 
     const listaCompleta = document.getElementById("listaMetas");
     const listaResumo = document.getElementById("listaMetasResumo");
-
     const semMetas = `<li class="item-linha"><span>Nenhuma meta cadastrada ainda.</span></li>`;
 
     if (dados.metas.length === 0) {
@@ -39,49 +30,31 @@ function renderizarMetas() {
         listaResumo.innerHTML = html;
     }
 
-    document.querySelectorAll(".excluir[data-id]").forEach((botao) => {
-        const idMeta = botao.getAttribute("data-id");
-        const ehMeta = dados.metas.some((m) => m.id === idMeta);
-
-        if (ehMeta) {
-            botao.addEventListener("click", () => {
-                excluirMeta(idMeta);
-            });
-        }
+    document.querySelectorAll(".excluir-meta").forEach((botao) => {
+        botao.addEventListener("click", () => excluirMeta(botao.getAttribute("data-id")));
     });
 }
 
-function excluirMeta(id) {
-    const dados = carregarDados();
+async function excluirMeta(id) {
+    const dados = await carregarDados();
     dados.metas = dados.metas.filter((m) => m.id !== id);
-    salvarDados(dados);
-
-    renderizarMetas();
+    await salvarDados(dados);
+    await renderizarMetas();
 }
 
-document.getElementById("formMeta").addEventListener("submit", (evento) => {
+document.getElementById("formMeta").addEventListener("submit", async (evento) => {
     evento.preventDefault();
 
     const nome = document.getElementById("metaNome").value.trim();
     const valorAlvo = parseFloat(document.getElementById("metaValorAlvo").value);
     const valorAtual = parseFloat(document.getElementById("metaValorAtual").value) || 0;
 
-    if (!nome || isNaN(valorAlvo) || valorAlvo <= 0) {
-        return;
-    }
+    if (!nome || isNaN(valorAlvo) || valorAlvo <= 0) return;
 
-    const dados = carregarDados();
-
-    dados.metas.push({
-        id: gerarId(),
-        nome: nome,
-        valorAlvo: valorAlvo,
-        valorAtual: valorAtual
-    });
-
-    salvarDados(dados);
+    const dados = await carregarDados();
+    dados.metas.push({ id: gerarId(), nome, valorAlvo, valorAtual });
+    await salvarDados(dados);
 
     document.getElementById("formMeta").reset();
-
-    renderizarMetas();
+    await renderizarMetas();
 });

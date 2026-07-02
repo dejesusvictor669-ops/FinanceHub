@@ -1,12 +1,8 @@
-console.log("carregou: app.js");
-// ======================================
-// PÁGINA: INVESTIMENTOS
-// ======================================
+console.log("carregou: investimentos.js");
 
-function renderizarInvestimentos() {
-    const dados = carregarDados();
+async function renderizarInvestimentos() {
+    const dados = await carregarDados();
     const lista = document.getElementById("listaInvestimentos");
-
     lista.innerHTML = "";
 
     if (dados.investimentos.length === 0) {
@@ -19,64 +15,46 @@ function renderizarInvestimentos() {
     investOrdenados.forEach((aporte) => {
         const item = document.createElement("li");
         item.className = "item-linha";
-
         item.innerHTML = `
             <div class="info">
                 <span>${aporte.descricao}</span>
                 <small>${aporte.tipo} • ${formatarData(aporte.data)}</small>
             </div>
-            <div style="display:flex; align-items:center; gap:15px;">
+            <div style="display:flex;align-items:center;gap:15px;">
                 <strong>${formatarMoeda(aporte.valor)}</strong>
-                <button class="excluir" data-id="${aporte.id}">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
+                <button class="excluir" data-id="${aporte.id}"><i class="fa-solid fa-trash"></i></button>
             </div>
         `;
-
         lista.appendChild(item);
     });
 
     document.querySelectorAll("#listaInvestimentos .excluir").forEach((botao) => {
-        botao.addEventListener("click", () => {
-            excluirInvestimento(botao.getAttribute("data-id"));
-        });
+        botao.addEventListener("click", () => excluirInvestimento(botao.getAttribute("data-id")));
     });
 }
 
-function excluirInvestimento(id) {
-    const dados = carregarDados();
+async function excluirInvestimento(id) {
+    const dados = await carregarDados();
     dados.investimentos = dados.investimentos.filter((i) => i.id !== id);
-    salvarDados(dados);
-
-    renderizarInvestimentos();
-    renderizarDashboard();
+    await salvarDados(dados);
+    await renderizarInvestimentos();
+    await renderizarDashboard();
 }
 
-document.getElementById("formInvestimento").addEventListener("submit", (evento) => {
+document.getElementById("formInvestimento").addEventListener("submit", async (evento) => {
     evento.preventDefault();
 
     const descricao = document.getElementById("investDescricao").value.trim();
     const valor = parseFloat(document.getElementById("investValor").value);
     const tipo = document.getElementById("investTipo").value;
 
-    if (!descricao || isNaN(valor) || valor <= 0) {
-        return;
-    }
+    if (!descricao || isNaN(valor) || valor <= 0) return;
 
-    const dados = carregarDados();
-
-    dados.investimentos.push({
-        id: gerarId(),
-        descricao: descricao,
-        valor: valor,
-        tipo: tipo,
-        data: hojeISO()
-    });
-
-    salvarDados(dados);
+    const dados = await carregarDados();
+    dados.investimentos.push({ id: gerarId(), descricao, valor, tipo, data: hojeISO() });
+    await salvarDados(dados);
 
     document.getElementById("formInvestimento").reset();
-
-    renderizarInvestimentos();
-    renderizarDashboard();
+    await renderizarInvestimentos();
+    await renderizarDashboard();
 });
