@@ -3,7 +3,7 @@ console.log("carregou: dashboard.js");
 function calcularTotais() {
     const dados = carregarDados();
 
-    const totalRendaExtra = dados.rendasExtras.reduce((soma, r) => soma + r.valor, 0);
+    const totalRendaExtra = (dados.rendasExtras || []).reduce((soma, r) => soma + r.valor, 0);
     const rendaTotal = dados.salario + totalRendaExtra;
 
     const gastosNormais = dados.gastos
@@ -128,18 +128,15 @@ function iniciarListenerConfig() {
         const lazerMensal = parseFloat(document.getElementById("configLazer").value);
         const metaReserva = parseFloat(document.getElementById("configMetaReserva").value) || 0;
 
-        if (isNaN(salario)) {
-            alert("Preencha salário  corretamente.");
-            return;
-        }
+        const dados = carregarDados();
 
-       const dados = carregarDados();
-
-        if (!isNaN(salario) && salario > 0) dados.salario = salario;
+        if (!isNaN(salario) && salario >= 0) dados.salario = salario;
         if (!isNaN(lazerMensal) && lazerMensal >= 0) dados.lazerMensal = lazerMensal;
         if (!isNaN(metaReserva) && metaReserva >= 0) dados.metaReserva = metaReserva;
+
+        salvarDados(dados); // ← estava faltando isso
+
         renderizarDashboard();
-        
         alert("Configurações salvas!");
     });
 }

@@ -1,403 +1,170 @@
 console.log("carregou: relatorios.js");
 
 const MESES = [
-    "Janeiro",
-    "Fevereiro",
-    "Março",
-    "Abril",
-    "Maio",
-    "Junho",
-    "Julho",
-    "Agosto",
-    "Setembro",
-    "Outubro",
-    "Novembro",
-    "Dezembro"
+    "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
+    "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"
 ];
 
+// ======================================
+// FECHAR MÊS — salva um snapshot dos dados atuais
+// ======================================
+
 function fecharMes() {
-
     const dados = carregarDados();
-
-    if (!dados.relatorios)
-        dados.relatorios = [];
-
-    const totais = calcularTotais();
+    if (!dados.relatorios) dados.relatorios = [];
 
     const hoje = new Date();
-
     const ano = hoje.getFullYear();
-
     const mes = hoje.getMonth();
 
-    const existe = dados.relatorios.find(r =>
-        r.ano == ano &&
-        r.mes == mes
-    );
-
-    if (existe) {
-
+    const jaExiste = dados.relatorios.find(r => r.ano === ano && r.mes === mes);
+    if (jaExiste) {
         alert("Este mês já foi fechado.");
-
         return;
-
     }
 
-    dados.relatorios.push({
+    const t = calcularTotais();
 
+    dados.relatorios.push({
         ano,
         mes,
-
-        data: hoje.toLocaleDateString("pt-BR"),
-
-        receita: totais.rendaTotal,
-
-        salario: totais.dados.salario,
-
-        rendaExtra: totais.totalRendaExtra,
-
-        gastos: totais.gastosNormais,
-
-        lazer: totais.gastosLazer,
-
-        cartoes: totais.totalCartoesMensal,
-
-        investimentos: totais.totalInvestimentos,
-
-        reserva: totais.totalReserva,
-
-        saldo: totais.saldo,
-
-        quantidadeGastos: totais.dados.gastos.length,
-
-        quantidadeInvestimentos: totais.dados.investimentos.length,
-
-        quantidadeCartoes: totais.dados.cartoes.length,
-
-        quantidadeRendas: totais.dados.rendasExtras.length,
-
-        metas: totais.dados.metas.length
-
+        fechadoEm: hoje.toLocaleDateString("pt-BR"),
+        salario: t.dados.salario,
+        rendaExtra: t.totalRendaExtra,
+        receita: t.rendaTotal,
+        gastosNormais: t.gastosNormais,
+        gastosLazer: t.gastosLazer,
+        cartoes: t.totalCartoesMensal,
+        investimentos: t.totalInvestimentos,
+        reserva: t.totalReserva,
+        lazerOrcamento: t.lazerOrcamento,
+        saldo: t.saldo,
+        qtdGastos: t.dados.gastos.length,
+        qtdCartoes: t.dados.cartoes.length,
+        qtdInvestimentos: t.dados.investimentos.length,
+        qtdRendas: t.dados.rendasExtras.length,
+        qtdMetas: t.dados.metas.length
     });
 
     salvarDados(dados);
-
-    alert("Mês fechado com sucesso!");
-
+    alert(`${MESES[mes]} ${ano} fechado com sucesso!`);
     carregarRelatorios();
-
 }
 
-function carregarRelatorios() {
+// ======================================
+// REABRIR MÊS
+// ======================================
+
+function reabrirMes(ano, mes) {
+    if (!confirm(`Reabrir ${MESES[mes]} ${ano}?`)) return;
 
     const dados = carregarDados();
+    dados.relatorios = dados.relatorios.filter(r => !(r.ano === ano && r.mes === mes));
+    salvarDados(dados);
 
-    if (!dados.relatorios)
-        dados.relatorios = [];
+    document.getElementById("dashboardHistorico").innerHTML = "";
+    carregarRelatorios();
+    alert("Mês reaberto.");
+}
+
+// ======================================
+// CALENDÁRIO — grade dos 12 meses
+// ======================================
+
+function carregarRelatorios() {
+    const dados = carregarDados();
+    if (!dados.relatorios) dados.relatorios = [];
 
     const calendario = document.getElementById("calendarioRelatorios");
+    if (!calendario) return;
 
-    if (!calendario)
-        return;
-
-    calendario.innerHTML = "";
-
+    // monta o select de ano se ainda não tiver
     const anoSelect = document.getElementById("anoRelatorio");
-
-    if (anoSelect) {
-
-        if (anoSelect.options.length == 0) {
-
-            const atual = new Date().getFullYear();
-
-            for (let i = atual - 5; i <= atual + 5; i++) {
-
-                anoSelect.innerHTML += `
-                    <option value="${i}">
-                        ${i}
-                    </option>
-                `;
-
-            }
-
-            anoSelect.value = atual;
-
+    if (anoSelect && anoSelect.options.length === 0) {
+        const anoAtual = new Date().getFullYear();
+        for (let a = anoAtual - 3; a <= anoAtual + 2; a++) {
+            anoSelect.innerHTML += `<option value="${a}">${a}</option>`;
         }
-
+        anoSelect.value = anoAtual;
     }
 
     const ano = anoSelect ? Number(anoSelect.value) : new Date().getFullYear();
 
-    for (let i = 0; i < 12; i++) {
+    calendario.innerHTML = "";
 
-        const relatorio = dados.relatorios.find(r =>
-            r.ano == ano &&
-            r.mes == i
-        );
+    for (let i = 0; i < 12; i++) {
+        const rel = dados.relatorios.find(r => r.ano === ano && r.mes === i);
+        const fechado = !!rel;
 
         calendario.innerHTML += `
-
-        <div
-            class="mes-relatorio ${relatorio ? "mes-fechado" : "mes-aberto"}"
-            onclick="abrirRelatorio(${ano},${i})">
-
-            <h4>${MESES[i]}</h4>
-
-            <p>
-
-            ${relatorio
-                ? "✅ Fechado"
-                : "Em aberto"}
-
-            </p>
-
-        </div>
-
+            <div class="mes-relatorio ${fechado ? 'mes-fechado' : 'mes-aberto'}"
+                 onclick="abrirRelatorio(${ano}, ${i})">
+                <h4>${MESES[i]}</h4>
+                <p>${fechado ? '✅ Fechado' : '📂 Em aberto'}</p>
+                ${fechado ? `<small>${rel.fechadoEm}</small>` : ''}
+            </div>
         `;
-
     }
-
 }
+
+// ======================================
+// ABRIR RELATÓRIO DE UM MÊS
+// ======================================
 
 function abrirRelatorio(ano, mes) {
-
     const dados = carregarDados();
-
-    const r = dados.relatorios.find(x =>
-        x.ano == ano &&
-        x.mes == mes
-    );
+    const r = dados.relatorios ? dados.relatorios.find(x => x.ano === ano && x.mes === mes) : null;
 
     const painel = document.getElementById("dashboardHistorico");
-
-    if (!painel)
-        return;
+    if (!painel) return;
 
     if (!r) {
-
         painel.innerHTML = `
-
-        <div class="cardResumo">
-
-        <h3>
-
-        Nenhum relatório encontrado.
-
-        </h3>
-
-        </div>
-
+            <div class="cardResumo">
+                <h3>📂 ${MESES[mes]} ${ano}</h3>
+                <p>Este mês ainda não foi fechado.</p>
+            </div>
         `;
-
         return;
-
     }
 
-    // store currently opened report so control buttons can act on it
-    window.currentRelatorioAno = r.ano;
-    window.currentRelatorioMes = r.mes;
+    const linha = (emoji, label, valor, cor) => `
+        <div class="cardResumo">
+            <h3>${emoji} ${label}</h3>
+            <h2 style="color:${cor || 'var(--text)'}">${formatarMoeda(valor)}</h2>
+        </div>
+    `;
 
     painel.innerHTML = `
-
-<div class="cardResumo">
-
-<h2>${MESES[r.mes]} ${r.ano}</h2>
-
-<p>Fechado em ${r.data}</p>
-
-</div>
-
-<div class="cardResumo">
-
-<h3>💰 Receita</h3>
-
-<h2>${formatarMoeda(r.receita)}</h2>
-
-</div>
-
-<div class="cardResumo">
-
-<h3>💸 Gastos</h3>
-
-<h2>${formatarMoeda(r.gastos)}</h2>
-
-</div>
-
-<div class="cardResumo">
-
-<h3>💳 Cartões</h3>
-
-<h2>${formatarMoeda(r.cartoes)}</h2>
-
-</div>
-
-<div class="cardResumo">
-
-<h3>📈 Investimentos</h3>
-
-<h2>${formatarMoeda(r.investimentos)}</h2>
-
-</div>
-
-<div class="cardResumo">
-
-<h3>🛡 Reserva</h3>
-
-<h2>${formatarMoeda(r.reserva)}</h2>
-
-</div>
-
-<div class="cardResumo">
-
-<h3>🍔 Lazer</h3>
-
-<h2>${formatarMoeda(r.lazer)}</h2>
-
-</div>
-
-<div class="cardResumo">
-
-<h3>💵 Saldo</h3>
-
-<h2 style="color:${r.saldo>=0?"#2ecc71":"#ff4d4d"}">
-
-${formatarMoeda(r.saldo)}
-
-</h2>
-
-</div>
-
-<div class="cardResumo">
-
-<h3>📋 Gastos cadastrados</h3>
-
-<h2>${r.quantidadeGastos}</h2>
-
-</div>
-
-<div class="cardResumo">
-
-<h3>💳 Compras</h3>
-
-<h2>${r.quantidadeCartoes}</h2>
-
-</div>
-
-<div class="cardResumo">
-
-<h3>📈 Investimentos</h3>
-
-<h2>${r.quantidadeInvestimentos}</h2>
-
-</div>
-
-<div class="cardResumo">
-
-<h3>💵 Rendas Extras</h3>
-
-<h2>${r.quantidadeRendas}</h2>
-
-</div>
-
-<div class="cardResumo">
-
-<h3>🎯 Metas</h3>
-
-<h2>${r.metas}</h2>
-
-</div>
-
-<div class="cardResumo">
-
-<h3>⚙️ Ações</h3>
-
-<button class="btn" onclick="reabrirMes(${r.ano}, ${r.mes})">
-
-🔓 Reabrir mês
-
-</button>
-
-<br><br>
-</div>
-
-`;
-
-}
-
-function compararMeses(ano1,mes1,ano2,mes2){
-
-    const dados=carregarDados();
-
-    const a=dados.relatorios.find(r=>r.ano==ano1 && r.mes==mes1);
-
-    const b=dados.relatorios.find(r=>r.ano==ano2 && r.mes==mes2);
-
-    if(!a || !b){
-
-        alert("Relatórios não encontrados.");
-
-        return;
-
-    }
-
-    console.table({
-
-        primeiro:a,
-
-        segundo:b
-
-    });
-
-}
-
-window.addEventListener("load",()=>{
-
-    setTimeout(()=>{
-
-        carregarRelatorios();
-
-    },300);
-
-});
-function reabrirMes(ano, mes) {
-
-    // if no args provided, use the currently opened report
-    if (ano === undefined || mes === undefined) {
-        ano = window.currentRelatorioAno;
-        mes = window.currentRelatorioMes;
-    }
-
-    if (ano === undefined || mes === undefined) {
-        alert("Nenhum relatório selecionado.");
-        return;
-    }
-
-    if (!confirm("Deseja realmente reabrir este mês?"))
-        return;
-
-    const dados = carregarDados();
-
-    dados.relatorios = dados.relatorios.filter(r =>
-        !(r.ano == ano && r.mes == mes)
-    );
-
-    salvarDados(dados);
-
-    carregarRelatorios();
-
-    const painel = document.getElementById("dashboardHistorico");
-    if (painel)
-        painel.innerHTML = "";
-
-    // clear current selection
-    window.currentRelatorioAno = undefined;
-    window.currentRelatorioMes = undefined;
-
-    alert("Mês reaberto com sucesso!");
-
-}
-function imprimirRelatorio() {
-
-    window.print();
-
+        <div class="cardResumo" style="grid-column:1/-1;">
+            <h2>📋 ${MESES[r.mes]} ${r.ano}</h2>
+            <p style="color:var(--gray)">Fechado em ${r.fechadoEm}</p>
+        </div>
+
+        ${linha('💼', 'Salário base', r.salario, 'var(--success)')}
+        ${linha('💵', 'Rendas extras', r.rendaExtra, 'var(--success)')}
+        ${linha('🧾', 'Gastos normais', r.gastosNormais, 'var(--danger)')}
+        ${linha('🎮', 'Gastos de lazer', r.gastosLazer, 'var(--danger)')}
+        ${linha('💳', 'Parcelas cartão', r.cartoes, 'var(--danger)')}
+        ${linha('📈', 'Investimentos', r.investimentos, 'var(--warning)')}
+        ${linha('🛡️', 'Reserva', r.reserva, 'var(--warning)')}
+        ${linha('🍔', 'Orçamento lazer', r.lazerOrcamento, 'var(--warning)')}
+        ${linha('💰', 'Saldo final', r.saldo, r.saldo >= 0 ? 'var(--success)' : 'var(--danger)')}
+
+        <div class="cardResumo">
+            <h3>📊 Quantidades</h3>
+            <p>🧾 ${r.qtdGastos} gastos</p>
+            <p>💳 ${r.qtdCartoes} compras no cartão</p>
+            <p>📈 ${r.qtdInvestimentos} aportes</p>
+            <p>💵 ${r.qtdRendas} rendas extras</p>
+            <p>🎯 ${r.qtdMetas} metas</p>
+        </div>
+
+        <div class="cardResumo">
+            <h3>⚙️ Ações</h3>
+            <button class="btn" onclick="reabrirMes(${r.ano}, ${r.mes})">
+                🔓 Reabrir este mês
+            </button>
+        </div>
+    `;
 }

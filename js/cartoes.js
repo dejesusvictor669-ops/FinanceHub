@@ -1,7 +1,4 @@
-console.log("carregou: app.js");
-// ======================================
-// PÁGINA: CARTÕES
-// ======================================
+console.log("carregou: cartoes.js");
 
 function renderizarCartoes() {
     const dados = carregarDados();
@@ -49,8 +46,8 @@ function excluirCartao(id) {
     const dados = carregarDados();
     dados.cartoes = dados.cartoes.filter((c) => c.id !== id);
     salvarDados(dados);
-
     renderizarCartoes();
+    renderizarDashboard(); // ← estava faltando isso
 }
 
 document.getElementById("formCartao").addEventListener("submit", (evento) => {
@@ -61,24 +58,21 @@ document.getElementById("formCartao").addEventListener("submit", (evento) => {
     const parcelas = parseInt(document.getElementById("cartaoParcelas").value);
     const nome = document.getElementById("cartaoNome").value.trim();
 
-    if (!descricao || !nome || isNaN(valor) || valor <= 0 || isNaN(parcelas) || parcelas <= 0) {
-        return;
-    }
+    if (!descricao || !nome || isNaN(valor) || valor <= 0 || isNaN(parcelas) || parcelas <= 0) return;
 
     const dados = carregarDados();
 
     dados.cartoes.push({
         id: gerarId(),
-        descricao: descricao,
-        valor: valor,
-        parcelas: parcelas,
-        nome: nome,
+        descricao,
+        valor,
+        parcelas,
+        nome,
         data: hojeISO()
     });
 
     salvarDados(dados);
-
     document.getElementById("formCartao").reset();
-
     renderizarCartoes();
+    renderizarDashboard(); // ← atualiza saldo imediatamente
 });
