@@ -318,13 +318,6 @@ ${formatarMoeda(r.saldo)}
 </button>
 
 <br><br>
-
-<button class="btn" onclick="imprimirRelatorio()">
-
-🖨️ Exportar PDF
-
-</button>
-
 </div>
 
 `;
