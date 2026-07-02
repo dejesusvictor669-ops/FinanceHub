@@ -115,6 +115,7 @@ function mostrarPagina(nomePagina) {
     if (nomePagina === "graficos") {
         renderizarGraficos();
         carregarRelatorios();
+        setTimeout(() => carregarRelatorios(), 300);
     }
 }
 
