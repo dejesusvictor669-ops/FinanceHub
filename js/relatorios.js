@@ -307,6 +307,26 @@ ${formatarMoeda(r.saldo)}
 
 </div>
 
+<div class="cardResumo">
+
+<h3>⚙️ Ações</h3>
+
+<button class="btn" onclick="reabrirMes(${r.ano}, ${r.mes})">
+
+🔓 Reabrir mês
+
+</button>
+
+<br><br>
+
+<button class="btn" onclick="imprimirRelatorio()">
+
+🖨️ Exportar PDF
+
+</button>
+
+</div>
+
 `;
 
 }
