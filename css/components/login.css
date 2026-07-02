@@ -77,3 +77,14 @@
     font-size: 12px;
     color: var(--gray);
 }
+@media (max-width: 600px) {
+    .login-box {
+        padding: 25px 20px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .login-descricao {
+        display: none;
+    }
+}
