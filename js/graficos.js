@@ -1,20 +1,17 @@
-console.log("carregou: app.js");
-// ======================================
-// PÁGINA: RELATÓRIOS / GRÁFICOS
-// ======================================
+console.log("carregou: graficos.js");
 
 let graficoMensalInstance = null;
 let graficoCategoriaInstance = null;
 
-function renderizarGraficos() {
-    const dados = carregarDados();
-
+async function renderizarGraficos() {
+    const dados = await carregarDados();
     renderizarGraficoMensal(dados);
     renderizarGraficoCategoria(dados);
 }
 
 function renderizarGraficoMensal(dados) {
-    const ctx = document.getElementById("graficoMensal").getContext("2d");
+    const ctx = document.getElementById("graficoMensal");
+    if (!ctx) return;
 
     const gastosPorMes = {};
 
@@ -25,26 +22,23 @@ function renderizarGraficoMensal(dados) {
 
     dados.cartoes.forEach((c) => {
         const mes = c.data ? c.data.substring(0, 7) : "sem data";
-        const parcela = c.valor / c.parcelas;
-        gastosPorMes[mes] = (gastosPorMes[mes] || 0) + parcela;
+        gastosPorMes[mes] = (gastosPorMes[mes] || 0) + (c.valor / c.parcelas);
     });
 
     const mesesOrdenados = Object.keys(gastosPorMes).sort();
+    const nomes = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
 
     const labels = mesesOrdenados.map((m) => {
         if (m === "sem data") return "Sem data";
         const [ano, mes] = m.split("-");
-        const nomes = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
         return `${nomes[parseInt(mes) - 1]}/${ano.substring(2)}`;
     });
 
     const valores = mesesOrdenados.map((m) => gastosPorMes[m]);
 
-    if (graficoMensalInstance) {
-        graficoMensalInstance.destroy();
-    }
+    if (graficoMensalInstance) graficoMensalInstance.destroy();
 
-    graficoMensalInstance = new Chart(ctx, {
+    graficoMensalInstance = new Chart(ctx.getContext("2d"), {
         type: "bar",
         data: {
             labels: labels.length > 0 ? labels : ["Nenhum dado"],
@@ -59,22 +53,23 @@ function renderizarGraficoMensal(dados) {
         },
         options: {
             responsive: true,
-            plugins: {
-                legend: { labels: { color: "#F8FAFC" } }
-            },
+            plugins: { legend: { labels: { color: "#F8FAFC" } } },
             scales: {
                 x: { ticks: { color: "#94A3B8" }, grid: { color: "rgba(255,255,255,0.05)" } },
-                y: { ticks: { color: "#94A3B8", callback: (v) => "R$ " + v.toFixed(0) }, grid: { color: "rgba(255,255,255,0.05)" } }
+                y: {
+                    ticks: { color: "#94A3B8", callback: (v) => "R$ " + v.toFixed(0) },
+                    grid: { color: "rgba(255,255,255,0.05)" }
+                }
             }
         }
     });
 }
 
 function renderizarGraficoCategoria(dados) {
-    const ctx = document.getElementById("graficoCategoria").getContext("2d");
+    const ctx = document.getElementById("graficoCategoria");
+    if (!ctx) return;
 
     const gastosPorCategoria = {};
-
     dados.gastos.forEach((g) => {
         gastosPorCategoria[g.categoria] = (gastosPorCategoria[g.categoria] || 0) + g.valor;
     });
@@ -90,14 +85,11 @@ function renderizarGraficoCategoria(dados) {
 
     const labels = Object.keys(gastosPorCategoria).map((k) => emojis[k] || k);
     const valores = Object.values(gastosPorCategoria);
-
     const cores = ["#2563EB","#22C55E","#F59E0B","#EF4444","#8B5CF6","#EC4899"];
 
-    if (graficoCategoriaInstance) {
-        graficoCategoriaInstance.destroy();
-    }
+    if (graficoCategoriaInstance) graficoCategoriaInstance.destroy();
 
-    graficoCategoriaInstance = new Chart(ctx, {
+    graficoCategoriaInstance = new Chart(ctx.getContext("2d"), {
         type: "doughnut",
         data: {
             labels: labels.length > 0 ? labels : ["Nenhum dado"],
@@ -111,10 +103,7 @@ function renderizarGraficoCategoria(dados) {
         options: {
             responsive: true,
             plugins: {
-                legend: {
-                    position: "bottom",
-                    labels: { color: "#F8FAFC", padding: 15 }
-                },
+                legend: { position: "bottom", labels: { color: "#F8FAFC", padding: 15 } },
                 tooltip: {
                     callbacks: {
                         label: (ctx) => {

@@ -112,10 +112,11 @@ function mostrarPagina(nomePagina) {
     const linkAtivo = document.querySelector(`nav a[data-page="${nomePagina}"]`);
     if (linkAtivo) linkAtivo.classList.add("active");
 
-    if (nomePagina === "graficos") {
-        renderizarGraficos();
-        carregarRelatorios();
-        setTimeout(() => carregarRelatorios(), 300);
+   if (nomePagina === "graficos") {
+        setTimeout(async () => {
+            await renderizarGraficos();
+            await carregarRelatorios();
+        }, 100);
     }
 }
 

@@ -26,32 +26,45 @@
         <div class="login-box">
             <i class="fa-solid fa-wallet" style="font-size:40px; color:var(--primary); margin-bottom:15px;"></i>
             <h2>FinanceHub</h2>
+            <p style="color:var(--gray); margin-bottom:20px; font-size:13px;">Seu controle financeiro pessoal</p>
+
+            <div class="login-descricao">
+                <h3>💡 O que você pode fazer aqui:</h3>
+                <ul>
+                    <li>💰 Controlar seu saldo mensal</li>
+                    <li>🧾 Lançar gastos por categoria</li>
+                    <li>💳 Acompanhar parcelas do cartão</li>
+                    <li>📈 Registrar investimentos e reserva</li>
+                    <li>🎯 Criar metas financeiras</li>
+                    <li>📊 Ver relatórios e gráficos mensais</li>
+                    <li>☁️ Dados salvos na nuvem — acesse de qualquer lugar</li>
+                </ul>
+            </div>
 
             <!-- FORM LOGIN -->
             <form id="formLogin">
-                <p style="color:var(--gray); margin-bottom:15px;">Entre na sua conta</p>
+                <p style="color:var(--gray); margin-bottom:15px; font-size:14px;">Entre na sua conta</p>
                 <input type="email" id="loginEmail" placeholder="Seu email" required>
                 <input type="password" id="loginSenha" placeholder="Sua senha" required>
                 <button type="submit" class="btn">Entrar</button>
                 <p style="margin-top:10px; color:var(--gray); font-size:13px;">
                     Não tem conta?
-                    <a href="#" id="linkParaCadastro" style="color:var(--primary);">Criar conta</a>
+                    <a href="#" id="linkParaCadastro" style="color:var(--primary);">Criar conta grátis</a>
                 </p>
             </form>
 
             <!-- FORM CADASTRO -->
             <form id="formCadastro" class="hidden">
-                <p style="color:var(--gray); margin-bottom:15px;">Criar nova conta</p>
+                <p style="color:var(--gray); margin-bottom:15px; font-size:14px;">Criar nova conta</p>
                 <input type="text" id="cadastroNome" placeholder="Seu nome" required>
                 <input type="email" id="cadastroEmail" placeholder="Seu email" required>
                 <input type="password" id="cadastroSenha" placeholder="Senha (mín. 6 caracteres)" required>
-                <button type="submit" class="btn">Criar conta</button>
+                <button type="submit" class="btn">Criar conta grátis</button>
                 <p style="margin-top:10px; color:var(--gray); font-size:13px;">
                     Já tem conta?
                     <a href="#" id="linkParaLogin" style="color:var(--primary);">Entrar</a>
                 </p>
             </form>
-
         </div>
     </div>
     </div>
