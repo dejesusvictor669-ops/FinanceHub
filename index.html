@@ -274,22 +274,63 @@
             </section>
 
             <!-- PÁGINA: RELATÓRIOS -->
-            <section class="page hidden" id="page-graficos">
+           <section class="page hidden" id="page-graficos">
 
-                <div class="card" style="margin-bottom:25px;">
-                    <h3>📅 Gastos por mês</h3>
-                    <p style="color:var(--gray); font-size:13px; margin-top:5px; margin-bottom:20px;">
-                        Compare seus gastos mês a mês e veja onde está gastando mais.
-                    </p>
-                    <canvas id="graficoMensal" height="120"></canvas>
-                </div>
+    <!-- CONTROLE -->
+    <div class="card" style="margin-bottom:25px;">
 
-                <div class="card">
-                    <h3>🗂️ Gastos por categoria</h3>
-                    <canvas id="graficoCategoria" height="120"></canvas>
-                </div>
+        <h2>📊 Central de Relatórios</h2>
 
-            </section>
+        <br>
+
+        <button class="btn" onclick="fecharMes()">
+            💾 Fechar mês atual
+        </button>
+
+        <select id="anoRelatorio" onchange="carregarRelatorios()" style="margin-top:15px;width:200px;">
+        </select>
+
+    </div>
+
+    <!-- CALENDÁRIO -->
+
+    <div class="card" style="margin-bottom:25px;">
+
+        <h3>📅 Histórico Mensal</h3>
+
+        <div id="calendarioRelatorios" class="calendario-relatorios"></div>
+
+    </div>
+
+    <!-- DASHBOARD -->
+
+    <div class="card" style="margin-bottom:25px;">
+
+        <h3>📈 Dashboard do mês</h3>
+
+        <div id="dashboardHistorico"></div>
+
+    </div>
+
+    <!-- GRAFICOS -->
+
+    <div class="card" style="margin-bottom:25px;">
+
+        <h3>📅 Gastos por mês</h3>
+
+        <canvas id="graficoMensal"></canvas>
+
+    </div>
+
+    <div class="card">
+
+        <h3>🗂 Gastos por categoria</h3>
+
+        <canvas id="graficoCategoria"></canvas>
+
+    </div>
+
+</section>
 
         </main>
     </div>
@@ -304,7 +345,9 @@
     <script src="js/metas.js"></script>
     <script src="js/rendas.js"></script>
     <script src="js/graficos.js"></script>
+    <script src="js/relatorios.js"></script>
     <script src="js/app.js"></script>
+    
 
 </body>
 
