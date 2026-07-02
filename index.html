@@ -50,6 +50,11 @@
                     <i class="fa-solid fa-house"></i>
                     Visão Geral
                 </a>
+                <a data-page="rendas">
+                    <i class="fa-solid fa-money-bill-trend-up"></i>
+                    Rendas Extras
+                </a>
+
                 <a data-page="gastos">
                     <i class="fa-solid fa-money-bill-wave"></i>
                     Gastos
@@ -145,7 +150,28 @@
                 </div>
 
             </section>
+            <!-- PÁGINA: RENDAS EXTRAS -->
+            <section class="page hidden" id="page-rendas">
 
+                <div class="card" style="margin-bottom:25px;">
+                    <h3>💵 Nova renda extra</h3>
+                    <p style="color:var(--gray); font-size:13px; margin-top:5px; margin-bottom:10px;">
+                        Freelance, LivePix, horas extras, bônus — qualquer valor que entrou além do salário.
+                    </p>
+                    <form id="formRenda" class="form-gasto">
+                        <input type="text" id="rendaDescricao" placeholder="Descrição (ex: Freela, LivePix)" required>
+                        <input type="number" id="rendaValor" placeholder="Valor (R$)" step="0.01" required>
+                        <input type="date" id="rendaData">
+                        <button type="submit" class="btn">Adicionar</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3>📋 Rendas extras cadastradas</h3>
+                    <ul id="listaRendas" class="lista-itens"></ul>
+                </div>
+
+            </section>
             <!-- PÁGINA: GASTOS -->
             <section class="page hidden" id="page-gastos">
 
@@ -276,6 +302,7 @@
     <script src="js/cartoes.js"></script>
     <script src="js/investimentos.js"></script>
     <script src="js/metas.js"></script>
+    <script src="js/rendas.js"></script>
     <script src="js/graficos.js"></script>
     <script src="js/app.js"></script>
 

@@ -1,9 +1,10 @@
-// ======================================
-// RENDERIZAÇÃO DA VISÃO GERAL (DASHBOARD)
-// ======================================
+console.log("carregou: dashboard.js");
 
 function calcularTotais() {
     const dados = carregarDados();
+
+    const totalRendaExtra = dados.rendasExtras.reduce((soma, r) => soma + r.valor, 0);
+    const rendaTotal = dados.salario + totalRendaExtra;
 
     const totalGastos = dados.gastos.reduce((soma, g) => soma + g.valor, 0);
 
@@ -19,10 +20,12 @@ function calcularTotais() {
 
     const lazer = dados.lazerMensal || 0;
 
-    const saldo = dados.salario - totalGastos - totalCartoesMensal - totalInvestimentos - totalReserva - lazer;
+    const saldo = rendaTotal - totalGastos - totalCartoesMensal - totalInvestimentos - totalReserva - lazer;
 
     return {
         dados,
+        rendaTotal,
+        totalRendaExtra,
         saldo,
         totalGastos,
         totalCartoesMensal,
@@ -53,15 +56,19 @@ function renderizarResumoMes(t) {
 
     resumo.innerHTML = `
         <li class="item-linha">
-            <span>💼 Salário / renda</span>
+            <span>💼 Salário base</span>
             <strong style="color:var(--success)">${formatarMoeda(t.dados.salario)}</strong>
+        </li>
+        <li class="item-linha">
+            <span>💵 Rendas extras</span>
+            <strong style="color:var(--success)">+ ${formatarMoeda(t.totalRendaExtra)}</strong>
         </li>
         <li class="item-linha">
             <span>🧾 Gastos lançados</span>
             <strong style="color:var(--danger)">− ${formatarMoeda(t.totalGastos)}</strong>
         </li>
         <li class="item-linha">
-            <span>💳 Parcelas do cartão</span>
+            <span>💳 Parcelas do cartão (mês)</span>
             <strong style="color:var(--danger)">− ${formatarMoeda(t.totalCartoesMensal)}</strong>
         </li>
         <li class="item-linha">
@@ -69,16 +76,18 @@ function renderizarResumoMes(t) {
             <strong style="color:var(--warning)">− ${formatarMoeda(t.totalInvestimentos)}</strong>
         </li>
         <li class="item-linha">
-            <span>🛡️ Reserva</span>
+            <span>🛡️ Reserva de emergência</span>
             <strong style="color:var(--warning)">− ${formatarMoeda(t.totalReserva)}</strong>
         </li>
         <li class="item-linha">
-            <span>🍔 Orçamento lazer</span>
+            <span>🍔 Orçamento de lazer</span>
             <strong style="color:var(--warning)">− ${formatarMoeda(t.lazer)}</strong>
         </li>
-        <li class="item-linha" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top:14px; margin-top:4px;">
+        <li class="item-linha" style="border-top:1px solid rgba(255,255,255,0.08); padding-top:14px; margin-top:4px;">
             <span><strong>💰 Saldo disponível</strong></span>
-            <strong style="color:${t.saldo >= 0 ? 'var(--success)' : 'var(--danger)'}">${formatarMoeda(t.saldo)}</strong>
+            <strong style="color:${t.saldo >= 0 ? 'var(--success)' : 'var(--danger)'}; font-size:18px;">
+                ${formatarMoeda(t.saldo)}
+            </strong>
         </li>
     `;
 }

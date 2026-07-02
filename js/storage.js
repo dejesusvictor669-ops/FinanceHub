@@ -1,7 +1,4 @@
-console.log("carregou: app.js");
-// ======================================
-// USUÁRIO (login simples, sem backend)
-// ======================================
+console.log("carregou: storage.js");
 
 const CHAVE_USUARIO = "financehub_usuario";
 
@@ -17,14 +14,9 @@ function sairUsuario() {
     localStorage.removeItem(CHAVE_USUARIO);
 }
 
-// ======================================
-// CAMADA DE ARMAZENAMENTO (localStorage por pessoa)
-// ======================================
-
 function chaveStorageAtual() {
     const nome = obterUsuario() || "convidado";
-    const nomeNormalizado = nome.trim().toLowerCase().replace(/\s+/g, "-");
-    return "financehub_dados_" + nomeNormalizado;
+    return "financehub_dados_" + nome.trim().toLowerCase().replace(/\s+/g, "-");
 }
 
 function dadosPadrao() {
@@ -35,6 +27,7 @@ function dadosPadrao() {
         gastos: [],
         cartoes: [],
         investimentos: [],
+        rendasExtras: [],
         metas: []
     };
 }
@@ -49,10 +42,18 @@ function carregarDados() {
         return padrao;
     }
 
-    return JSON.parse(salvo);
+    const dados = JSON.parse(salvo);
+
+    if (!dados.rendasExtras) dados.rendasExtras = [];
+
+    dados.investimentos = dados.investimentos.map(i => ({
+        ...i,
+        tipo: i.tipo || "renda-fixa"
+    }));
+
+    return dados;
 }
 
 function salvarDados(dados) {
-    const chave = chaveStorageAtual();
-    localStorage.setItem(chave, JSON.stringify(dados));
+    localStorage.setItem(chaveStorageAtual(), JSON.stringify(dados));
 }

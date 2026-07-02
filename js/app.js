@@ -1,6 +1,4 @@
-// ======================================
-// LOGIN
-// ======================================
+console.log("carregou: app.js");
 
 const telaLogin = document.getElementById("telaLogin");
 const appContainer = document.getElementById("appContainer");
@@ -26,10 +24,6 @@ document.getElementById("formLogin").addEventListener("submit", (evento) => {
     verificarLogin();
 });
 
-// ======================================
-// NAVEGAÇÃO
-// ======================================
-
 const links = document.querySelectorAll("nav a[data-page]");
 const paginas = document.querySelectorAll(".page");
 
@@ -43,9 +37,7 @@ function mostrarPagina(nomePagina) {
     const linkAtivo = document.querySelector(`nav a[data-page="${nomePagina}"]`);
     if (linkAtivo) linkAtivo.classList.add("active");
 
-    if (nomePagina === "graficos") {
-        renderizarGraficos();
-    }
+    if (nomePagina === "graficos") renderizarGraficos();
 }
 
 links.forEach((link) => {
@@ -55,13 +47,9 @@ links.forEach((link) => {
     });
 });
 
-// ======================================
-// SAUDAÇÃO E DATA
-// ======================================
-
 function iniciarApp() {
     const hora = new Date().getHours();
-    let saudacao = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
+    const saudacao = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
     const nomeUsuario = obterUsuario();
 
     document.getElementById("saudacao").innerHTML = `${saudacao}, ${nomeUsuario} 👋`;
@@ -76,15 +64,12 @@ function iniciarApp() {
         });
 
     renderizarDashboard();
+    renderizarRendas();
     renderizarGastos();
     renderizarCartoes();
     renderizarInvestimentos();
     renderizarMetas();
 }
-
-// ======================================
-// MENU MOBILE
-// ======================================
 
 const botaoMenu = document.getElementById("botaoMenu");
 const sidebar = document.getElementById("sidebar");
@@ -103,17 +88,9 @@ function fecharMenu() {
 if (botaoMenu) botaoMenu.addEventListener("click", abrirMenu);
 if (overlayMenu) overlayMenu.addEventListener("click", fecharMenu);
 
-// ======================================
-// BOTÃO SAIR
-// ======================================
-
 document.getElementById("botaoSair").addEventListener("click", () => {
     sairUsuario();
     location.reload();
 });
-
-// ======================================
-// INICIALIZAÇÃO
-// ======================================
 
 verificarLogin();
