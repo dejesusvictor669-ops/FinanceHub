@@ -6,9 +6,16 @@ function calcularTotais() {
     const totalRendaExtra = dados.rendasExtras.reduce((soma, r) => soma + r.valor, 0);
     const rendaTotal = dados.salario + totalRendaExtra;
 
-    const totalGastos = dados.gastos.reduce((soma, g) => soma + g.valor, 0);
+    const gastosNormais = dados.gastos
+        .filter(g => g.categoria !== "lazer")
+        .reduce((soma, g) => soma + g.valor, 0);
 
-    const totalCartoesMensal = dados.cartoes.reduce((soma, c) => soma + (c.valor / c.parcelas), 0);
+    const gastosLazer = dados.gastos
+        .filter(g => g.categoria === "lazer")
+        .reduce((soma, g) => soma + g.valor, 0);
+
+    const totalCartoesMensal = dados.cartoes
+        .reduce((soma, c) => soma + (c.valor / c.parcelas), 0);
 
     const totalInvestimentos = dados.investimentos
         .filter(i => i.tipo !== "reserva")
@@ -18,20 +25,23 @@ function calcularTotais() {
         .filter(i => i.tipo === "reserva")
         .reduce((soma, i) => soma + i.valor, 0);
 
-    const lazer = dados.lazerMensal || 0;
+    const lazerOrcamento = dados.lazerMensal || 0;
+    const lazerRestante = lazerOrcamento - gastosLazer;
 
-    const saldo = rendaTotal - totalGastos - totalCartoesMensal - totalInvestimentos - totalReserva - lazer;
+    const saldo = rendaTotal - gastosNormais - totalCartoesMensal - totalInvestimentos - totalReserva - lazerOrcamento;
 
     return {
         dados,
         rendaTotal,
         totalRendaExtra,
         saldo,
-        totalGastos,
+        gastosNormais,
+        gastosLazer,
         totalCartoesMensal,
         totalInvestimentos,
         totalReserva,
-        lazer
+        lazerOrcamento,
+        lazerRestante
     };
 }
 
@@ -41,7 +51,10 @@ function renderizarDashboard() {
     document.getElementById("saldo").innerHTML = formatarMoeda(t.saldo);
     document.getElementById("investimentos").innerHTML = formatarMoeda(t.totalInvestimentos);
     document.getElementById("reserva").innerHTML = formatarMoeda(t.totalReserva);
-    document.getElementById("lazer").innerHTML = formatarMoeda(t.lazer);
+
+    const lazerEl = document.getElementById("lazer");
+    lazerEl.innerHTML = formatarMoeda(t.lazerRestante);
+    lazerEl.style.color = t.lazerRestante < 0 ? "var(--danger)" : "var(--text)";
 
     const metaReserva = t.dados.metaReserva > 0 ? t.dados.metaReserva : 1;
     const porcentagem = Math.min((t.totalReserva / metaReserva) * 100, 100);
@@ -63,9 +76,9 @@ function renderizarResumoMes(t) {
             <span>💵 Rendas extras</span>
             <strong style="color:var(--success)">+ ${formatarMoeda(t.totalRendaExtra)}</strong>
         </li>
-        <li class="item-linha">
+        <li class="item-linha" style="border-top:1px solid rgba(255,255,255,0.05); padding-top:12px; margin-top:4px;">
             <span>🧾 Gastos lançados</span>
-            <strong style="color:var(--danger)">− ${formatarMoeda(t.totalGastos)}</strong>
+            <strong style="color:var(--danger)">− ${formatarMoeda(t.gastosNormais)}</strong>
         </li>
         <li class="item-linha">
             <span>💳 Parcelas do cartão (mês)</span>
@@ -81,12 +94,18 @@ function renderizarResumoMes(t) {
         </li>
         <li class="item-linha">
             <span>🍔 Orçamento de lazer</span>
-            <strong style="color:var(--warning)">− ${formatarMoeda(t.lazer)}</strong>
+            <strong style="color:var(--warning)">− ${formatarMoeda(t.lazerOrcamento)}</strong>
         </li>
         <li class="item-linha" style="border-top:1px solid rgba(255,255,255,0.08); padding-top:14px; margin-top:4px;">
             <span><strong>💰 Saldo disponível</strong></span>
             <strong style="color:${t.saldo >= 0 ? 'var(--success)' : 'var(--danger)'}; font-size:18px;">
                 ${formatarMoeda(t.saldo)}
+            </strong>
+        </li>
+        <li class="item-linha" style="margin-top:4px;">
+            <span><strong>🍔 Lazer restante</strong></span>
+            <strong style="color:${t.lazerRestante >= 0 ? 'var(--success)' : 'var(--danger)'};">
+                ${formatarMoeda(t.lazerRestante)}
             </strong>
         </li>
     `;
