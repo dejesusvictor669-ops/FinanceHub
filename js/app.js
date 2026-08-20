@@ -147,12 +147,12 @@ async function iniciarApp() {
             year: "numeric"
         });
 
-    await renderizarDashboard();
+        await renderizarDashboard();
     await renderizarCompras();
     await renderizarRendas();
-    await renderizarCartoes();
-    await renderizarInvestimentos();
-    await renderizarMetas();
+
+    await pedirPermissaoNotificacao();
+    await verificarAlertas();
 }
 
 // ======================================
@@ -188,5 +188,5 @@ document.getElementById("botaoSair").addEventListener("click", async () => {
 // ======================================
 // INICIALIZAÇÃO
 // ======================================
-
+registrarServiceWorker();
 inicializar();
