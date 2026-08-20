@@ -22,7 +22,9 @@ async function renderizarInvestimentos() {
             </div>
             <div style="display:flex;align-items:center;gap:15px;">
                 <strong>${formatarMoeda(aporte.valor)}</strong>
-                <button class="excluir" data-id="${aporte.id}"><i class="fa-solid fa-trash"></i></button>
+                <button class="excluir" data-id="${aporte.id}">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
             </div>
         `;
         lista.appendChild(item);
