@@ -3,13 +3,8 @@ console.log("carregou: app.js");
 const telaLogin = document.getElementById("telaLogin");
 const appContainer = document.getElementById("appContainer");
 
-// ======================================
-// VERIFICAR SESSÃO AO CARREGAR
-// ======================================
-
 async function inicializar() {
     const logado = await verificarSessao();
-
     if (logado) {
         mostrarApp();
     } else {
@@ -27,10 +22,6 @@ function mostrarApp() {
     appContainer.classList.remove("hidden");
     iniciarApp();
 }
-
-// ======================================
-// FORMULÁRIO DE LOGIN / CADASTRO
-// ======================================
 
 const formLogin = document.getElementById("formLogin");
 const formCadastro = document.getElementById("formCadastro");
@@ -51,19 +42,18 @@ linkParaLogin.addEventListener("click", (e) => {
 
 formLogin.addEventListener("submit", async (e) => {
     e.preventDefault();
-
     const email = document.getElementById("loginEmail").value.trim();
     const senha = document.getElementById("loginSenha").value;
     const btn = formLogin.querySelector("button");
-
     btn.textContent = "Entrando...";
     btn.disabled = true;
-
     try {
         await loginUsuario(email, senha);
         mostrarApp();
     } catch (err) {
+        console.error("Erro login:", err);
         alert("Erro ao entrar: " + err.message);
+    } finally {
         btn.textContent = "Entrar";
         btn.disabled = false;
     }
@@ -71,20 +61,16 @@ formLogin.addEventListener("submit", async (e) => {
 
 formCadastro.addEventListener("submit", async (e) => {
     e.preventDefault();
-
     const nome = document.getElementById("cadastroNome").value.trim();
     const email = document.getElementById("cadastroEmail").value.trim();
     const senha = document.getElementById("cadastroSenha").value;
     const btn = formCadastro.querySelector("button");
-
     if (senha.length < 6) {
         alert("A senha precisa ter pelo menos 6 caracteres.");
         return;
     }
-
     btn.textContent = "Criando conta...";
     btn.disabled = true;
-
     try {
         await cadastrarUsuario(nome, email, senha);
         mostrarApp();
@@ -112,12 +98,19 @@ function mostrarPagina(nomePagina) {
     const linkAtivo = document.querySelector(`nav a[data-page="${nomePagina}"]`);
     if (linkAtivo) linkAtivo.classList.add("active");
 
-   if (nomePagina === "graficos") {
-        setTimeout(async () => {
+    setTimeout(async () => {
+        if (nomePagina === "visao-geral") await renderizarDashboard();
+        if (nomePagina === "gastos") await renderizarGastos();
+        if (nomePagina === "cartoes") await renderizarCartoes();
+        if (nomePagina === "investimentos") await renderizarInvestimentos();
+        if (nomePagina === "metas") await renderizarMetas();
+        if (nomePagina === "rendas") await renderizarRendas();
+        if (nomePagina === "compras") await renderizarCompras();
+        if (nomePagina === "graficos") {
             await renderizarGraficos();
             await carregarRelatorios();
-        }, 100);
-    }
+        }
+    }, 100);
 }
 
 links.forEach((link) => {
@@ -147,9 +140,13 @@ async function iniciarApp() {
             year: "numeric"
         });
 
-        await renderizarDashboard();
+    await renderizarDashboard();
     await renderizarCompras();
     await renderizarRendas();
+    await renderizarGastos();
+    await renderizarCartoes();
+    await renderizarInvestimentos();
+    await renderizarMetas();
 
     await pedirPermissaoNotificacao();
     await verificarAlertas();
@@ -188,5 +185,9 @@ document.getElementById("botaoSair").addEventListener("click", async () => {
 // ======================================
 // INICIALIZAÇÃO
 // ======================================
-registrarServiceWorker();
+
+if (typeof registrarServiceWorker === "function") {
+    registrarServiceWorker();
+}
+
 inicializar();

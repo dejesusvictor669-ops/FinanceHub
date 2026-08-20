@@ -59,27 +59,30 @@ async function carregarDados() {
 }
 
 async function salvarDados(dados) {
-    _dadosCache = dados;
+    _dadosCache = null;
+    const dadosParaSalvar = { ...dados };
 
-    const { error } = await sb
+        const { error } = await sb
         .from("dados_financeiros")
         .upsert({
             user_id: _usuarioAtual.id,
-            salario: dados.salario,
-            lazer_mensal: dados.lazerMensal,
-            meta_reserva: dados.metaReserva,
-            gastos: dados.gastos,
-            cartoes: dados.cartoes,
-            investimentos: dados.investimentos,
-            rendas_extras: dados.rendasExtras,
-            metas: dados.metas,
-            relatorios: dados.relatorios,
-            listas_compras: dados.listasCompras,
+            salario: dadosParaSalvar.salario,
+            lazer_mensal: dadosParaSalvar.lazerMensal,
+            meta_reserva: dadosParaSalvar.metaReserva,
+            gastos: dadosParaSalvar.gastos,
+            cartoes: dadosParaSalvar.cartoes,
+            investimentos: dadosParaSalvar.investimentos,
+            rendas_extras: dadosParaSalvar.rendasExtras,
+            metas: dadosParaSalvar.metas,
+            relatorios: dadosParaSalvar.relatorios,
+            listas_compras: dadosParaSalvar.listasCompras,
             updated_at: new Date().toISOString()
         }, { onConflict: "user_id" });
 
     if (error) {
         console.error("Erro ao salvar:", error.message);
+    } else {
+        _dadosCache = dadosParaSalvar;
     }
 }
 
