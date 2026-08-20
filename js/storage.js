@@ -1,9 +1,5 @@
 console.log("carregou: storage.js");
 
-// ======================================
-// USUÁRIO LOGADO (cache local)
-// ======================================
-
 let _usuarioAtual = null;
 let _dadosCache = null;
 
@@ -15,10 +11,6 @@ function obterNomeUsuario() {
     return _usuarioAtual ? (_usuarioAtual.user_metadata?.nome || _usuarioAtual.email) : "";
 }
 
-// ======================================
-// DADOS PADRÃO
-// ======================================
-
 function dadosPadrao() {
     return {
         salario: 0,
@@ -29,13 +21,10 @@ function dadosPadrao() {
         investimentos: [],
         rendasExtras: [],
         metas: [],
-        relatorios: []
+        relatorios: [],
+        listasCompras: []
     };
 }
-
-// ======================================
-// CARREGAR DADOS DO SUPABASE
-// ======================================
 
 async function carregarDados() {
     if (_dadosCache) return _dadosCache;
@@ -62,15 +51,12 @@ async function carregarDados() {
         })),
         rendasExtras: data.rendas_extras || [],
         metas: data.metas || [],
-        relatorios: data.relatorios || []
+        relatorios: data.relatorios || [],
+        listasCompras: data.listas_compras || []
     };
 
     return _dadosCache;
 }
-
-// ======================================
-// SALVAR DADOS NO SUPABASE
-// ======================================
 
 async function salvarDados(dados) {
     _dadosCache = dados;
@@ -88,6 +74,7 @@ async function salvarDados(dados) {
             rendas_extras: dados.rendasExtras,
             metas: dados.metas,
             relatorios: dados.relatorios,
+            listas_compras: dados.listasCompras,
             updated_at: new Date().toISOString()
         }, { onConflict: "user_id" });
 
@@ -96,15 +83,9 @@ async function salvarDados(dados) {
     }
 }
 
-// ======================================
-// AUTH — LOGIN, CADASTRO, LOGOUT
-// ======================================
-
 async function loginUsuario(email, senha) {
     const { data, error } = await sb.auth.signInWithPassword({ email, password: senha });
-
     if (error) throw new Error(error.message);
-
     _usuarioAtual = data.user;
     _dadosCache = null;
     return data.user;
@@ -116,18 +97,13 @@ async function cadastrarUsuario(nome, email, senha) {
         password: senha,
         options: { data: { nome } }
     });
-
     if (error) throw new Error(error.message);
-
     _usuarioAtual = data.user;
-
-    // cria registro inicial no banco
     await sb.from("dados_financeiros").insert({
         user_id: data.user.id,
         nome,
         ...dadosPadrao()
     });
-
     _dadosCache = null;
     return data.user;
 }
@@ -140,11 +116,9 @@ async function sairUsuario() {
 
 async function verificarSessao() {
     const { data } = await sb.auth.getSession();
-
     if (data.session) {
         _usuarioAtual = data.session.user;
         return true;
     }
-
     return false;
 }

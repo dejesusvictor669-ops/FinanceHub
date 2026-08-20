@@ -148,8 +148,8 @@ async function iniciarApp() {
         });
 
     await renderizarDashboard();
+    await renderizarCompras();
     await renderizarRendas();
-    await renderizarGastos();
     await renderizarCartoes();
     await renderizarInvestimentos();
     await renderizarMetas();

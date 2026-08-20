@@ -85,6 +85,10 @@
                     <i class="fa-solid fa-house"></i>
                     Visão Geral
                 </a>
+                                <a data-page="compras">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    Lista de Compras
+                </a>
                 <a data-page="rendas">
                     <i class="fa-solid fa-money-bill-trend-up"></i>
                     Rendas Extras
@@ -183,6 +187,20 @@
                     <h3>🎯 Metas em andamento</h3>
                     <ul id="listaMetasResumo" class="lista-itens"></ul>
                 </div>
+
+            </section>
+                        <!-- PÁGINA: LISTA DE COMPRAS -->
+            <section class="page hidden" id="page-compras">
+
+                <div class="card" style="margin-bottom:25px;">
+                    <h3>🛒 Nova lista de compras</h3>
+                    <form id="formNovaLista" class="form-gasto">
+                        <input type="text" id="nomeLista" placeholder="Nome da lista (ex: Mercado semana)" required>
+                        <button type="submit" class="btn">Criar lista</button>
+                    </form>
+                </div>
+
+                <div id="containerListas"></div>
 
             </section>
             <!-- PÁGINA: RENDAS EXTRAS -->
@@ -358,6 +376,7 @@
     <script src="js/cartoes.js"></script>
     <script src="js/investimentos.js"></script>
     <script src="js/metas.js"></script>
+    <script src="js/compras.js"></script>
     <script src="js/rendas.js"></script>
     <script src="js/graficos.js"></script>
     <script src="js/relatorios.js"></script>
