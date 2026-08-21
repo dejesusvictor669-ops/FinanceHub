@@ -59,6 +59,7 @@ async function carregarDados() {
 }
 
 async function salvarDados(dados) {
+     dados = validarDados(dados); 
     _dadosCache = null;
     const dadosParaSalvar = { ...dados };
 
@@ -84,6 +85,19 @@ async function salvarDados(dados) {
     } else {
         _dadosCache = dadosParaSalvar;
     }
+    function validarDados(dados) {
+    if (typeof dados.salario !== "number") dados.salario = 0;
+    if (typeof dados.lazerMensal !== "number") dados.lazerMensal = 0;
+    if (typeof dados.metaReserva !== "number") dados.metaReserva = 0;
+    if (!Array.isArray(dados.gastos)) dados.gastos = [];
+    if (!Array.isArray(dados.cartoes)) dados.cartoes = [];
+    if (!Array.isArray(dados.investimentos)) dados.investimentos = [];
+    if (!Array.isArray(dados.rendasExtras)) dados.rendasExtras = [];
+    if (!Array.isArray(dados.metas)) dados.metas = [];
+    if (!Array.isArray(dados.relatorios)) dados.relatorios = [];
+    if (!Array.isArray(dados.listasCompras)) dados.listasCompras = [];
+    return dados;
+}
 }
 
 async function loginUsuario(email, senha) {
