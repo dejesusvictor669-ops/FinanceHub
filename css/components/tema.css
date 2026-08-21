@@ -1,0 +1,49 @@
+body.tema-claro {
+    --bg: #F1F5F9;
+    --sidebar: #FFFFFF;
+    --card: #FFFFFF;
+    --text: #0F172A;
+    --gray: #64748B;
+    --shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+body.tema-claro .form-gasto input,
+body.tema-claro .form-gasto select,
+body.tema-claro .login-box input {
+    background: #F8FAFC;
+    color: #0F172A;
+    border: 1px solid #E2E8F0;
+}
+
+body.tema-claro .item-linha {
+    background: #F8FAFC;
+}
+
+body.tema-claro .progress {
+    background: #E2E8F0;
+}
+
+body.tema-claro nav a {
+    color: #64748B;
+}
+
+body.tema-claro nav a:hover {
+    background: rgba(0,0,0,0.05);
+    color: #0F172A;
+}
+
+.botao-tema {
+    background: none;
+    color: var(--gray);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 10px;
+    transition: var(--transition);
+    margin-left: auto;
+}
+
+.botao-tema:hover {
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+}

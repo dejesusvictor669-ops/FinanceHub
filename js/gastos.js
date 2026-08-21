@@ -1,6 +1,7 @@
 console.log("carregou: gastos.js");
 
 let _salvandoGasto = false;
+let _editandoGastoId = null;
 
 async function renderizarGastos() {
     const dados = await carregarDados();
@@ -23,7 +24,7 @@ async function renderizarGastos() {
 
         const info = document.createElement("small");
         info.style.color = "var(--gray)";
-        info.textContent = `${gasto.categoria} • ${formatarData(gasto.data)}`;
+        info.textContent = `${gasto.categoria} • ${formatarData(gasto.data)}${gasto.recorrente ? " • 🔁 Recorrente" : ""}`;
 
         const infoDiv = document.createElement("div");
         infoDiv.className = "info";
@@ -33,21 +34,50 @@ async function renderizarGastos() {
         const valor = document.createElement("strong");
         valor.textContent = formatarMoeda(gasto.valor);
 
-        const botao = document.createElement("button");
-        botao.className = "excluir";
-        botao.dataset.id = gasto.id;
-        botao.innerHTML = `<i class="fa-solid fa-trash"></i>`;
-        botao.addEventListener("click", () => excluirGasto(gasto.id));
+        const botaoEditar = document.createElement("button");
+        botaoEditar.style.cssText = "background:none; color:var(--primary); cursor:pointer; font-size:16px;";
+        botaoEditar.innerHTML = `<i class="fa-solid fa-pen"></i>`;
+        botaoEditar.addEventListener("click", () => iniciarEdicaoGasto(gasto));
+
+        const botaoExcluir = document.createElement("button");
+        botaoExcluir.className = "excluir";
+        botaoExcluir.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+        botaoExcluir.addEventListener("click", () => excluirGasto(gasto.id));
 
         const acoes = document.createElement("div");
-        acoes.style.cssText = "display:flex;align-items:center;gap:15px;";
+        acoes.style.cssText = "display:flex;align-items:center;gap:12px;";
         acoes.appendChild(valor);
-        acoes.appendChild(botao);
+        acoes.appendChild(botaoEditar);
+        acoes.appendChild(botaoExcluir);
 
         item.appendChild(infoDiv);
         item.appendChild(acoes);
         lista.appendChild(item);
     });
+}
+
+function iniciarEdicaoGasto(gasto) {
+    _editandoGastoId = gasto.id;
+
+    document.getElementById("gastoDescricao").value = gasto.descricao;
+    document.getElementById("gastoValor").value = gasto.valor;
+    document.getElementById("gastoCategoria").value = gasto.categoria;
+    document.getElementById("gastoData").value = gasto.data;
+
+    const btn = document.querySelector("#formGasto button");
+    btn.textContent = "Salvar edição";
+    btn.style.background = "var(--warning)";
+
+    document.getElementById("gastoDescricao").focus();
+    document.getElementById("formGasto").scrollIntoView({ behavior: "smooth" });
+}
+
+function cancelarEdicaoGasto() {
+    _editandoGastoId = null;
+    document.getElementById("formGasto").reset();
+    const btn = document.querySelector("#formGasto button");
+    btn.textContent = "Adicionar";
+    btn.style.background = "";
 }
 
 async function excluirGasto(id) {
@@ -56,6 +86,7 @@ async function excluirGasto(id) {
     await salvarDados(dados);
     await renderizarGastos();
     await renderizarDashboard();
+    toastSucesso("Gasto excluído!");
 }
 
 document.getElementById("formGasto").addEventListener("submit", async (evento) => {
@@ -65,6 +96,7 @@ document.getElementById("formGasto").addEventListener("submit", async (evento) =
     _salvandoGasto = true;
 
     const btn = evento.target.querySelector("button");
+    const textoOriginal = btn.textContent;
     btn.textContent = "Salvando...";
     btn.disabled = true;
 
@@ -73,23 +105,36 @@ document.getElementById("formGasto").addEventListener("submit", async (evento) =
         const valor = parseFloat(document.getElementById("gastoValor").value);
         const categoria = document.getElementById("gastoCategoria").value;
         const data = validarData(document.getElementById("gastoData").value);
+        const recorrente = document.getElementById("gastoRecorrente").checked;
 
-        if (!descricao || descricao.length > 200 || isNaN(valor) || valor <= 0 || valor > 9999999) return;
+        if (!descricao || descricao.length > 200 || isNaN(valor) || valor <= 0 || valor > 9999999) {
+            toastErro("Preencha os campos corretamente.");
+            return;
+        }
 
         const dados = await carregarDados();
-        dados.gastos.push({
-            id: gerarId(),
-            descricao,
-            valor,
-            categoria,
-            data
-        });
+
+        if (_editandoGastoId) {
+            const idx = dados.gastos.findIndex(g => g.id === _editandoGastoId);
+            if (idx !== -1) {
+                dados.gastos[idx] = { ...dados.gastos[idx], descricao, valor, categoria, data, recorrente };
+            }
+            _editandoGastoId = null;
+            toastSucesso("Gasto atualizado!");
+        } else {
+            dados.gastos.push({ id: gerarId(), descricao, valor, categoria, data, recorrente });
+            toastSucesso("Gasto adicionado!");
+        }
 
         await salvarDados(dados);
         document.getElementById("formGasto").reset();
+        btn.style.background = "";
         await renderizarGastos();
         await renderizarDashboard();
 
+    } catch (err) {
+        toastErro("Erro ao salvar gasto.");
+        console.error(err);
     } finally {
         _salvandoGasto = false;
         btn.textContent = "Adicionar";

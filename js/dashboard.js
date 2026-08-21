@@ -104,7 +104,7 @@ function iniciarListenerConfig() {
 
         await salvarDados(dados);
         await renderizarDashboard();
-        alert("Configurações salvas!");
+        toastSucesso("Configurações salvas!");
     });
 }
 

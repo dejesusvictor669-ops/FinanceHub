@@ -5,7 +5,7 @@ function montarHtmlMeta(meta) {
     return `
         <li class="meta-linha">
             <div class="topo">
-                <span>${meta.nome}</span>
+                <span>${sanitizar(meta.nome)}</span>
                 <button class="excluir-meta" data-id="${meta.id}">
                     <i class="fa-solid fa-trash"></i>
                 </button>
@@ -30,7 +30,7 @@ async function adicionarValorMeta(id) {
     const valor = parseFloat(input.value);
 
     if (isNaN(valor) || valor <= 0) {
-        alert("Digite um valor válido.");
+        toastErro("Digite um valor válido.");
         return;
     }
 
@@ -43,7 +43,9 @@ async function adicionarValorMeta(id) {
     await renderizarMetas();
 
     if (meta.valorAtual >= meta.valorAlvo) {
-        alert(`🎉 Meta "${meta.nome}" concluída!`);
+        toastSucesso(`🎉 Meta "${meta.nome}" concluída!`);
+    } else {
+        toastSucesso("Valor adicionado à meta!");
     }
 }
 
@@ -73,6 +75,7 @@ async function excluirMeta(id) {
     dados.metas = dados.metas.filter((m) => m.id !== id);
     await salvarDados(dados);
     await renderizarMetas();
+    toastSucesso("Meta excluída!");
 }
 
 document.getElementById("formMeta").addEventListener("submit", async (evento) => {
@@ -90,4 +93,5 @@ document.getElementById("formMeta").addEventListener("submit", async (evento) =>
 
     document.getElementById("formMeta").reset();
     await renderizarMetas();
+    toastSucesso("Meta criada!");
 });

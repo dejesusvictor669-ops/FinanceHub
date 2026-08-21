@@ -42,60 +42,112 @@ function montarCartaoLista(lista) {
     div.className = "card";
     div.style.marginBottom = "20px";
 
-    div.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-            <div>
-                <h3 style="color:var(--text); font-size:18px;">${lista.nome}</h3>
-                <small style="color:var(--gray);">${formatarData(lista.data)} • ${checked}/${total} itens</small>
-            </div>
-            <button class="excluir" onclick="excluirLista('${lista.id}')">
-                <i class="fa-solid fa-trash"></i>
-            </button>
-        </div>
+    const nomeEl = document.createElement("h3");
+    nomeEl.style.cssText = "color:var(--text); font-size:18px;";
+    nomeEl.textContent = lista.nome;
 
-        ${total > 0 ? `
-        <div class="progress" style="margin-bottom:15px;">
-            <span style="width:${progresso}%"></span>
-        </div>` : ''}
+    const infoEl = document.createElement("small");
+    infoEl.style.color = "var(--gray)";
+    infoEl.textContent = `${formatarData(lista.data)} • ${checked}/${total} itens`;
 
-        <ul style="display:flex; flex-direction:column; gap:10px; margin-bottom:15px;">
-            ${lista.itens.map(item => `
-                <li style="display:flex; align-items:center; gap:12px; padding:10px 14px; background:var(--bg); border-radius:10px; ${item.checked ? 'opacity:0.5;' : ''}">
-                    <input type="checkbox" ${item.checked ? 'checked' : ''} ${finalizada ? 'disabled' : ''}
-                        onchange="toggleItem('${lista.id}', '${item.id}')"
-                        style="width:18px; height:18px; cursor:pointer; accent-color:var(--primary);">
-                    <span style="${item.checked ? 'text-decoration:line-through;' : ''}">${item.nome}</span>
-                    ${!finalizada ? `
-                    <button onclick="removerItem('${lista.id}', '${item.id}')"
-                        style="margin-left:auto; background:none; color:var(--danger); cursor:pointer; font-size:14px;">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>` : ''}
-                </li>
-            `).join('')}
-        </ul>
+    const headerInfo = document.createElement("div");
+    headerInfo.appendChild(nomeEl);
+    headerInfo.appendChild(infoEl);
 
-        ${!finalizada ? `
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <input type="text" id="novoItem-${lista.id}" placeholder="Adicionar item..."
-                style="flex:1; min-width:140px; padding:10px 14px; border-radius:10px; background:var(--bg); color:var(--text);"
-                onkeydown="if(event.key==='Enter') adicionarItem('${lista.id}')">
-            <button class="btn" onclick="adicionarItem('${lista.id}')">+ Item</button>
-            <button class="btn" style="background:var(--success);" onclick="finalizarLista('${lista.id}')">
-                ✅ Finalizar
-            </button>
-        </div>
-        ` : `
-        <div style="display:flex; align-items:center; gap:10px; color:var(--success);">
-            <i class="fa-solid fa-circle-check"></i>
-            <strong>Gasto registrado: ${formatarMoeda(lista.valorGasto || 0)}</strong>
-        </div>`}
-    `;
+    const botaoExcluir = document.createElement("button");
+    botaoExcluir.className = "excluir";
+    botaoExcluir.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+    botaoExcluir.addEventListener("click", () => excluirLista(lista.id));
+
+    const header = document.createElement("div");
+    header.style.cssText = "display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;";
+    header.appendChild(headerInfo);
+    header.appendChild(botaoExcluir);
+
+    div.appendChild(header);
+
+    if (total > 0) {
+        const progressBar = document.createElement("div");
+        progressBar.className = "progress";
+        progressBar.style.marginBottom = "15px";
+        const progressSpan = document.createElement("span");
+        progressSpan.style.width = `${progresso}%`;
+        progressBar.appendChild(progressSpan);
+        div.appendChild(progressBar);
+    }
+
+    const ul = document.createElement("ul");
+    ul.style.cssText = "display:flex; flex-direction:column; gap:10px; margin-bottom:15px;";
+
+    lista.itens.forEach(item => {
+        const li = document.createElement("li");
+        li.style.cssText = `display:flex; align-items:center; gap:12px; padding:10px 14px; background:var(--bg); border-radius:10px; ${item.checked ? 'opacity:0.5;' : ''}`;
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = item.checked;
+        checkbox.disabled = finalizada;
+        checkbox.style.cssText = "width:18px; height:18px; cursor:pointer; accent-color:var(--primary);";
+        checkbox.addEventListener("change", () => toggleItem(lista.id, item.id));
+
+        const nomeItem = document.createElement("span");
+        nomeItem.textContent = item.nome;
+        if (item.checked) nomeItem.style.textDecoration = "line-through";
+
+        li.appendChild(checkbox);
+        li.appendChild(nomeItem);
+
+        if (!finalizada) {
+            const botaoRemover = document.createElement("button");
+            botaoRemover.style.cssText = "margin-left:auto; background:none; color:var(--danger); cursor:pointer; font-size:14px;";
+            botaoRemover.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+            botaoRemover.addEventListener("click", () => removerItem(lista.id, item.id));
+            li.appendChild(botaoRemover);
+        }
+
+        ul.appendChild(li);
+    });
+
+    div.appendChild(ul);
+
+    if (!finalizada) {
+        const inputItem = document.createElement("input");
+        inputItem.type = "text";
+        inputItem.placeholder = "Adicionar item...";
+        inputItem.style.cssText = "flex:1; min-width:140px; padding:10px 14px; border-radius:10px; background:var(--bg); color:var(--text);";
+        inputItem.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); adicionarItemLista(lista.id, inputItem); } });
+
+        const btnItem = document.createElement("button");
+        btnItem.className = "btn";
+        btnItem.textContent = "+ Item";
+        btnItem.addEventListener("click", () => adicionarItemLista(lista.id, inputItem));
+
+        const btnFinalizar = document.createElement("button");
+        btnFinalizar.className = "btn";
+        btnFinalizar.style.background = "var(--success)";
+        btnFinalizar.textContent = "✅ Finalizar";
+        btnFinalizar.addEventListener("click", () => finalizarLista(lista.id));
+
+        const acoes = document.createElement("div");
+        acoes.style.cssText = "display:flex; gap:10px; flex-wrap:wrap;";
+        acoes.appendChild(inputItem);
+        acoes.appendChild(btnItem);
+        acoes.appendChild(btnFinalizar);
+        div.appendChild(acoes);
+    } else {
+        const concluido = document.createElement("div");
+        concluido.style.cssText = "display:flex; align-items:center; gap:10px; color:var(--success);";
+        concluido.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
+        const texto = document.createElement("strong");
+        texto.textContent = `Gasto registrado: ${formatarMoeda(lista.valorGasto || 0)}`;
+        concluido.appendChild(texto);
+        div.appendChild(concluido);
+    }
 
     return div;
 }
 
-async function adicionarItem(listaId) {
-    const input = document.getElementById(`novoItem-${listaId}`);
+async function adicionarItemLista(listaId, input) {
     const nome = input.value.trim();
     if (!nome) return;
 
@@ -113,7 +165,6 @@ async function removerItem(listaId, itemId) {
     const dados = await carregarDados();
     const lista = dados.listasCompras.find(l => l.id === listaId);
     if (!lista) return;
-
     lista.itens = lista.itens.filter(i => i.id !== itemId);
     await salvarDados(dados);
     await renderizarCompras();
@@ -123,10 +174,8 @@ async function toggleItem(listaId, itemId) {
     const dados = await carregarDados();
     const lista = dados.listasCompras.find(l => l.id === listaId);
     if (!lista) return;
-
     const item = lista.itens.find(i => i.id === itemId);
     if (item) item.checked = !item.checked;
-
     await salvarDados(dados);
     await renderizarCompras();
 }
@@ -137,7 +186,7 @@ async function finalizarLista(listaId) {
 
     const valor = parseFloat(valorStr.replace(",", "."));
     if (isNaN(valor) || valor < 0) {
-        alert("Valor inválido.");
+        toastErro("Valor inválido.");
         return;
     }
 
@@ -161,21 +210,20 @@ async function finalizarLista(listaId) {
     await salvarDados(dados);
     await renderizarCompras();
     await renderizarDashboard();
-    alert(`Lista finalizada! ${formatarMoeda(valor)} descontado do saldo.`);
+    toastSucesso(`Lista finalizada! ${formatarMoeda(valor)} descontado do saldo.`);
 }
 
 async function excluirLista(listaId) {
     if (!confirm("Excluir esta lista?")) return;
-
     const dados = await carregarDados();
     dados.listasCompras = dados.listasCompras.filter(l => l.id !== listaId);
     await salvarDados(dados);
     await renderizarCompras();
+    toastSucesso("Lista excluída!");
 }
 
 document.getElementById("formNovaLista").addEventListener("submit", async (evento) => {
     evento.preventDefault();
-
     const nome = document.getElementById("nomeLista").value.trim();
     if (!nome) return;
 
@@ -192,4 +240,5 @@ document.getElementById("formNovaLista").addEventListener("submit", async (event
     await salvarDados(dados);
     document.getElementById("formNovaLista").reset();
     await renderizarCompras();
+    toastSucesso("Lista criada!");
 });

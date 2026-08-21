@@ -22,7 +22,11 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/style.css">
+    <meta name="theme-color" content="#2563EB">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="FinanceHub">
+    <link rel="manifest" href="manifest.json">
 
 </head>
 
@@ -53,12 +57,13 @@
                 <input type="email" id="loginEmail" placeholder="Seu email" required>
                 <input type="password" id="loginSenha" placeholder="Sua senha" required>
                 <button type="submit" class="btn">Entrar</button>
-                <p style="margin-top:10px; color:var(--gray); font-size:13px;">
+                               <p style="margin-top:10px; color:var(--gray); font-size:13px;">
+                    <a href="#" id="linkEsqueceuSenha" style="color:var(--gray);">Esqueci minha senha</a>
+                </p>
+                <p style="margin-top:5px; color:var(--gray); font-size:13px;">
                     Não tem conta?
                     <a href="#" id="linkParaCadastro" style="color:var(--primary);">Criar conta grátis</a>
                 </p>
-            </form>
-
             <!-- FORM CADASTRO -->
             <form id="formCadastro" class="hidden">
                 <p style="color:var(--gray); margin-bottom:15px; font-size:14px;">Criar nova conta</p>
@@ -122,10 +127,11 @@
                 </a>
             </nav>
 
+                       <button id="botaoTema" class="botao-tema">
+                <i class="fa-solid fa-sun"></i>
+            </button>
+
             <a id="botaoSair" style="margin-top:auto; cursor:pointer;">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                Sair
-            </a>
 
         </aside>
 
@@ -247,9 +253,12 @@
                             <option value="cartao">💳 Cartão</option>
                             <option value="outros">📦 Outros</option>
                         </select>
-                        <input type="date" id="gastoData">
+                                                <input type="date" id="gastoData">
+                        <label style="display:flex; align-items:center; gap:8px; color:var(--gray); font-size:14px; cursor:pointer; width:100%;">
+                            <input type="checkbox" id="gastoRecorrente" style="width:16px; height:16px; accent-color:var(--primary);">
+                            🔁 Gasto recorrente (aparece todo mês)
+                        </label>
                         <button type="submit" class="btn">Adicionar</button>
-                    </form>
                 </div>
 
                 <div class="card">
@@ -386,7 +395,9 @@
     <script src="js/rendas.js"></script>
     <script src="js/graficos.js"></script>
     <script src="js/relatorios.js"></script>
-     <script src="js/notificacoes.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/tema.js"></script>
+    <script src="js/notificacoes.js"></script>
     <script src="js/app.js"></script>
     
 

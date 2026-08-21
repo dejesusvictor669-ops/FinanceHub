@@ -1,5 +1,7 @@
 console.log("carregou: cartoes.js");
 
+let _salvandoCartao = false;
+
 async function renderizarCartoes() {
     const dados = await carregarDados();
     const lista = document.getElementById("listaCartoes");
@@ -16,21 +18,35 @@ async function renderizarCartoes() {
         const valorParcela = compra.valor / compra.parcelas;
         const item = document.createElement("li");
         item.className = "item-linha";
-        item.innerHTML = `
-            <div class="info">
-                <span>${compra.descricao}</span>
-                <small>${compra.nome} • ${compra.parcelas}x de ${formatarMoeda(valorParcela)} • ${formatarData(compra.data)}</small>
-            </div>
-            <div style="display:flex;align-items:center;gap:15px;">
-                <strong>${formatarMoeda(compra.valor)}</strong>
-                <button class="excluir" data-id="${compra.id}"><i class="fa-solid fa-trash"></i></button>
-            </div>
-        `;
-        lista.appendChild(item);
-    });
 
-    document.querySelectorAll("#listaCartoes .excluir").forEach((botao) => {
-        botao.addEventListener("click", () => excluirCartao(botao.getAttribute("data-id")));
+        const descricao = document.createElement("span");
+        descricao.textContent = compra.descricao;
+
+        const info = document.createElement("small");
+        info.style.color = "var(--gray)";
+        info.textContent = `${compra.nome} • ${compra.parcelas}x de ${formatarMoeda(valorParcela)} • ${formatarData(compra.data)}`;
+
+        const infoDiv = document.createElement("div");
+        infoDiv.className = "info";
+        infoDiv.appendChild(descricao);
+        infoDiv.appendChild(info);
+
+        const valor = document.createElement("strong");
+        valor.textContent = formatarMoeda(compra.valor);
+
+        const botao = document.createElement("button");
+        botao.className = "excluir";
+        botao.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+        botao.addEventListener("click", () => excluirCartao(compra.id));
+
+        const acoes = document.createElement("div");
+        acoes.style.cssText = "display:flex;align-items:center;gap:15px;";
+        acoes.appendChild(valor);
+        acoes.appendChild(botao);
+
+        item.appendChild(infoDiv);
+        item.appendChild(acoes);
+        lista.appendChild(item);
     });
 }
 
@@ -40,23 +56,39 @@ async function excluirCartao(id) {
     await salvarDados(dados);
     await renderizarCartoes();
     await renderizarDashboard();
+    toastSucesso("Compra excluída!");
 }
 
 document.getElementById("formCartao").addEventListener("submit", async (evento) => {
     evento.preventDefault();
 
-    const descricao = document.getElementById("cartaoDescricao").value.trim();
-    const valor = parseFloat(document.getElementById("cartaoValor").value);
-    const parcelas = parseInt(document.getElementById("cartaoParcelas").value);
-    const nome = document.getElementById("cartaoNome").value.trim();
+    if (_salvandoCartao) return;
+    _salvandoCartao = true;
 
-    if (!descricao || !nome || isNaN(valor) || valor <= 0 || isNaN(parcelas) || parcelas <= 0) return;
+    const btn = evento.target.querySelector("button");
+    btn.textContent = "Salvando...";
+    btn.disabled = true;
 
-    const dados = await carregarDados();
-    dados.cartoes.push({ id: gerarId(), descricao, valor, parcelas, nome, data: hojeISO() });
-    await salvarDados(dados);
+    try {
+        const descricao = document.getElementById("cartaoDescricao").value.trim();
+        const valor = parseFloat(document.getElementById("cartaoValor").value);
+        const parcelas = parseInt(document.getElementById("cartaoParcelas").value);
+        const nome = document.getElementById("cartaoNome").value.trim();
 
-    document.getElementById("formCartao").reset();
-    await renderizarCartoes();
-    await renderizarDashboard();
+        if (!descricao || !nome || isNaN(valor) || valor <= 0 || isNaN(parcelas) || parcelas <= 0) return;
+
+        const dados = await carregarDados();
+        dados.cartoes.push({ id: gerarId(), descricao, valor, parcelas, nome, data: hojeISO() });
+        await salvarDados(dados);
+
+        document.getElementById("formCartao").reset();
+        await renderizarCartoes();
+        await renderizarDashboard();
+        toastSucesso("Compra adicionada!");
+
+    } finally {
+        _salvandoCartao = false;
+        btn.textContent = "Adicionar";
+        btn.disabled = false;
+    }
 });

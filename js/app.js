@@ -4,6 +4,7 @@ const telaLogin = document.getElementById("telaLogin");
 const appContainer = document.getElementById("appContainer");
 
 async function inicializar() {
+    iniciarTema();
     const logado = await verificarSessao();
     if (logado) {
         mostrarApp();
@@ -23,10 +24,15 @@ function mostrarApp() {
     iniciarApp();
 }
 
+// ======================================
+// LOGIN / CADASTRO / RECUPERAR SENHA
+// ======================================
+
 const formLogin = document.getElementById("formLogin");
 const formCadastro = document.getElementById("formCadastro");
 const linkParaCadastro = document.getElementById("linkParaCadastro");
 const linkParaLogin = document.getElementById("linkParaLogin");
+const linkEsqueceuSenha = document.getElementById("linkEsqueceuSenha");
 
 linkParaCadastro.addEventListener("click", (e) => {
     e.preventDefault();
@@ -40,6 +46,24 @@ linkParaLogin.addEventListener("click", (e) => {
     formLogin.classList.remove("hidden");
 });
 
+linkEsqueceuSenha.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("loginEmail").value.trim();
+    if (!email) {
+        toastAviso("Digite seu email primeiro.");
+        return;
+    }
+    try {
+        const { error } = await sb.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin
+        });
+        if (error) throw error;
+        toastSucesso("Email de recuperação enviado!");
+    } catch (err) {
+        toastErro("Erro ao enviar email: " + err.message);
+    }
+});
+
 formLogin.addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = document.getElementById("loginEmail").value.trim();
@@ -51,8 +75,7 @@ formLogin.addEventListener("submit", async (e) => {
         await loginUsuario(email, senha);
         mostrarApp();
     } catch (err) {
-        console.error("Erro login:", err);
-        alert("Erro ao entrar: " + err.message);
+        toastErro("Erro ao entrar: " + err.message);
     } finally {
         btn.textContent = "Entrar";
         btn.disabled = false;
@@ -66,7 +89,7 @@ formCadastro.addEventListener("submit", async (e) => {
     const senha = document.getElementById("cadastroSenha").value;
     const btn = formCadastro.querySelector("button");
     if (senha.length < 6) {
-        alert("A senha precisa ter pelo menos 6 caracteres.");
+        toastErro("A senha precisa ter pelo menos 6 caracteres.");
         return;
     }
     btn.textContent = "Criando conta...";
@@ -75,7 +98,7 @@ formCadastro.addEventListener("submit", async (e) => {
         await cadastrarUsuario(nome, email, senha);
         mostrarApp();
     } catch (err) {
-        alert("Erro ao criar conta: " + err.message);
+        toastErro("Erro ao criar conta: " + err.message);
         btn.textContent = "Criar conta";
         btn.disabled = false;
     }
@@ -90,7 +113,6 @@ const paginas = document.querySelectorAll(".page");
 
 function mostrarPagina(nomePagina) {
     paginas.forEach((p) => p.classList.add("hidden"));
-
     const paginaAtiva = document.getElementById("page-" + nomePagina);
     if (paginaAtiva) paginaAtiva.classList.remove("hidden");
 
@@ -121,7 +143,47 @@ links.forEach((link) => {
 });
 
 // ======================================
-// INICIAR APP APÓS LOGIN
+// GASTOS RECORRENTES — aplicar no início do mês
+// ======================================
+
+async function aplicarGastosRecorrentes() {
+    const dados = await carregarDados();
+    const hoje = new Date();
+    const mesAtual = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, "0")}`;
+    const chaveAplicado = `financehub_recorrente_${mesAtual}`;
+
+    if (localStorage.getItem(chaveAplicado)) return;
+
+    const recorrentes = dados.gastos.filter(g => g.recorrente);
+    if (recorrentes.length === 0) return;
+
+    recorrentes.forEach(g => {
+        const jaExiste = dados.gastos.some(x =>
+            x.descricao === g.descricao &&
+            x.data &&
+            x.data.startsWith(mesAtual) &&
+            x.id !== g.id
+        );
+
+        if (!jaExiste) {
+            dados.gastos.push({
+                id: gerarId(),
+                descricao: g.descricao,
+                valor: g.valor,
+                categoria: g.categoria,
+                data: hojeISO(),
+                recorrente: false
+            });
+        }
+    });
+
+    await salvarDados(dados);
+    localStorage.setItem(chaveAplicado, "1");
+    toastInfo(`🔁 ${recorrentes.length} gasto(s) recorrente(s) aplicado(s).`);
+}
+
+// ======================================
+// INICIAR APP
 // ======================================
 
 async function iniciarApp() {
@@ -130,16 +192,13 @@ async function iniciarApp() {
     const nome = obterNomeUsuario();
 
     document.getElementById("saudacao").innerHTML = `${saudacao}, ${nome} 👋`;
+    document.getElementById("dataAtual").innerHTML = new Date().toLocaleDateString("pt-BR", {
+        weekday: "long", day: "numeric", month: "long", year: "numeric"
+    });
 
-    const hoje = new Date();
-    document.getElementById("dataAtual").innerHTML =
-        hoje.toLocaleDateString("pt-BR", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-        });
+    mostrarSkeleton("resumoMes", 4);
 
+    await aplicarGastosRecorrentes();
     await renderizarDashboard();
     await renderizarCompras();
     await renderizarRendas();
