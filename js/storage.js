@@ -3,6 +3,10 @@ console.log("carregou: storage.js");
 let _usuarioAtual = null;
 let _dadosCache = null;
 
+function chavePerfis() {
+    return _usuarioAtual ? `financehub_perfis_${_usuarioAtual.id}` : "financehub_perfis";
+}
+
 function obterUsuario() {
     return _usuarioAtual;
 }
@@ -115,9 +119,9 @@ function dadosPadrao() {
         rendasExtras: [],
         metas: [],
         relatorios: [],
-        listasCompras: []
-        , perfis: [{ id: "principal", nome: "Principal" }]
-        , perfilAtivo: "principal"
+        listasCompras: [],
+        perfis: [{ id: "principal", nome: "Principal" }],
+        perfilAtivo: "principal"
     };
 }
 
@@ -151,10 +155,21 @@ async function carregarDados() {
         rendasExtras: data.rendas_extras || [],
         metas: data.metas || [],
         relatorios: data.relatorios || [],
-        listasCompras: data.listas_compras || []
-        , perfis: data.perfis || [{ id: "principal", nome: "Principal" }]
-        , perfilAtivo: data.perfil_ativo || "principal"
+        listasCompras: data.listas_compras || [],
+        perfis: data.perfis || [{ id: "principal", nome: "Principal" }],
+        perfilAtivo: data.perfil_ativo || "principal"
     };
+
+    const perfisLocais = localStorage.getItem(chavePerfis());
+    if (perfisLocais) {
+        try {
+            const perfilData = JSON.parse(perfisLocais);
+            _dadosCache.perfis = perfilData.perfis;
+            _dadosCache.perfilAtivo = perfilData.perfilAtivo;
+        } catch (error) {
+            localStorage.removeItem(chavePerfis());
+        }
+    }
 
     return _dadosCache;
 }
@@ -167,6 +182,10 @@ async function salvarDados(dados) {
     dados = validarDados(dados);
     _dadosCache = null;
     const dadosParaSalvar = { ...dados };
+    localStorage.setItem(chavePerfis(), JSON.stringify({
+        perfis: dadosParaSalvar.perfis,
+        perfilAtivo: dadosParaSalvar.perfilAtivo
+    }));
 
     const { error } = await sb
         .from("dados_financeiros")
@@ -182,15 +201,15 @@ async function salvarDados(dados) {
             metas: dadosParaSalvar.metas,
             relatorios: dadosParaSalvar.relatorios,
             listas_compras: dadosParaSalvar.listasCompras,
-            perfis: dadosParaSalvar.perfis,
-            perfil_ativo: dadosParaSalvar.perfilAtivo,
             updated_at: new Date().toISOString()
         }, { onConflict: "user_id" });
 
     if (error) {
         console.error("Erro ao salvar:", error.message);
+        return false;
     } else {
         _dadosCache = dadosParaSalvar;
+        return true;
     }
 }
 

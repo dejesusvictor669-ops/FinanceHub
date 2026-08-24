@@ -31,6 +31,7 @@ async function renderizarSeletorPerfil() {
                     ">${p.nome.charAt(0).toUpperCase()}</div>
                     <span style="font-size:14px;flex:1;">${p.nome}</span>
                     ${p.id === dados.perfilAtivo ? '<i class="fa-solid fa-check" style="color:var(--primary);font-size:12px;"></i>' : ''}
+                    ${p.id !== "principal" ? '<button type="button" onclick="event.stopPropagation(); apagarPerfil(\'' + p.id + '\')" title="Apagar perfil" aria-label="Apagar perfil" style="border:0;background:transparent;color:var(--gray);cursor:pointer;padding:5px;font-size:12px;"><i class="fa-solid fa-trash"></i></button>' : ''}
                 </div>
             `).join("")}
             <button onclick="criarPerfil()" style="
@@ -48,6 +49,20 @@ async function ativarPerfil(id) {
     const dados = await carregarDados();
     dados.perfilAtivo = id;
     await salvarDados(dados);
+    location.reload();
+}
+
+async function apagarPerfil(id) {
+    if (id === "principal") return;
+
+    const dados = await carregarDados();
+    const perfil = dados.perfis.find(item => item.id === id);
+    if (!perfil || !confirm(`Apagar o perfil "${perfil.nome}"?`)) return;
+
+    dados.perfis = dados.perfis.filter(item => item.id !== id);
+    if (dados.perfilAtivo === id) dados.perfilAtivo = "principal";
+    await salvarDados(dados);
+    toastSucesso(`Perfil "${perfil.nome}" apagado.`);
     location.reload();
 }
 
@@ -85,10 +100,14 @@ async function criarPerfil() {
         const novoId = "perfil_" + gerarId();
         dados.perfis.push({ id: novoId, nome });
         dados.perfilAtivo = novoId;
-        await salvarDados(dados);
+        const salvo = await salvarDados(dados);
 
         fechar();
-        toastSucesso(`Perfil "${nome}" criado!`);
+        if (!salvo) {
+            toastAviso(`Perfil "${nome}" foi criado neste dispositivo, mas os demais dados não foram salvos na nuvem.`);
+        } else {
+            toastSucesso(`Perfil "${nome}" criado!`);
+        }
         location.reload();
     });
 }
