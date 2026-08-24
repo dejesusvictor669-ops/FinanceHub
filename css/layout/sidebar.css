@@ -104,6 +104,10 @@ nav .active {
 
 .botao-menu {
     display: none;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
     background: none;
     color: var(--text);
     font-size: 22px;
@@ -123,7 +127,11 @@ nav .active {
 }
 
 @media (max-width: 900px) {
-    .botao-menu { display: block; }
+    .botao-menu {
+        display: flex !important;
+        position: relative;
+        z-index: 1001;
+    }
 
     .sidebar {
         position: fixed;

@@ -1,4 +1,4 @@
-const CACHE_NAME = "financehub-v5";
+const CACHE_NAME = "financehub-v6";
 
 const ARQUIVOS = [
     "/",
