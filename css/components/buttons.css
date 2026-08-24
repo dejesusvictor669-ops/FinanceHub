@@ -118,7 +118,7 @@
     margin-top: 15px;
 }
 
-.form-gasto input,
+.form-gasto input:not([type="checkbox"]),
 .form-gasto select {
     flex: 1;
     min-width: 140px;
@@ -133,9 +133,29 @@
     transition: border-color 0.3s;
 }
 
-.form-gasto input:focus,
+.form-gasto input:not([type="checkbox"]):focus,
 .form-gasto select:focus {
     border-color: var(--primary);
+}
+
+.campo-recorrente {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 24px;
+    color: var(--gray);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.campo-recorrente input[type="checkbox"] {
+    flex: 0 0 16px;
+    width: 16px;
+    min-width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--primary);
 }
 
 .lista-itens {
@@ -214,7 +234,7 @@
 @media (max-width: 600px) {
     .form-gasto { gap: 10px; }
 
-    .form-gasto input,
+    .form-gasto input:not([type="checkbox"]),
     .form-gasto select {
         min-width: 100%;
         padding: 12px 14px;
@@ -227,6 +247,6 @@
 }
 
 @media (max-width: 380px) {
-    .form-gasto input,
+    .form-gasto input:not([type="checkbox"]),
     .form-gasto select { font-size: 13px; }
 }
