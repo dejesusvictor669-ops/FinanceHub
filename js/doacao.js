@@ -35,7 +35,11 @@ function gerarPayloadPix(valor) {
 
 function renderizarQRCode(containerId, valor) {
     const container = document.getElementById(containerId);
-    if (!container || typeof QRCode === "undefined") return;
+    if (!container) return;
+    if (typeof QRCode === "undefined") {
+        setTimeout(() => renderizarQRCode(containerId, valor), 100);
+        return;
+    }
 
     const payload = gerarPayloadPix(valor);
     container.innerHTML = `
@@ -51,6 +55,11 @@ function renderizarQRCode(containerId, valor) {
         width: 200,
         margin: 2,
         color: { dark: "#000000", light: "#ffffff" }
+    }, (erro) => {
+        if (erro) {
+            container.innerHTML = "<p style=\"color:var(--gray);font-size:13px;\">Não foi possível gerar o QR Code.</p>";
+            return;
+        }
     });
     container.setAttribute("data-payload", payload);
 }
