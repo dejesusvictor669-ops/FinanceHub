@@ -108,12 +108,14 @@ nav .active {
     height: 42px;
     align-items: center;
     justify-content: center;
-    background: none;
+    background: var(--card);
     color: var(--text);
     font-size: 22px;
     cursor: pointer;
     margin-right: 15px;
-    border: none;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
     flex-shrink: 0;
 }
 
