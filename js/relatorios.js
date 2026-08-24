@@ -102,7 +102,7 @@ async function carregarRelatorios() {
                  onclick="abrirRelatorio(${ano}, ${i})">
                 <h4>${MESES[i]}</h4>
                 <p>${fechado ? '✅ Fechado' : '📂 Em aberto'}</p>
-                ${fechado ? `<small>${rel.fechadoEm}</small>` : ''}
+                ${fechado ? `<small>${sanitizar(rel.fechadoEm)}</small>` : ''}
             </div>
         `;
     }

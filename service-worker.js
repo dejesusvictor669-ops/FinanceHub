@@ -56,10 +56,18 @@ self.addEventListener("fetch", (event) => {
 // ======================================
 
 self.addEventListener("push", (event) => {
-    const dados = event.data ? event.data.json() : {};
+    let dados = {};
+    try {
+        dados = event.data ? event.data.json() : {};
+    } catch (error) {
+        console.error("Payload de notificação inválido:", error);
+    }
+
+    const titulo = typeof dados.titulo === "string" ? dados.titulo.slice(0, 100) : "FinanceHub";
+    const mensagem = typeof dados.mensagem === "string" ? dados.mensagem.slice(0, 500) : "";
     event.waitUntil(
-        self.registration.showNotification(dados.titulo || "FinanceHub", {
-            body: dados.mensagem || ""
+        self.registration.showNotification(titulo, {
+            body: mensagem
         })
     );
 });

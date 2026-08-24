@@ -200,6 +200,7 @@ async function carregarDados() {
         }
     }
 
+    _dadosCache = validarDados(_dadosCache);
     return _dadosCache;
 }
 

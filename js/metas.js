@@ -2,11 +2,12 @@ console.log("carregou: metas.js");
 
 function montarHtmlMeta(meta) {
     const porcentagem = Math.min((meta.valorAtual / meta.valorAlvo) * 100, 100);
+    const metaId = sanitizarId(meta.id);
     return `
         <li class="meta-linha">
             <div class="topo">
                 <span>${sanitizar(meta.nome)}</span>
-                <button class="excluir-meta" data-id="${meta.id}">
+                <button class="excluir-meta" data-id="${metaId}">
                     <i class="fa-solid fa-trash"></i>
                 </button>
             </div>
@@ -15,9 +16,9 @@ function montarHtmlMeta(meta) {
             </div>
             <small>${formatarMoeda(meta.valorAtual)} de ${formatarMoeda(meta.valorAlvo)} (${porcentagem.toFixed(0)}%)</small>
             <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
-                <input type="number" id="aporte-${meta.id}" placeholder="Adicionar valor (R$)" step="0.01"
+                <input type="number" id="aporte-${metaId}" placeholder="Adicionar valor (R$)" step="0.01"
                     style="flex:1; min-width:140px; padding:10px 14px; border-radius:10px; background:var(--bg); color:var(--text);">
-                <button class="btn" style="padding:10px 16px;" onclick="adicionarValorMeta('${meta.id}')">
+                <button class="btn adicionar-meta" data-id="${metaId}" style="padding:10px 16px;">
                     + Adicionar
                 </button>
             </div>
@@ -67,6 +68,9 @@ async function renderizarMetas() {
 
     document.querySelectorAll(".excluir-meta").forEach((botao) => {
         botao.addEventListener("click", () => excluirMeta(botao.getAttribute("data-id")));
+    });
+    document.querySelectorAll(".adicionar-meta").forEach((botao) => {
+        botao.addEventListener("click", () => adicionarValorMeta(botao.getAttribute("data-id")));
     });
 }
 
