@@ -8,6 +8,11 @@ function formatarMoeda(valor) {
 }
 
 function formatarData(data) {
+    if (!data) return "";
+    const partes = String(data).split("-").map(Number);
+    if (partes.length === 3 && partes.every(Number.isFinite)) {
+        return new Date(partes[0], partes[1] - 1, partes[2]).toLocaleDateString("pt-BR");
+    }
     return new Date(data).toLocaleDateString("pt-BR");
 }
 
@@ -16,7 +21,8 @@ function gerarId() {
 }
 
 function hojeISO() {
-    return new Date().toISOString().split("T")[0];
+    const hoje = new Date();
+    return `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, "0")}-${String(hoje.getDate()).padStart(2, "0")}`;
 }
 
 function sanitizar(texto) {
