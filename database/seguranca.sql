@@ -2,6 +2,7 @@
 alter table public.dados_financeiros enable row level security;
 
 drop policy if exists "usuario ve seus dados" on public.dados_financeiros;
+drop policy if exists "usuario ve so seus dados" on public.dados_financeiros;
 
 revoke all on table public.dados_financeiros from anon;
 grant select, insert, update, delete on table public.dados_financeiros to authenticated;
