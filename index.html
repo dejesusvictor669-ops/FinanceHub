@@ -4,67 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>FinanceHub</title>
+    <title>Renda+ | Controle Financeiro</title>
+    <meta name="theme-color" content="#6366F1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Renda+">
+    <link rel="manifest" href="manifest.json">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2563EB">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="FinanceHub">
-    <link rel="apple-touch-icon" href="assets/icones/icon-192.png">
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
-        <link rel="stylesheet" href="css/style.css">
-    <meta name="theme-color" content="#2563EB">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="FinanceHub">
-    <link rel="manifest" href="manifest.json">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
+    <!-- WATERMARK -->
+    <div class="watermark">© Renda+ • Desenvolvido por Victor com IA</div>
+
+    <!-- TELA DE LOGIN -->
     <div id="telaLogin" class="tela-login">
         <div class="login-box">
-            <i class="fa-solid fa-wallet" style="font-size:40px; color:var(--primary); margin-bottom:15px;"></i>
-            <h2>FinanceHub</h2>
-            <p style="color:var(--gray); margin-bottom:20px; font-size:13px;">Seu controle financeiro pessoal</p>
+            <div class="login-logo">Renda+</div>
+            <p style="color:var(--gray); margin-bottom:20px; font-size:13px;">Seu controle financeiro inteligente</p>
 
             <div class="login-descricao">
                 <h3>💡 O que você pode fazer aqui:</h3>
                 <ul>
-                    <li>💰 Controlar seu saldo mensal</li>
+                    <li>💰 Controlar saldo e rendas</li>
                     <li>🧾 Lançar gastos por categoria</li>
                     <li>💳 Acompanhar parcelas do cartão</li>
-                    <li>📈 Registrar investimentos e reserva</li>
-                    <li>🎯 Criar metas financeiras</li>
-                    <li>📊 Ver relatórios e gráficos mensais</li>
-                    <li>☁️ Dados salvos na nuvem — acesse de qualquer lugar</li>
+                    <li>📈 Registrar investimentos</li>
+                    <li>🎯 Criar e acompanhar metas</li>
+                    <li>📊 Ver relatórios mensais</li>
+                    <li>☁️ Dados salvos na nuvem</li>
                 </ul>
             </div>
 
-            <!-- FORM LOGIN -->
             <form id="formLogin">
                 <p style="color:var(--gray); margin-bottom:15px; font-size:14px;">Entre na sua conta</p>
                 <input type="email" id="loginEmail" placeholder="Seu email" required>
                 <input type="password" id="loginSenha" placeholder="Sua senha" required>
                 <button type="submit" class="btn">Entrar</button>
-                               <p style="margin-top:10px; color:var(--gray); font-size:13px;">
+                <p style="margin-top:10px; color:var(--gray); font-size:13px;">
                     <a href="#" id="linkEsqueceuSenha" style="color:var(--gray);">Esqueci minha senha</a>
                 </p>
                 <p style="margin-top:5px; color:var(--gray); font-size:13px;">
                     Não tem conta?
                     <a href="#" id="linkParaCadastro" style="color:var(--primary);">Criar conta grátis</a>
                 </p>
-            <!-- FORM CADASTRO -->
+            </form>
+
             <form id="formCadastro" class="hidden">
                 <p style="color:var(--gray); margin-bottom:15px; font-size:14px;">Criar nova conta</p>
                 <input type="text" id="cadastroNome" placeholder="Seu nome" required>
@@ -76,10 +66,14 @@
                     <a href="#" id="linkParaLogin" style="color:var(--primary);">Entrar</a>
                 </p>
             </form>
+
+            <a href="landing.html" style="display:block; text-align:center; margin-top:20px; font-size:12px; color:var(--gray);">
+                ← Conhecer o Renda+
+            </a>
         </div>
     </div>
-    </div>
 
+    <!-- APP -->
     <div class="container hidden" id="appContainer">
 
         <div id="overlayMenu" class="overlay-menu"></div>
@@ -87,16 +81,17 @@
         <aside class="sidebar" id="sidebar">
 
             <div class="logo">
-                <i class="fa-solid fa-wallet"></i>
-                <span>FinanceHub</span>
+                <span class="logo-text">Renda+</span>
             </div>
+
+            <div id="seletorPerfil"></div>
 
             <nav>
                 <a class="active" data-page="visao-geral">
                     <i class="fa-solid fa-house"></i>
                     Visão Geral
                 </a>
-                                <a data-page="compras">
+                <a data-page="compras">
                     <i class="fa-solid fa-cart-shopping"></i>
                     Lista de Compras
                 </a>
@@ -104,7 +99,6 @@
                     <i class="fa-solid fa-money-bill-trend-up"></i>
                     Rendas Extras
                 </a>
-
                 <a data-page="gastos">
                     <i class="fa-solid fa-money-bill-wave"></i>
                     Gastos
@@ -127,11 +121,16 @@
                 </a>
             </nav>
 
-                       <button id="botaoTema" class="botao-tema">
-                <i class="fa-solid fa-sun"></i>
-            </button>
+            <div class="sidebar-bottom">
+                <button id="botaoTema" class="botao-tema" onclick="abrirSeletorTema()" title="Personalizar tema">
+                    <i class="fa-solid fa-palette"></i>
+                </button>
 
-            <a id="botaoSair" style="margin-top:auto; cursor:pointer;">
+                <a id="botaoSair" class="botao-sair">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Sair
+                </a>
+            </div>
 
         </aside>
 
@@ -147,21 +146,17 @@
                 </div>
             </header>
 
-            <!-- PÁGINA: VISÃO GERAL -->
+            <!-- VISÃO GERAL -->
             <section class="page" id="page-visao-geral">
-
                 <section class="cards">
-
                     <div class="card green">
                         <h3>💰 Saldo disponível</h3>
                         <h2 id="saldo"></h2>
                     </div>
-
                     <div class="card blue">
                         <h3>📈 Investimentos</h3>
                         <h2 id="investimentos"></h2>
                     </div>
-
                     <div class="card">
                         <h3>🛡️ Reserva de emergência</h3>
                         <h2 id="reserva"></h2>
@@ -169,41 +164,35 @@
                             <span id="barraReserva"></span>
                         </div>
                     </div>
-
                     <div class="card red">
-                        <h3>🍔 Orçamento de lazer</h3>
+                        <h3>🍔 Lazer restante</h3>
                         <h2 id="lazer"></h2>
                     </div>
-
                 </section>
 
-                <!-- RESUMO DE DESCONTOS -->
                 <div class="card" style="margin-top:25px;">
                     <h3>📊 Resumo do mês</h3>
                     <ul class="lista-itens" id="resumoMes"></ul>
                 </div>
 
-                <!-- CONFIGURAÇÕES -->
                 <div class="card" style="margin-top:25px;">
                     <h3>⚙️ Configurações</h3>
                     <form id="formConfig" class="form-gasto">
-                        <input type="number" id="configSalario" placeholder="Salário / renda mensal (R$)" step="0.01" >
-                        <input type="number" id="configLazer" placeholder="Orçamento de lazer (R$)" step="0.01" >
+                        <input type="number" id="configSalario" placeholder="Salário / renda mensal (R$)" step="0.01">
+                        <input type="number" id="configLazer" placeholder="Orçamento de lazer (R$)" step="0.01">
                         <input type="number" id="configMetaReserva" placeholder="Meta de reserva (R$)" step="0.01">
                         <button type="submit" class="btn">Salvar configurações</button>
                     </form>
                 </div>
 
-                <!-- METAS RESUMO -->
                 <div class="card" style="margin-top:25px;">
                     <h3>🎯 Metas em andamento</h3>
                     <ul id="listaMetasResumo" class="lista-itens"></ul>
                 </div>
-
             </section>
-                        <!-- PÁGINA: LISTA DE COMPRAS -->
-            <section class="page hidden" id="page-compras">
 
+            <!-- LISTA DE COMPRAS -->
+            <section class="page hidden" id="page-compras">
                 <div class="card" style="margin-bottom:25px;">
                     <h3>🛒 Nova lista de compras</h3>
                     <form id="formNovaLista" class="form-gasto">
@@ -211,17 +200,15 @@
                         <button type="submit" class="btn">Criar lista</button>
                     </form>
                 </div>
-
                 <div id="containerListas"></div>
-
             </section>
-            <!-- PÁGINA: RENDAS EXTRAS -->
-            <section class="page hidden" id="page-rendas">
 
+            <!-- RENDAS EXTRAS -->
+            <section class="page hidden" id="page-rendas">
                 <div class="card" style="margin-bottom:25px;">
                     <h3>💵 Nova renda extra</h3>
                     <p style="color:var(--gray); font-size:13px; margin-top:5px; margin-bottom:10px;">
-                        Freelance, LivePix, horas extras, bônus — qualquer valor que entrou além do salário.
+                        Freelance, LivePix, horas extras, bônus — qualquer valor além do salário.
                     </p>
                     <form id="formRenda" class="form-gasto">
                         <input type="text" id="rendaDescricao" placeholder="Descrição (ex: Freela, LivePix)" required>
@@ -230,16 +217,14 @@
                         <button type="submit" class="btn">Adicionar</button>
                     </form>
                 </div>
-
                 <div class="card">
                     <h3>📋 Rendas extras cadastradas</h3>
                     <ul id="listaRendas" class="lista-itens"></ul>
                 </div>
-
             </section>
-            <!-- PÁGINA: GASTOS -->
-            <section class="page hidden" id="page-gastos">
 
+            <!-- GASTOS -->
+            <section class="page hidden" id="page-gastos">
                 <div class="card" style="margin-bottom:25px;">
                     <h3>➕ Novo gasto</h3>
                     <form id="formGasto" class="form-gasto">
@@ -253,24 +238,22 @@
                             <option value="cartao">💳 Cartão</option>
                             <option value="outros">📦 Outros</option>
                         </select>
-                                                <input type="date" id="gastoData">
-                        <label style="display:flex; align-items:center; gap:8px; color:var(--gray); font-size:14px; cursor:pointer; width:100%;">
-                            <input type="checkbox" id="gastoRecorrente" style="width:16px; height:16px; accent-color:var(--primary);">
-                            🔁 Gasto recorrente (aparece todo mês)
+                        <input type="date" id="gastoData">
+                        <label style="display:flex;align-items:center;gap:8px;color:var(--gray);font-size:14px;cursor:pointer;width:100%;">
+                            <input type="checkbox" id="gastoRecorrente" style="width:16px;height:16px;accent-color:var(--primary);">
+                            🔁 Gasto recorrente
                         </label>
                         <button type="submit" class="btn">Adicionar</button>
+                    </form>
                 </div>
-
                 <div class="card">
                     <h3>📋 Gastos lançados</h3>
                     <ul id="listaGastos" class="lista-itens"></ul>
                 </div>
-
             </section>
 
-            <!-- PÁGINA: CARTÕES -->
+            <!-- CARTÕES -->
             <section class="page hidden" id="page-cartoes">
-
                 <div class="card" style="margin-bottom:25px;">
                     <h3>➕ Nova compra no cartão</h3>
                     <form id="formCartao" class="form-gasto">
@@ -281,24 +264,21 @@
                         <button type="submit" class="btn">Adicionar</button>
                     </form>
                 </div>
-
                 <div class="card">
                     <h3>💳 Compras parceladas</h3>
-                    <p style="color:var(--gray); font-size:13px; margin-top:5px; margin-bottom:10px;">
-                        O valor da parcela mensal de cada compra é descontado automaticamente do seu saldo.
+                    <p style="color:var(--gray);font-size:13px;margin-top:5px;margin-bottom:10px;">
+                        A parcela mensal é descontada automaticamente do saldo.
                     </p>
                     <ul id="listaCartoes" class="lista-itens"></ul>
                 </div>
-
             </section>
 
-            <!-- PÁGINA: INVESTIMENTOS -->
+            <!-- INVESTIMENTOS -->
             <section class="page hidden" id="page-investimentos">
-
                 <div class="card" style="margin-bottom:25px;">
                     <h3>➕ Novo aporte</h3>
-                    <p style="color:var(--gray); font-size:13px; margin-top:5px; margin-bottom:10px;">
-                        Aportes de <strong>Reserva de emergência</strong> aparecem no card de Reserva. Os demais aparecem em Investimentos.
+                    <p style="color:var(--gray);font-size:13px;margin-top:5px;margin-bottom:10px;">
+                        Aportes de <strong>Reserva de emergência</strong> aparecem no card de Reserva.
                     </p>
                     <form id="formInvestimento" class="form-gasto">
                         <input type="text" id="investDescricao" placeholder="Onde (ex: Tesouro Selic)" required>
@@ -313,17 +293,14 @@
                         <button type="submit" class="btn">Adicionar</button>
                     </form>
                 </div>
-
                 <div class="card">
                     <h3>📈 Aportes realizados</h3>
                     <ul id="listaInvestimentos" class="lista-itens"></ul>
                 </div>
-
             </section>
 
-            <!-- PÁGINA: METAS -->
+            <!-- METAS -->
             <section class="page hidden" id="page-metas">
-
                 <div class="card" style="margin-bottom:25px;">
                     <h3>🎯 Nova meta</h3>
                     <form id="formMeta" class="form-gasto">
@@ -333,17 +310,14 @@
                         <button type="submit" class="btn">Adicionar</button>
                     </form>
                 </div>
-
                 <div class="card">
                     <h3>📋 Metas em andamento</h3>
                     <ul id="listaMetas" class="lista-itens"></ul>
                 </div>
-
             </section>
 
-            <!-- PÁGINA: RELATÓRIOS -->
+            <!-- RELATÓRIOS -->
             <section class="page hidden" id="page-graficos">
-
                 <div class="card" style="margin-bottom:25px;">
                     <h2>📊 Central de Relatórios</h2>
                     <br>
@@ -352,30 +326,24 @@
                         <select id="anoRelatorio" onchange="carregarRelatorios()" style="padding:12px;border-radius:12px;background:var(--bg);color:var(--text);min-width:120px;"></select>
                     </div>
                 </div>
-
                 <div class="card" style="margin-bottom:25px;">
                     <h3>📅 Histórico Mensal</h3>
                     <div id="calendarioRelatorios" class="calendario-relatorios"></div>
                 </div>
-
-                <div class="card" style="margin-bottom:25px; display:none;" id="cardComparacao">
+                <div class="card" style="margin-bottom:25px;display:none;" id="cardComparacao">
                     <h3>📈 Comparativo anual</h3>
                     <p style="color:var(--gray);font-size:13px;margin-bottom:15px;">Receita vs Gastos vs Saldo mês a mês</p>
                     <canvas id="graficoComparacao" height="120"></canvas>
                 </div>
-
                 <div id="dashboardHistorico"></div>
-
                 <div class="card" style="margin-top:25px;">
                     <h3>📅 Gastos por mês (atual)</h3>
                     <canvas id="graficoMensal" height="120"></canvas>
                 </div>
-
                 <div class="card" style="margin-top:25px;">
                     <h3>🗂️ Gastos por categoria (atual)</h3>
                     <canvas id="graficoCategoria" height="120"></canvas>
                 </div>
-
             </section>
 
         </main>
@@ -386,6 +354,9 @@
     <script src="js/supabase.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/storage.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/temas.js"></script>
+    <script src="js/perfis.js"></script>
     <script src="js/dashboard.js"></script>
     <script src="js/gastos.js"></script>
     <script src="js/cartoes.js"></script>
@@ -395,12 +366,8 @@
     <script src="js/rendas.js"></script>
     <script src="js/graficos.js"></script>
     <script src="js/relatorios.js"></script>
-    <script src="js/toast.js"></script>
-    <script src="js/tema.js"></script>
     <script src="js/notificacoes.js"></script>
     <script src="js/app.js"></script>
-    
 
 </body>
-
 </html>

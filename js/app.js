@@ -25,7 +25,7 @@ function mostrarApp() {
 }
 
 // ======================================
-// LOGIN / CADASTRO / RECUPERAR SENHA
+// AUTH
 // ======================================
 
 const formLogin = document.getElementById("formLogin");
@@ -49,10 +49,7 @@ linkParaLogin.addEventListener("click", (e) => {
 linkEsqueceuSenha.addEventListener("click", async (e) => {
     e.preventDefault();
     const email = document.getElementById("loginEmail").value.trim();
-    if (!email) {
-        toastAviso("Digite seu email primeiro.");
-        return;
-    }
+    if (!email) { toastAviso("Digite seu email primeiro."); return; }
     try {
         const { error } = await sb.auth.resetPasswordForEmail(email, {
             redirectTo: window.location.origin
@@ -60,7 +57,7 @@ linkEsqueceuSenha.addEventListener("click", async (e) => {
         if (error) throw error;
         toastSucesso("Email de recuperação enviado!");
     } catch (err) {
-        toastErro("Erro ao enviar email: " + err.message);
+        toastErro("Erro: " + err.message);
     }
 });
 
@@ -88,10 +85,7 @@ formCadastro.addEventListener("submit", async (e) => {
     const email = document.getElementById("cadastroEmail").value.trim();
     const senha = document.getElementById("cadastroSenha").value;
     const btn = formCadastro.querySelector("button");
-    if (senha.length < 6) {
-        toastErro("A senha precisa ter pelo menos 6 caracteres.");
-        return;
-    }
+    if (senha.length < 6) { toastErro("Senha precisa ter pelo menos 6 caracteres."); return; }
     btn.textContent = "Criando conta...";
     btn.disabled = true;
     try {
@@ -99,7 +93,7 @@ formCadastro.addEventListener("submit", async (e) => {
         mostrarApp();
     } catch (err) {
         toastErro("Erro ao criar conta: " + err.message);
-        btn.textContent = "Criar conta";
+        btn.textContent = "Criar conta grátis";
         btn.disabled = false;
     }
 });
@@ -143,15 +137,14 @@ links.forEach((link) => {
 });
 
 // ======================================
-// GASTOS RECORRENTES — aplicar no início do mês
+// GASTOS RECORRENTES
 // ======================================
 
 async function aplicarGastosRecorrentes() {
     const dados = await carregarDados();
     const hoje = new Date();
     const mesAtual = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, "0")}`;
-    const chaveAplicado = `financehub_recorrente_${mesAtual}`;
-
+    const chaveAplicado = `renda_recorrente_${mesAtual}`;
     if (localStorage.getItem(chaveAplicado)) return;
 
     const recorrentes = dados.gastos.filter(g => g.recorrente);
@@ -160,11 +153,9 @@ async function aplicarGastosRecorrentes() {
     recorrentes.forEach(g => {
         const jaExiste = dados.gastos.some(x =>
             x.descricao === g.descricao &&
-            x.data &&
-            x.data.startsWith(mesAtual) &&
+            x.data && x.data.startsWith(mesAtual) &&
             x.id !== g.id
         );
-
         if (!jaExiste) {
             dados.gastos.push({
                 id: gerarId(),
@@ -198,6 +189,7 @@ async function iniciarApp() {
 
     mostrarSkeleton("resumoMes", 4);
 
+    await renderizarSeletorPerfil();
     await aplicarGastosRecorrentes();
     await renderizarDashboard();
     await renderizarCompras();

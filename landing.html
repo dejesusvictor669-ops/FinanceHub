@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renda+ | Controle Financeiro Inteligente</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #6366F1;
+            --primary-dark: #4F46E5;
+            --secondary: #EC4899;
+            --bg: #0A0A0F;
+            --card: #13131A;
+            --text: #F8FAFC;
+            --gray: #94A3B8;
+            --border: rgba(255,255,255,0.08);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* NAVBAR */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(20px);
+            background: rgba(10,10,15,0.8);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--text); }
+
+        .nav-cta {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-outline {
+            padding: 10px 22px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+        .btn-primary {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(99,102,241,0.4); }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 40px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(236,72,153,0.1) 0%, transparent 70%);
+            top: 30%; right: 10%;
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(99,102,241,0.1);
+            border: 1px solid rgba(99,102,241,0.3);
+            border-radius: 999px;
+            font-size: 13px;
+            color: #A5B4FC;
+            margin-bottom: 30px;
+        }
+
+        .hero-badge i { font-size: 11px; }
+
+        .hero h1 {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            max-width: 800px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--gray);
+            max-width: 520px;
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+
+        .btn-hero {
+            padding: 16px 35px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 14px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat { text-align: center; }
+        .stat strong { display: block; font-size: 28px; font-weight: 800; }
+        .stat span { font-size: 13px; color: var(--gray); }
+
+        /* PREVIEW */
+        .preview {
+            padding: 0 40px 100px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .preview-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 40px 100px rgba(99,102,241,0.15);
+        }
+
+        .preview-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .preview-dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+        }
+
+        .preview-dot:nth-child(1) { background: #EF4444; }
+        .preview-dot:nth-child(2) { background: #F59E0B; }
+        .preview-dot:nth-child(3) { background: #22C55E; }
+
+        .preview-content {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .preview-metric {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .preview-metric label {
+            display: block;
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 8px;
+        }
+
+        .preview-metric strong {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .preview-metric.green strong { color: #22C55E; }
+        .preview-metric.red strong { color: #EF4444; }
+        .preview-metric.blue strong { color: #60A5FA; }
+        .preview-metric.purple strong { color: #A78BFA; }
+
+        .preview-bar-chart {
+            grid-column: 1 / -1;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .bar-chart-title {
+            font-size: 13px;
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+
+        .bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 80px;
+        }
+
+        .bar {
+            flex: 1;
+            border-radius: 6px 6px 0 0;
+            background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .bar:hover { opacity: 1; }
+
+        /* FEATURES */
+        .section {
+            padding: 100px 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 800;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .section-sub {
+            font-size: 16px;
+            color: var(--gray);
+            max-width: 500px;
+            line-height: 1.7;
+            margin-bottom: 60px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(99,102,241,0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(99,102,241,0.1);
+        }
+
+        .feature-icon {
+            width: 50px; height: 50px;
+            background: rgba(99,102,241,0.1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* HOW IT WORKS */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .step-num {
+            width: 50px; height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+            margin: 0 auto 20px;
+        }
+
+        .step h3 { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
+        .step p { font-size: 14px; color: var(--gray); line-height: 1.6; }
+
+        /* TEMAS */
+        .temas-grid {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .tema-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-size: 14px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .tema-pill:hover { border-color: rgba(255,255,255,0.2); }
+
+        .tema-dot {
+            width: 14px; height: 14px;
+            border-radius: 50%;
+        }
+
+        /* CTA */
+        .cta-section {
+            margin: 0 40px 100px;
+            background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.1));
+            border: 1px solid rgba(99,102,241,0.2);
+            border-radius: 28px;
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .cta-section p {
+            color: var(--gray);
+            font-size: 16px;
+            margin-bottom: 35px;
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: gap;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-ai {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--gray);
+            background: rgba(99,102,241,0.08);
+            border: 1px solid rgba(99,102,241,0.2);
+            border-radius: 999px;
+            padding: 8px 16px;
+        }
+
+        .footer-copy {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        /* WATERMARK */
+        .watermark {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: rgba(255,255,255,0.15);
+            pointer-events: none;
+            z-index: 9999;
+            white-space: nowrap;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 15px 20px; }
+            .nav-links { display: none; }
+            .hero { padding: 100px 20px 60px; }
+            .preview { padding: 0 20px 60px; }
+            .preview-content { grid-template-columns: 1fr; }
+            .section { padding: 60px 20px; }
+            .cta-section { margin: 0 20px 60px; padding: 50px 25px; }
+            footer { flex-direction: column; text-align: center; padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- WATERMARK -->
+    <div class="watermark">© Renda+ • Desenvolvido por Victor com auxílio de Inteligência Artificial</div>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="nav-logo">Renda+</div>
+        <ul class="nav-links">
+            <li><a href="#funcionalidades">Funcionalidades</a></li>
+            <li><a href="#como-funciona">Como funciona</a></li>
+            <li><a href="#temas">Personalização</a></li>
+        </ul>
+        <div class="nav-cta">
+            <a href="index.html" class="btn-outline">Entrar</a>
+            <a href="index.html#cadastro" class="btn-primary">Começar grátis</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-badge">
+            <i class="fa-solid fa-robot"></i>
+            Desenvolvido com Inteligência Artificial
+        </div>
+
+        <h1>
+            Controle financeiro <span>inteligente</span> para sua vida
+        </h1>
+
+        <p>
+            Gerencie seu dinheiro com facilidade. Acompanhe gastos, investimentos, metas e muito mais — tudo em um só lugar, com dados salvos na nuvem.
+        </p>
+
+        <div class="hero-btns">
+            <a href="index.html" class="btn-primary btn-hero">
+                <i class="fa-solid fa-rocket"></i>
+                Começar gratuitamente
+            </a>
+            <a href="#funcionalidades" class="btn-outline btn-hero">
+                Ver funcionalidades
+            </a>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat">
+                <strong>100%</strong>
+                <span>Gratuito</span>
+            </div>
+            <div class="stat">
+                <strong>☁️</strong>
+                <span>Dados na nuvem</span>
+            </div>
+            <div class="stat">
+                <strong>🔒</strong>
+                <span>Seguro</span>
+            </div>
+            <div class="stat">
+                <strong>📱</strong>
+                <span>Mobile friendly</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- PREVIEW -->
+    <div class="preview">
+        <div class="preview-card">
+            <div class="preview-bar">
+                <div class="preview-dot"></div>
+                <div class="preview-dot"></div>
+                <div class="preview-dot"></div>
+            </div>
+            <div class="preview-content">
+                <div class="preview-metric green">
+                    <label>💰 Saldo disponível</label>
+                    <strong>R$ 1.847,30</strong>
+                </div>
+                <div class="preview-metric blue">
+                    <label>📈 Investimentos</label>
+                    <strong>R$ 3.200,00</strong>
+                </div>
+                <div class="preview-metric purple">
+                    <label>🛡️ Reserva</label>
+                    <strong>R$ 8.500,00</strong>
+                </div>
+                <div class="preview-metric red">
+                    <label>🍔 Lazer restante</label>
+                    <strong>R$ 120,00</strong>
+                </div>
+                <div class="preview-bar-chart">
+                    <div class="bar-chart-title">📊 Gastos por mês</div>
+                    <div class="bars">
+                        <div class="bar" style="height:40%"></div>
+                        <div class="bar" style="height:65%"></div>
+                        <div class="bar" style="height:50%"></div>
+                        <div class="bar" style="height:80%"></div>
+                        <div class="bar" style="height:45%"></div>
+                        <div class="bar" style="height:70%"></div>
+                        <div class="bar" style="height:90%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FUNCIONALIDADES -->
+    <section class="section" id="funcionalidades">
+        <span class="section-label">Funcionalidades</span>
+        <h2 class="section-title">Tudo que você precisa para organizar seu dinheiro</h2>
+        <p class="section-sub">Do controle básico ao acompanhamento avançado, o Renda+ tem tudo em um só lugar.</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>Controle de saldo</h3>
+                <p>Acompanhe seu saldo em tempo real, com salário, rendas extras e todos os descontos calculados automaticamente.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🧾</div>
+                <h3>Gestão de gastos</h3>
+                <p>Lance gastos por categoria, defina recorrências e veja exatamente onde seu dinheiro está indo.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💳</div>
+                <h3>Controle de cartões</h3>
+                <p>Cadastre compras parceladas e tenha o valor de cada parcela descontado automaticamente do seu saldo mensal.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3>Investimentos</h3>
+                <p>Registre seus aportes em renda fixa, ETFs, cripto e reserva de emergência — tudo separado e organizado.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Metas financeiras</h3>
+                <p>Crie metas, adicione valor conforme poupa e acompanhe o progresso com barra visual em tempo real.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛒</div>
+                <h3>Lista de compras</h3>
+                <p>Monte listas de compras, dê check nos itens e ao finalizar o valor é descontado automaticamente do saldo.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Relatórios mensais</h3>
+                <p>Feche o mês e veja um relatório completo com gráficos de distribuição e comparativo anual.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👨‍👩‍👧</div>
+                <h3>Perfis familiares</h3>
+                <p>Crie perfis separados dentro da mesma conta — ideal para casais e famílias controlarem juntos.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Temas personalizados</h3>
+                <p>Escolha entre 7 paletas de cores e deixe o sistema com a sua cara. Preferência salva automaticamente.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMO FUNCIONA -->
+    <section class="section" id="como-funciona" style="background:rgba(255,255,255,0.02); border-radius:28px; max-width:100%; padding:80px 40px;">
+        <div style="max-width:1100px; margin:0 auto;">
+            <span class="section-label">Como funciona</span>
+            <h2 class="section-title">Comece em menos de 2 minutos</h2>
+            <p class="section-sub">Simples, rápido e sem complicação.</p>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <h3>Crie sua conta</h3>
+                    <p>Cadastre-se gratuitamente com email e senha. Seus dados ficam seguros na nuvem.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <h3>Configure seu salário</h3>
+                    <p>Informe sua renda mensal e orçamento de lazer. O sistema calcula o saldo automaticamente.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <h3>Lance seus gastos</h3>
+                    <p>Adicione gastos, cartões e investimentos. Tudo desconta do saldo em tempo real.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <h3>Acompanhe e evolua</h3>
+                    <p>Veja relatórios, feche o mês e tome decisões melhores com seus dados financeiros.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEMAS -->
+    <section class="section" id="temas">
+        <span class="section-label">Personalização</span>
+        <h2 class="section-title">Do seu jeito, com sua cor</h2>
+        <p class="section-sub">Escolha o tema que combina com você. A preferência é salva automaticamente.</p>
+
+        <div class="temas-grid">
+            <div class="tema-pill"><div class="tema-dot" style="background:#6366F1"></div> Índigo</div>
+            <div class="tema-pill"><div class="tema-dot" style="background:#7C3AED"></div> Roxo</div>
+            <div class="tema-pill"><div class="tema-dot" style="background:#059669"></div> Verde</div>
+            <div class="tema-pill"><div class="tema-dot" style="background:#EA580C"></div> Laranja</div>
+            <div class="tema-pill"><div class="tema-dot" style="background:#DB2777"></div> Rosa</div>
+            <div class="tema-pill"><div class="tema-dot" style="background:#DC2626"></div> Vermelho</div>
+            <div class="tema-pill"><div class="tema-dot" style="background:#D97706"></div> Âmbar</div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-section">
+        <h2>Pronto para organizar suas finanças?</h2>
+        <p>Gratuito, seguro e acessível de qualquer dispositivo.</p>
+        <a href="index.html" class="btn-primary btn-hero">
+            <i class="fa-solid fa-rocket"></i>
+            Criar conta grátis agora
+        </a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">Renda+</div>
+        <div class="footer-ai">
+            <i class="fa-solid fa-robot"></i>
+            Desenvolvido por Victor com auxílio de Inteligência Artificial
+        </div>
+        <div class="footer-copy">© 2026 Renda+. Todos os direitos reservados.</div>
+    </footer>
+
+</body>
+</html>
