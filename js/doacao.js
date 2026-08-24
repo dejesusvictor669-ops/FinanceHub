@@ -37,7 +37,17 @@ function renderizarQRCode(containerId, valor) {
     const container = document.getElementById(containerId);
     if (!container) return;
     if (typeof QRCode === "undefined") {
-        setTimeout(() => renderizarQRCode(containerId, valor), 100);
+        const payload = gerarPayloadPix(valor);
+        const url = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=2&data=${encodeURIComponent(payload)}`;
+        container.innerHTML = `
+            <div style="text-align:center;">
+                <img src="${url}" alt="QR Code PIX" width="200" height="200" style="border-radius:12px;background:#fff;padding:4px;">
+                <p style="font-size:12px;color:var(--gray);margin-top:10px;">Escaneie com qualquer banco</p>
+                <button onclick="copiarPix('${containerId}')" class="btn" style="margin-top:12px;width:100%;font-size:13px;padding:10px;">
+                    <i class="fa-regular fa-copy"></i> Copiar código PIX
+                </button>
+            </div>`;
+        container.setAttribute("data-payload", payload);
         return;
     }
 
