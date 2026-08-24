@@ -1,20 +1,18 @@
 .sidebar {
-    width: 260px;
+    width: 250px;
     background: var(--sidebar);
-    padding: 25px 20px;
+    padding: 25px 18px;
     display: flex;
     flex-direction: column;
     box-shadow: var(--shadow);
     border-right: 1px solid var(--border);
+    flex-shrink: 0;
 }
 
-.logo {
-    margin-bottom: 25px;
-    padding: 0 8px;
-}
+.logo { margin-bottom: 20px; padding: 0 8px; }
 
 .logo-text {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 800;
     background: linear-gradient(135deg, var(--primary), #EC4899);
     -webkit-background-clip: text;
@@ -24,12 +22,13 @@
 nav {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
     flex: 1;
+    overflow-y: auto;
 }
 
 nav a {
-    padding: 12px 15px;
+    padding: 11px 14px;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -38,7 +37,10 @@ nav a {
     cursor: pointer;
     color: var(--gray);
     font-size: 14px;
+    white-space: nowrap;
 }
+
+nav a i { width: 18px; text-align: center; flex-shrink: 0; }
 
 nav a:hover {
     background: rgba(255,255,255,0.05);
@@ -55,7 +57,7 @@ nav .active {
     align-items: center;
     gap: 10px;
     margin-top: 20px;
-    padding-top: 20px;
+    padding-top: 18px;
     border-top: 1px solid var(--border);
 }
 
@@ -82,7 +84,7 @@ nav .active {
 
 .botao-sair {
     flex: 1;
-    padding: 10px 15px;
+    padding: 10px 12px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -91,6 +93,8 @@ nav .active {
     color: var(--gray);
     font-size: 14px;
     transition: var(--transition);
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .botao-sair:hover {
@@ -106,6 +110,7 @@ nav .active {
     cursor: pointer;
     margin-right: 15px;
     border: none;
+    flex-shrink: 0;
 }
 
 .overlay-menu {
@@ -122,17 +127,19 @@ nav .active {
 
     .sidebar {
         position: fixed;
-        top: 0; left: 0;
+        top: 0;
+        left: 0;
         height: 100%;
         z-index: 999;
         transform: translateX(-100%);
         transition: transform 0.3s ease;
+        width: 270px;
     }
 
     .sidebar.aberta { transform: translateX(0); }
     .overlay-menu.ativo { display: block; }
+}
 
-    .content { padding: 25px 18px; }
-    header { align-items: center; }
-    .cards { grid-template-columns: 1fr; }
+@media (max-width: 380px) {
+    .sidebar { width: 240px; }
 }

@@ -1,27 +1,25 @@
-header{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin-bottom:35px;
-
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 15px;
 }
 
-header h1{
-
-font-size:32px;
-
-font-weight:600;
-
+header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
-header p{
+header p {
+    color: var(--gray);
+    margin-top: 4px;
+    font-size: 14px;
+}
 
-color:var(--gray);
-
-margin-top:5px;
-
+@media (max-width: 600px) {
+    header h1 { font-size: 20px; }
+    header p { font-size: 12px; }
+    header { margin-bottom: 20px; }
 }

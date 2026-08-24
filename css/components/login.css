@@ -7,31 +7,22 @@
     justify-content: center;
     z-index: 999;
     padding: 20px;
-    box-sizing: border-box;
+    overflow-y: auto;
 }
 
-.tela-login.hidden { display: none; }
-
-.tela-login::before {
-    content: '';
-    position: absolute;
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
-    top: 50%; left: 50%;
-    transform: translate(-50%,-50%);
-    pointer-events: none;
-}
+.tela-login.hidden { display: none !important; }
 
 .login-box {
     background: var(--card);
-    padding: 40px;
+    padding: 35px 30px;
     border-radius: 24px;
     box-shadow: 0 30px 80px rgba(0,0,0,0.4);
     text-align: center;
     width: 100%;
-    max-width: 340px;
+    max-width: 360px;
     border: 1px solid var(--border);
     position: relative;
+    margin: auto;
 }
 
 .login-logo {
@@ -40,22 +31,23 @@
     background: linear-gradient(135deg, var(--primary), #EC4899);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .login-descricao {
-    background: rgba(99,102,241,0.08);
+    background: rgba(99,102,241,0.07);
     border: 1px solid rgba(99,102,241,0.2);
     border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 20px;
+    padding: 13px;
+    margin-bottom: 18px;
     text-align: left;
 }
 
 .login-descricao h3 {
     color: var(--primary);
     margin-bottom: 8px;
-    font-size: 13px;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .login-descricao ul {
@@ -70,27 +62,33 @@
 .login-box form {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 11px;
 }
 
 .login-box input {
-    padding: 14px;
+    padding: 13px 15px;
     border-radius: 12px;
     background: var(--bg);
     color: var(--text);
     text-align: left;
     width: 100%;
-    box-sizing: border-box;
     border: 1px solid var(--border);
     font-family: inherit;
     font-size: 14px;
     outline: none;
     transition: border-color 0.3s;
+    box-sizing: border-box;
 }
 
 .login-box input:focus { border-color: var(--primary); }
 
 @media (max-width: 600px) {
-    .login-box { padding: 25px 20px; }
+    .login-box { padding: 25px 18px; max-width: 100%; }
     .login-descricao { display: none; }
+    .login-logo { font-size: 28px; }
+}
+
+@media (max-width: 380px) {
+    .login-box { padding: 20px 15px; }
+    .login-box input { padding: 11px 12px; font-size: 13px; }
 }

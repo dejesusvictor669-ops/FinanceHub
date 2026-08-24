@@ -1,24 +1,24 @@
 .toast-container {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
+    bottom: 25px;
+    right: 25px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     z-index: 9999;
+    max-width: 340px;
+    width: calc(100% - 50px);
 }
 
 .toast {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 14px 20px;
+    padding: 13px 18px;
     border-radius: 14px;
     box-shadow: 0 8px 30px rgba(0,0,0,0.3);
     font-size: 14px;
     font-weight: 500;
-    min-width: 260px;
-    max-width: 350px;
     animation: toastEntrar 0.3s ease;
     backdrop-filter: blur(10px);
 }
@@ -47,9 +47,7 @@
     color: #F59E0B;
 }
 
-.toast.saindo {
-    animation: toastSair 0.3s ease forwards;
-}
+.toast.saindo { animation: toastSair 0.3s ease forwards; }
 
 @keyframes toastEntrar {
     from { opacity: 0; transform: translateX(50px); }
@@ -62,7 +60,7 @@
 }
 
 .skeleton {
-    background: linear-gradient(90deg, var(--card) 25%, rgba(255,255,255,0.05) 50%, var(--card) 75%);
+    background: linear-gradient(90deg, var(--card) 25%, rgba(255,255,255,0.04) 50%, var(--card) 75%);
     background-size: 200% 100%;
     animation: skeleton 1.5s infinite;
     border-radius: 8px;
@@ -71,9 +69,10 @@
 
 .skeleton-card {
     background: var(--card);
-    padding: 28px;
+    padding: 22px;
     border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
 }
 
 @keyframes skeleton {
@@ -81,14 +80,13 @@
     100% { background-position: -200% 0; }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 480px) {
     .toast-container {
-        bottom: 20px;
-        right: 15px;
-        left: 15px;
-    }
-    .toast {
-        min-width: unset;
+        bottom: 15px;
+        right: 12px;
+        left: 12px;
+        width: auto;
         max-width: 100%;
     }
+    .toast { font-size: 13px; padding: 11px 14px; }
 }
