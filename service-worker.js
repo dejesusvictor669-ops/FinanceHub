@@ -1,4 +1,4 @@
-const CACHE_NAME = "financehub-v4";
+const CACHE_NAME = "financehub-v5";
 
 const ARQUIVOS = [
     "/",
@@ -9,6 +9,7 @@ const ARQUIVOS = [
     "/js/toast.js",
     "/js/calculadora.js",
     "/js/supabase.js",
+    "/assets/supabase.js",
     "/js/tema.js",
     "/js/perfis.js",
     "/js/dashboard.js",
