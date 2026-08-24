@@ -52,17 +52,43 @@ async function ativarPerfil(id) {
 }
 
 async function criarPerfil() {
-    const nome = prompt("Nome do novo perfil (ex: Casal, Casa, Filhos):");
-    if (!nome || !nome.trim()) return;
+    const modal = document.createElement("div");
+    modal.id = "modalNovoPerfil";
+    modal.innerHTML = `
+        <div style="position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10000;">
+            <form style="width:min(100%,380px);background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.35);">
+                <h3 style="margin:0 0 8px;">Novo perfil</h3>
+                <p style="color:var(--gray);font-size:13px;margin:0 0 18px;">Crie um espaço separado para seus dados.</p>
+                <input id="novoPerfilNome" type="text" maxlength="50" placeholder="Ex: Casa, Casal ou Filhos" required autofocus style="width:100%;box-sizing:border-box;">
+                <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px;">
+                    <button type="button" id="cancelarNovoPerfil" style="padding:10px 16px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--text);cursor:pointer;font-family:inherit;">Cancelar</button>
+                    <button type="submit" class="btn">Criar perfil</button>
+                </div>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    const form = modal.querySelector("form");
+    const fechar = () => modal.remove();
+    modal.querySelector("#cancelarNovoPerfil").addEventListener("click", fechar);
+    modal.querySelector("div").addEventListener("click", (event) => {
+        if (event.target === event.currentTarget) fechar();
+    });
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const nome = modal.querySelector("#novoPerfilNome").value.trim();
+        if (!nome) return;
 
-    const dados = await carregarDados();
-    if (!dados.perfis) dados.perfis = [];
+        const dados = await carregarDados();
+        if (!dados.perfis) dados.perfis = [];
 
-    const novoId = "perfil_" + gerarId();
-    dados.perfis.push({ id: novoId, nome: nome.trim() });
-    dados.perfilAtivo = novoId;
-    await salvarDados(dados);
+        const novoId = "perfil_" + gerarId();
+        dados.perfis.push({ id: novoId, nome });
+        dados.perfilAtivo = novoId;
+        await salvarDados(dados);
 
-    toastSucesso(`Perfil "${nome}" criado!`);
-    location.reload();
+        fechar();
+        toastSucesso(`Perfil "${nome}" criado!`);
+        location.reload();
+    });
 }

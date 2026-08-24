@@ -6,7 +6,10 @@ const ARQUIVOS = [
     "/css/style.css",
     "/js/utils.js",
     "/js/storage.js",
+    "/js/toast.js",
     "/js/supabase.js",
+    "/js/tema.js",
+    "/js/perfis.js",
     "/js/dashboard.js",
     "/js/gastos.js",
     "/js/cartoes.js",
@@ -16,6 +19,7 @@ const ARQUIVOS = [
     "/js/compras.js",
     "/js/graficos.js",
     "/js/relatorios.js",
+    "/js/notificaçoes.js",
     "/js/app.js"
 ];
 
@@ -49,9 +53,7 @@ self.addEventListener("push", (event) => {
     const dados = event.data ? event.data.json() : {};
     event.waitUntil(
         self.registration.showNotification(dados.titulo || "FinanceHub", {
-            body: dados.mensagem || "",
-            icon: "/assets/icones/icon-192.png",
-            badge: "/assets/icones/icon-192.png"
+            body: dados.mensagem || ""
         })
     );
 });

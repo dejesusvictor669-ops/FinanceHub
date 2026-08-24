@@ -30,8 +30,20 @@ function validarDados(dados) {
         descricao: sanitizarTexto(g.descricao),
         valor: Math.abs(Number(g.valor) || 0),
         categoria: sanitizarTexto(g.categoria, 50),
-        data: validarData(g.data)
+        data: validarData(g.data),
+        recorrente: Boolean(g.recorrente)
     }));
+
+    if (!Array.isArray(dados.perfis) || dados.perfis.length === 0) {
+        dados.perfis = [{ id: "principal", nome: "Principal" }];
+    }
+    dados.perfis = dados.perfis.slice(0, 20).map(perfil => ({
+        id: sanitizarTexto(perfil.id, 50),
+        nome: sanitizarTexto(perfil.nome, 50) || "Perfil"
+    }));
+    if (!dados.perfis.some(perfil => perfil.id === dados.perfilAtivo)) {
+        dados.perfilAtivo = dados.perfis[0].id;
+    }
 
     if (!Array.isArray(dados.cartoes)) dados.cartoes = [];
     dados.cartoes = dados.cartoes.slice(0, 100).map(c => ({
@@ -104,6 +116,8 @@ function dadosPadrao() {
         metas: [],
         relatorios: [],
         listasCompras: []
+        , perfis: [{ id: "principal", nome: "Principal" }]
+        , perfilAtivo: "principal"
     };
 }
 
@@ -138,6 +152,8 @@ async function carregarDados() {
         metas: data.metas || [],
         relatorios: data.relatorios || [],
         listasCompras: data.listas_compras || []
+        , perfis: data.perfis || [{ id: "principal", nome: "Principal" }]
+        , perfilAtivo: data.perfil_ativo || "principal"
     };
 
     return _dadosCache;
@@ -166,6 +182,8 @@ async function salvarDados(dados) {
             metas: dadosParaSalvar.metas,
             relatorios: dadosParaSalvar.relatorios,
             listas_compras: dadosParaSalvar.listasCompras,
+            perfis: dadosParaSalvar.perfis,
+            perfil_ativo: dadosParaSalvar.perfilAtivo,
             updated_at: new Date().toISOString()
         }, { onConflict: "user_id" });
 

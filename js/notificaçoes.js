@@ -35,8 +35,7 @@ function notificar(titulo, mensagem) {
     if (Notification.permission !== "granted") return;
 
     new Notification(titulo, {
-        body: mensagem,
-        icon: "/assets/icones/icon-192.png"
+        body: mensagem
     });
 }
 
