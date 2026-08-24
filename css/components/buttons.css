@@ -19,6 +19,96 @@
 
 .hidden { display: none !important; }
 
+.calculadora-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, .62);
+}
+
+.calculadora {
+    width: min(100%, 340px);
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--card);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .4);
+}
+
+.calculadora-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.calculadora-topo h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.calculadora-fechar {
+    padding: 2px 8px;
+    border: 0;
+    background: transparent;
+    color: var(--gray);
+    cursor: pointer;
+    font-size: 26px;
+    line-height: 1;
+}
+
+.calculadora-visor {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 25px;
+    text-align: right;
+}
+
+.calculadora-botoes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.calculadora-botoes button {
+    min-height: 48px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--text);
+    cursor: pointer;
+    font: inherit;
+    font-size: 16px;
+}
+
+.calculadora-botoes button:hover {
+    border-color: var(--primary);
+}
+
+.calculadora-botoes .calculadora-funcao,
+.calculadora-botoes [data-calculadora="operator"] {
+    color: var(--primary);
+}
+
+.calculadora-botoes .calculadora-igual {
+    background: var(--primary);
+    color: white;
+}
+
+.calculadora-botoes .calculadora-zero {
+    grid-column: span 2;
+}
+
 .page { width: 100%; }
 
 .form-gasto {

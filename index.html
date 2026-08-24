@@ -45,6 +45,10 @@
                 <p style="color:var(--gray); margin-bottom:15px; font-size:14px;">Entre na sua conta</p>
                 <input type="email" id="loginEmail" placeholder="Seu email" required>
                 <input type="password" id="loginSenha" placeholder="Sua senha" required>
+                <label style="display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--gray);font-size:13px;cursor:pointer;">
+                    <input type="checkbox" id="lembrarEmail" style="width:auto;">
+                    Lembrar meu email
+                </label>
                 <button type="submit" class="btn">Entrar</button>
                 <p style="margin-top:10px; color:var(--gray); font-size:13px;">
                     <a href="#" id="linkEsqueceuSenha" style="color:var(--gray);">Esqueci minha senha</a>
@@ -122,6 +126,9 @@
             </nav>
 
             <div class="sidebar-bottom">
+                <button id="botaoCalculadora" class="botao-tema" onclick="abrirCalculadora()" title="Abrir calculadora" aria-label="Abrir calculadora">
+                    <i class="fa-solid fa-calculator"></i>
+                </button>
                 <button id="botaoTema" class="botao-tema" onclick="abrirSeletorTema()" title="Personalizar tema">
                     <i class="fa-solid fa-palette"></i>
                 </button>
@@ -257,7 +264,7 @@
                 <div class="card" style="margin-bottom:25px;">
                     <h3>➕ Nova compra no cartão</h3>
                     <form id="formCartao" class="form-gasto">
-                        <input type="text" id="cartaoDescricao" placeholder="Descrição (ex: Placa de vídeo)" required>
+                        <input type="text" id="cartaoDescricao" placeholder="Descrição (ex: Lazer e etc)" required>
                         <input type="number" id="cartaoValor" placeholder="Valor total (R$)" step="0.01" required>
                         <input type="number" id="cartaoParcelas" placeholder="Nº de parcelas" min="1" value="1" required>
                         <input type="text" id="cartaoNome" placeholder="Cartão (ex: Nubank)" required>
@@ -355,6 +362,7 @@
     <script src="js/utils.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/toast.js"></script>
+    <script src="js/calculadora.js"></script>
     <script src="js/tema.js"></script>
     <script src="js/perfis.js"></script>
     <script src="js/dashboard.js"></script>

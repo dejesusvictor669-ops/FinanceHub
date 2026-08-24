@@ -33,6 +33,11 @@ const formCadastro = document.getElementById("formCadastro");
 const linkParaCadastro = document.getElementById("linkParaCadastro");
 const linkParaLogin = document.getElementById("linkParaLogin");
 const linkEsqueceuSenha = document.getElementById("linkEsqueceuSenha");
+const emailSalvo = localStorage.getItem("financehub_email");
+if (emailSalvo) {
+    document.getElementById("loginEmail").value = emailSalvo;
+    document.getElementById("lembrarEmail").checked = true;
+}
 
 linkParaCadastro.addEventListener("click", (e) => {
     e.preventDefault();
@@ -65,10 +70,16 @@ formLogin.addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = document.getElementById("loginEmail").value.trim();
     const senha = document.getElementById("loginSenha").value;
+    const lembrarEmail = document.getElementById("lembrarEmail").checked;
     const btn = formLogin.querySelector("button");
     btn.textContent = "Entrando...";
     btn.disabled = true;
     try {
+        if (lembrarEmail) {
+            localStorage.setItem("financehub_email", email);
+        } else {
+            localStorage.removeItem("financehub_email");
+        }
         await loginUsuario(email, senha);
         mostrarApp();
     } catch (err) {

@@ -7,6 +7,7 @@ const ARQUIVOS = [
     "/js/utils.js",
     "/js/storage.js",
     "/js/toast.js",
+    "/js/calculadora.js",
     "/js/supabase.js",
     "/js/tema.js",
     "/js/perfis.js",
