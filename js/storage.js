@@ -160,7 +160,7 @@ async function carregarDados() {
         return _dadosCache;
     }
 
-    const { data, error } = await sb
+    const { data, error } = await obterSupabase()
         .from("dados_financeiros")
         .select("*")
         .eq("user_id", _usuarioAtual.id)
@@ -217,7 +217,7 @@ async function salvarDados(dados) {
         perfilAtivo: dadosParaSalvar.perfilAtivo
     }));
 
-    const { error } = await sb
+    const { error } = await obterSupabase()
         .from("dados_financeiros")
         .upsert({
             user_id: _usuarioAtual.id,
@@ -248,7 +248,7 @@ async function salvarDados(dados) {
 // ======================================
 
 async function loginUsuario(email, senha) {
-    const { data, error } = await sb.auth.signInWithPassword({ email, password: senha });
+    const { data, error } = await obterSupabase().auth.signInWithPassword({ email, password: senha });
     if (error) throw new Error(error.message);
     _usuarioAtual = data.user;
     _dadosCache = null;
@@ -256,14 +256,14 @@ async function loginUsuario(email, senha) {
 }
 
 async function cadastrarUsuario(nome, email, senha) {
-    const { data, error } = await sb.auth.signUp({
+    const { data, error } = await obterSupabase().auth.signUp({
         email,
         password: senha,
         options: { data: { nome } }
     });
     if (error) throw new Error(error.message);
     _usuarioAtual = data.user;
-    await sb.from("dados_financeiros").insert({
+    await obterSupabase().from("dados_financeiros").insert({
         user_id: data.user.id,
         nome,
         ...dadosPadrao()
@@ -273,13 +273,13 @@ async function cadastrarUsuario(nome, email, senha) {
 }
 
 async function sairUsuario() {
-    await sb.auth.signOut();
+    await obterSupabase().auth.signOut();
     _usuarioAtual = null;
     _dadosCache = null;
 }
 
 async function verificarSessao() {
-    const { data } = await sb.auth.getSession();
+    const { data } = await obterSupabase().auth.getSession();
     if (data.session) {
         _usuarioAtual = data.session.user;
         return true;

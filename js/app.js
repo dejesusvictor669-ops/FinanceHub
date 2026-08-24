@@ -56,7 +56,7 @@ linkEsqueceuSenha.addEventListener("click", async (e) => {
     const email = document.getElementById("loginEmail").value.trim();
     if (!email) { toastAviso("Digite seu email primeiro."); return; }
     try {
-        const { error } = await sb.auth.resetPasswordForEmail(email, {
+        const { error } = await obterSupabase().auth.resetPasswordForEmail(email, {
             redirectTo: window.location.origin
         });
         if (error) throw error;
