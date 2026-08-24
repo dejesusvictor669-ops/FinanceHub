@@ -137,6 +137,10 @@ function mostrarPagina(nomePagina) {
             await renderizarGraficos();
             await carregarRelatorios();
         }
+                if (nomePagina === "doacao") {
+            document.getElementById("textoChavePix").textContent = PIX_CHAVE;
+            renderizarPaginaDoacao();
+        }
     }, 100);
 }
 
@@ -212,6 +216,7 @@ async function iniciarApp() {
 
     await pedirPermissaoNotificacao();
     await verificarAlertas();
+    verificarModalDoacao();
 }
 
 // ======================================

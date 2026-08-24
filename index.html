@@ -123,6 +123,10 @@
                     <i class="fa-solid fa-chart-bar"></i>
                     Relatórios
                 </a>
+                                <a data-page="doacao">
+                    <i class="fa-solid fa-heart"></i>
+                    Apoiar ❤️
+                </a>
             </nav>
 
             <div class="sidebar-bottom">
@@ -354,6 +358,37 @@
                     <canvas id="graficoCategoria" height="120"></canvas>
                 </div>
             </section>
+                        <!-- PÁGINA: DOAÇÃO -->
+            <section class="page hidden" id="page-doacao">
+
+                <div class="card" style="text-align:center; padding:40px 30px; margin-bottom:25px;">
+                    <div style="font-size:50px; margin-bottom:20px;">☕</div>
+                    <h2 style="font-size:24px; font-weight:700; margin-bottom:12px;">Me pague um café!</h2>
+                    <p style="color:var(--gray); font-size:15px; line-height:1.7; max-width:480px; margin:0 auto 25px;">
+                        O <strong style="color:var(--text);">Renda+</strong> é gratuito e foi construído com muito esforço e com o auxílio de <strong style="color:var(--primary);">Inteligência Artificial</strong>.<br><br>
+                        Se o sistema está te ajudando a organizar sua vida financeira, considere fazer uma doação de qualquer valor. Cada contribuição me motiva a continuar melhorando! 💙
+                    </p>
+
+                    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:25px;" id="botoesValorDoacao">
+                    </div>
+
+                    <div id="qr-pagina-doacao" style="margin:0 auto; max-width:300px;"></div>
+
+                      <div style="margin-top:25px; padding:15px; background:var(--bg); border-radius:14px; border:1px solid var(--border);">
+                        <p style="font-size:12px; color:var(--gray); margin-bottom:5px;">Chave PIX</p>
+                        <p id="textoChavePix" style="font-size:14px; font-weight:600;"></p>
+                    </div>
+                </div>
+
+                <div class="card" style="text-align:center;">
+                    <h3 style="margin-bottom:10px;">🤖 Desenvolvido com IA</h3>
+                    <p style="color:var(--gray); font-size:14px; line-height:1.6;">
+                        Este sistema foi desenvolvido por <strong style="color:var(--text);">Victor</strong> com o auxílio de Inteligência Artificial.<br>
+                        Todo o código foi construído colaborativamente entre humano e IA.
+                    </p>
+                </div>
+
+            </section>
 
         </main>
     </div>
@@ -376,6 +411,8 @@
     <script src="js/rendas.js"></script>
     <script src="js/graficos.js"></script>
     <script src="js/relatorios.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="js/doacao.js"></script>
     <script src="js/notificaçoes.js"></script>
     <script src="js/app.js"></script>
 
