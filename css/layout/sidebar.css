@@ -119,6 +119,43 @@ nav .active {
     flex-shrink: 0;
 }
 
+.botao-menu i {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    position: relative;
+    font-size: 0;
+}
+
+.botao-menu i::before,
+.botao-menu i::after {
+    content: "" !important;
+    position: absolute;
+    left: 0;
+    width: 22px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+}
+
+.botao-menu i::before { top: -7px; }
+.botao-menu i::after { top: 7px; }
+
+.botao-tema i {
+    font-size: 0;
+}
+
+.botao-tema i.fa-calculator::before { content: "🧮" !important; }
+.botao-tema i.fa-palette::before { content: "🎨" !important; }
+.botao-tema i.fa-calculator,
+.botao-tema i.fa-palette {
+    font-family: "Segoe UI Emoji", sans-serif !important;
+    font-size: 20px;
+    font-style: normal;
+}
+
 .overlay-menu {
     display: none;
     position: fixed;
