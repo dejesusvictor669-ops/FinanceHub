@@ -28,8 +28,8 @@ async function renderizarSeletorPerfil() {
                         background:linear-gradient(135deg,var(--primary),#EC4899);
                         display:flex;align-items:center;justify-content:center;
                         font-size:14px;font-weight:700;
-                    ">${p.nome.charAt(0).toUpperCase()}</div>
-                    <span style="font-size:14px;flex:1;">${p.nome}</span>
+                    ">${sanitizar(p.nome.charAt(0).toUpperCase())}</div>
+                    <span style="font-size:14px;flex:1;">${sanitizar(p.nome)}</span>
                     ${p.id === dados.perfilAtivo ? '<i class="fa-solid fa-check" style="color:var(--primary);font-size:12px;"></i>' : ''}
                     ${p.id !== "principal" ? '<button type="button" onclick="event.stopPropagation(); apagarPerfil(\'' + p.id + '\')" title="Apagar perfil" aria-label="Apagar perfil" style="border:0;background:transparent;color:var(--gray);cursor:pointer;padding:5px;font-size:12px;"><i class="fa-solid fa-trash"></i></button>' : ''}
                 </div>

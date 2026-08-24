@@ -197,8 +197,8 @@ async function iniciarApp() {
     const saudacao = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
     const nome = obterNomeUsuario();
 
-    document.getElementById("saudacao").innerHTML = `${saudacao}, ${nome} 👋`;
-    document.getElementById("dataAtual").innerHTML = new Date().toLocaleDateString("pt-BR", {
+    document.getElementById("saudacao").textContent = `${saudacao}, ${nome} 👋`;
+    document.getElementById("dataAtual").textContent = new Date().toLocaleDateString("pt-BR", {
         weekday: "long", day: "numeric", month: "long", year: "numeric"
     });
 

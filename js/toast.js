@@ -17,11 +17,14 @@ function mostrarToast(mensagem, tipo = "success", duracao = 3000) {
     };
 
     const toast = document.createElement("div");
-    toast.className = `toast ${tipo}`;
-    toast.innerHTML = `
-        <i class="fa-solid ${icones[tipo] || icones.info}"></i>
-        <span>${mensagem}</span>
-    `;
+    const tipoSeguro = Object.prototype.hasOwnProperty.call(icones, tipo) ? tipo : "info";
+    toast.className = `toast ${tipoSeguro}`;
+
+    const icone = document.createElement("i");
+    icone.className = `fa-solid ${icones[tipoSeguro]}`;
+    const texto = document.createElement("span");
+    texto.textContent = String(mensagem || "");
+    toast.append(icone, texto);
 
     container.appendChild(toast);
 

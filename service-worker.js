@@ -1,4 +1,4 @@
-const CACHE_NAME = "financehub-v1";
+const CACHE_NAME = "financehub-v2";
 
 const ARQUIVOS = [
     "/",
@@ -20,6 +20,7 @@ const ARQUIVOS = [
     "/js/compras.js",
     "/js/graficos.js",
     "/js/relatorios.js",
+    "/js/doacao.js",
     "/js/notificaçoes.js",
     "/js/app.js"
 ];
