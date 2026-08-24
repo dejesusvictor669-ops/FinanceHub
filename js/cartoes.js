@@ -2,6 +2,8 @@ console.log("carregou: cartoes.js");
 
 let _salvandoCartao = false;
 
+document.getElementById("cartaoData").value = hojeISO();
+
 async function renderizarCartoes() {
     const dados = await carregarDados();
     const lista = document.getElementById("listaCartoes");
@@ -15,7 +17,7 @@ async function renderizarCartoes() {
     const cartoesOrdenados = [...dados.cartoes].sort((a, b) => new Date(b.data) - new Date(a.data));
 
     cartoesOrdenados.forEach((compra) => {
-        const valorParcela = compra.valor / compra.parcelas;
+        const parcelas = calcularParcelasCartao(compra);
         const item = document.createElement("li");
         item.className = "item-linha";
 
@@ -24,7 +26,7 @@ async function renderizarCartoes() {
 
         const info = document.createElement("small");
         info.style.color = "var(--gray)";
-        info.textContent = `${compra.nome} • ${compra.parcelas}x de ${formatarMoeda(valorParcela)} • ${formatarData(compra.data)}`;
+        info.textContent = `${compra.nome} • ${compra.parcelas}x de ${formatarMoeda(parcelas.valorParcela)} • ${formatarData(compra.data)} • ${parcelas.parcelasPagas} pagas, ${parcelas.parcelasRestantes} restantes`;
 
         const infoDiv = document.createElement("div");
         infoDiv.className = "info";
@@ -73,12 +75,13 @@ document.getElementById("formCartao").addEventListener("submit", async (evento) 
         const descricao = document.getElementById("cartaoDescricao").value.trim();
         const valor = parseFloat(document.getElementById("cartaoValor").value);
         const parcelas = parseInt(document.getElementById("cartaoParcelas").value);
+        const data = document.getElementById("cartaoData").value;
         const nome = document.getElementById("cartaoNome").value.trim();
 
-        if (!descricao || !nome || isNaN(valor) || valor <= 0 || isNaN(parcelas) || parcelas <= 0) return;
+        if (!descricao || !nome || !data || isNaN(valor) || valor <= 0 || isNaN(parcelas) || parcelas <= 0) return;
 
         const dados = await carregarDados();
-        dados.cartoes.push({ id: gerarId(), descricao, valor, parcelas, nome, data: hojeISO() });
+        dados.cartoes.push({ id: gerarId(), descricao, valor, parcelas, nome, data });
         await salvarDados(dados);
 
         document.getElementById("formCartao").reset();

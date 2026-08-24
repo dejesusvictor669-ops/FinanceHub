@@ -23,7 +23,8 @@ async function renderizarInvestimentos() {
 
         const info = document.createElement("small");
         info.style.color = "var(--gray)";
-        info.textContent = `${aporte.tipo} • ${formatarData(aporte.data)}`;
+        const tipo = aporte.tipo === "reserva" ? "Reserva de emergência" : "Investimento";
+        info.textContent = [`Tipo: ${tipo}`, `Banco: ${aporte.banco || "Não informado"}`, formatarData(aporte.data)].join(" • ");
 
         const infoDiv = document.createElement("div");
         infoDiv.className = "info";
@@ -70,13 +71,17 @@ document.getElementById("formInvestimento").addEventListener("submit", async (ev
 
     try {
         const descricao = document.getElementById("investDescricao").value.trim();
+        const banco = document.getElementById("investBanco").value.trim();
         const valor = parseFloat(document.getElementById("investValor").value);
         const tipo = document.getElementById("investTipo").value;
 
-        if (!descricao || isNaN(valor) || valor <= 0) return;
+        if (!descricao || !banco || isNaN(valor) || valor <= 0) {
+            toastErro("Preencha o que foi investido, o banco e o valor.");
+            return;
+        }
 
         const dados = await carregarDados();
-        dados.investimentos.push({ id: gerarId(), descricao, valor, tipo, data: hojeISO() });
+        dados.investimentos.push({ id: gerarId(), descricao, banco, valor, tipo, data: hojeISO() });
         await salvarDados(dados);
 
         document.getElementById("formInvestimento").reset();

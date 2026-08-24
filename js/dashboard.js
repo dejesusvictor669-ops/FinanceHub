@@ -15,7 +15,10 @@ async function calcularTotais() {
         .reduce((soma, g) => soma + g.valor, 0);
 
     const totalCartoesMensal = dados.cartoes
-        .reduce((soma, c) => soma + (c.valor / c.parcelas), 0);
+        .reduce((soma, c) => {
+            const parcelas = calcularParcelasCartao(c);
+            return soma + (parcelas.parcelasPagas > 0 && parcelas.parcelasRestantes > 0 ? parcelas.valorParcela : 0);
+        }, 0);
 
     const totalInvestimentos = dados.investimentos
         .filter(i => i.tipo !== "reserva")
@@ -28,7 +31,7 @@ async function calcularTotais() {
     const lazerOrcamento = dados.lazerMensal || 0;
     const lazerRestante = lazerOrcamento - gastosLazer;
 
-    const saldo = rendaTotal - gastosNormais - totalCartoesMensal - totalInvestimentos - totalReserva - lazerOrcamento;
+    const saldo = rendaTotal - gastosNormais - totalCartoesMensal - lazerOrcamento;
 
     return {
         dados, rendaTotal, totalRendaExtra, saldo,
@@ -65,8 +68,8 @@ function renderizarResumoMes(t) {
             <span>🧾 Gastos lançados</span><strong style="color:var(--danger)">− ${formatarMoeda(t.gastosNormais)}</strong>
         </li>
         <li class="item-linha"><span>💳 Parcelas do cartão (mês)</span><strong style="color:var(--danger)">− ${formatarMoeda(t.totalCartoesMensal)}</strong></li>
-        <li class="item-linha"><span>📈 Investimentos</span><strong style="color:var(--warning)">− ${formatarMoeda(t.totalInvestimentos)}</strong></li>
-        <li class="item-linha"><span>🛡️ Reserva de emergência</span><strong style="color:var(--warning)">− ${formatarMoeda(t.totalReserva)}</strong></li>
+        <li class="item-linha"><span>📈 Investimentos registrados</span><strong style="color:var(--warning)">${formatarMoeda(t.totalInvestimentos)}</strong></li>
+        <li class="item-linha"><span>🛡️ Reserva registrada</span><strong style="color:var(--warning)">${formatarMoeda(t.totalReserva)}</strong></li>
         <li class="item-linha"><span>🍔 Orçamento de lazer</span><strong style="color:var(--warning)">− ${formatarMoeda(t.lazerOrcamento)}</strong></li>
         <li class="item-linha" style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;margin-top:4px;">
             <span><strong>💰 Saldo disponível</strong></span>

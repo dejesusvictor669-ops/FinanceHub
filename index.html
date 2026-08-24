@@ -215,10 +215,10 @@
                 <div class="card" style="margin-bottom:25px;">
                     <h3>💵 Nova renda extra</h3>
                     <p style="color:var(--gray); font-size:13px; margin-top:5px; margin-bottom:10px;">
-                        Freelance, LivePix, horas extras, bônus — qualquer valor além do salário.
+                        Freelance, horas extras, bônus — qualquer valor além do salário.
                     </p>
                     <form id="formRenda" class="form-gasto">
-                        <input type="text" id="rendaDescricao" placeholder="Descrição (ex: Freela, LivePix)" required>
+                        <input type="text" id="rendaDescricao" placeholder="Descrição (ex: Freelance,Hora extra)" required>
                         <input type="number" id="rendaValor" placeholder="Valor (R$)" step="0.01" required>
                         <input type="date" id="rendaData">
                         <button type="submit" class="btn">Adicionar</button>
@@ -267,6 +267,7 @@
                         <input type="text" id="cartaoDescricao" placeholder="Descrição (ex: Lazer e etc)" required>
                         <input type="number" id="cartaoValor" placeholder="Valor total (R$)" step="0.01" required>
                         <input type="number" id="cartaoParcelas" placeholder="Nº de parcelas" min="1" value="1" required>
+                        <input type="date" id="cartaoData" required>
                         <input type="text" id="cartaoNome" placeholder="Cartão (ex: Nubank)" required>
                         <button type="submit" class="btn">Adicionar</button>
                     </form>
@@ -288,15 +289,16 @@
                         Aportes de <strong>Reserva de emergência</strong> aparecem no card de Reserva.
                     </p>
                     <form id="formInvestimento" class="form-gasto">
-                        <input type="text" id="investDescricao" placeholder="Onde (ex: Tesouro Selic)" required>
-                        <input type="number" id="investValor" placeholder="Valor aportado (R$)" step="0.01" required>
-                        <select id="investTipo">
+                        <input type="text" id="investDescricao" placeholder="O que foi investido? (ex: Tesouro Selic)" required>
+                        <input type="text" id="investBanco" placeholder="Banco onde está guardado (ex: Nubank)" maxlength="100" required>
+                        <input type="number" id="investValor" placeholder="Valor (R$)" step="0.01" required>
+                        <label for="investTipo" style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;width:100%;color:var(--gray);font-size:14px;">
+                            <strong style="color:var(--text);">Tipo do investimento:</strong>
+                            <select id="investTipo" style="flex:1 1 100%;min-width:0;">
                             <option value="reserva">🛡️ Reserva de emergência</option>
-                            <option value="renda-fixa">📄 Renda fixa</option>
-                            <option value="etf-br">📊 ETF Brasil</option>
-                            <option value="etf-eua">🌎 ETF EUA</option>
-                            <option value="cripto">₿ Cripto</option>
-                        </select>
+                            <option value="investimento">📈 Investimento</option>
+                            </select>
+                        </label>
                         <button type="submit" class="btn">Adicionar</button>
                     </form>
                 </div>

@@ -22,7 +22,10 @@ function renderizarGraficoMensal(dados) {
 
     dados.cartoes.forEach((c) => {
         const mes = c.data ? c.data.substring(0, 7) : "sem data";
-        gastosPorMes[mes] = (gastosPorMes[mes] || 0) + (c.valor / c.parcelas);
+        const parcelas = calcularParcelasCartao(c);
+        if (parcelas.parcelasPagas > 0 && parcelas.parcelasRestantes > 0) {
+            gastosPorMes[mes] = (gastosPorMes[mes] || 0) + parcelas.valorParcela;
+        }
     });
 
     const mesesOrdenados = Object.keys(gastosPorMes).sort();

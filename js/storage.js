@@ -63,6 +63,7 @@ function validarDados(dados) {
     dados.investimentos = dados.investimentos.slice(0, 200).map(i => ({
         id: sanitizarTexto(i.id, 50),
         descricao: sanitizarTexto(i.descricao),
+        banco: sanitizarTexto(i.banco, 100),
         valor: Math.abs(Number(i.valor) || 0),
         tipo: sanitizarTexto(i.tipo, 50),
         data: validarData(i.data)

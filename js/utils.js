@@ -33,3 +33,14 @@ function validarData(data) {
     if (isNaN(d.getTime())) return hojeISO();
     return data;
 }
+
+function calcularParcelasCartao(compra, hoje = new Date()) {
+    const [ano, mes] = validarData(compra.data).split("-").map(Number);
+    const diferencaMeses = (hoje.getFullYear() - ano) * 12 + hoje.getMonth() + 1 - mes;
+    const parcelasPagas = Math.min(Math.max(diferencaMeses, 0), compra.parcelas);
+    return {
+        parcelasPagas,
+        parcelasRestantes: compra.parcelas - parcelasPagas,
+        valorParcela: compra.valor / compra.parcelas
+    };
+}
