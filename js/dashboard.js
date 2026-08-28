@@ -17,7 +17,7 @@ async function calcularTotais() {
     const totalCartoesMensal = dados.cartoes
         .reduce((soma, c) => {
             const parcelas = calcularParcelasCartao(c);
-            return soma + (parcelas.parcelasPagas > 0 && parcelas.parcelasRestantes > 0 ? parcelas.valorParcela : 0);
+            return soma + (parcelas.parcelasRestantes > 0 ? parcelas.valorParcela : 0);
         }, 0);
 
     const totalInvestimentos = dados.investimentos
