@@ -35,17 +35,21 @@ async function renderizarGastos() {
         valor.textContent = formatarMoeda(gasto.valor);
 
         const botaoEditar = document.createElement("button");
-        botaoEditar.style.cssText = "background:none; color:var(--primary); cursor:pointer; font-size:16px;";
+        botaoEditar.type = "button";
+        botaoEditar.className = "acao-btn editar";
+        botaoEditar.title = "Editar gasto";
         botaoEditar.innerHTML = `<i class="fa-solid fa-pen"></i>`;
         botaoEditar.addEventListener("click", () => iniciarEdicaoGasto(gasto));
 
         const botaoExcluir = document.createElement("button");
-        botaoExcluir.className = "excluir";
+        botaoExcluir.type = "button";
+        botaoExcluir.className = "acao-btn excluir";
+        botaoExcluir.title = "Excluir gasto";
         botaoExcluir.innerHTML = `<i class="fa-solid fa-trash"></i>`;
         botaoExcluir.addEventListener("click", () => excluirGasto(gasto.id));
 
         const acoes = document.createElement("div");
-        acoes.style.cssText = "display:flex;align-items:center;gap:12px;";
+        acoes.style.cssText = "display:flex;align-items:center;gap:10px;";
         acoes.appendChild(valor);
         acoes.appendChild(botaoEditar);
         acoes.appendChild(botaoExcluir);
@@ -63,21 +67,29 @@ function iniciarEdicaoGasto(gasto) {
     document.getElementById("gastoValor").value = gasto.valor;
     document.getElementById("gastoCategoria").value = gasto.categoria;
     document.getElementById("gastoData").value = gasto.data;
+    document.getElementById("gastoRecorrente").checked = !!gasto.recorrente;
 
-    const btn = document.querySelector("#formGasto button");
+    const form = document.getElementById("formGasto");
+    const btn = form.querySelector("button[type='submit']");
     btn.textContent = "Salvar edição";
     btn.style.background = "var(--warning)";
 
+    const btnCancelar = document.getElementById("btnCancelarEdicaoGasto");
+    if (btnCancelar) btnCancelar.classList.remove("hidden");
+
     document.getElementById("gastoDescricao").focus();
-    document.getElementById("formGasto").scrollIntoView({ behavior: "smooth" });
+    form.scrollIntoView({ behavior: "smooth" });
 }
 
 function cancelarEdicaoGasto() {
     _editandoGastoId = null;
     document.getElementById("formGasto").reset();
-    const btn = document.querySelector("#formGasto button");
+    const btn = document.querySelector("#formGasto button[type='submit']");
     btn.textContent = "Adicionar";
     btn.style.background = "";
+
+    const btnCancelar = document.getElementById("btnCancelarEdicaoGasto");
+    if (btnCancelar) btnCancelar.classList.add("hidden");
 }
 
 async function excluirGasto(id) {
@@ -129,6 +141,7 @@ document.getElementById("formGasto").addEventListener("submit", async (evento) =
         await salvarDados(dados);
         document.getElementById("formGasto").reset();
         btn.style.background = "";
+        cancelarEdicaoGasto();
         await renderizarGastos();
         await renderizarDashboard();
 
@@ -139,5 +152,7 @@ document.getElementById("formGasto").addEventListener("submit", async (evento) =
         _salvandoGasto = false;
         btn.textContent = "Adicionar";
         btn.disabled = false;
+        const btnCancelar = document.getElementById("btnCancelarEdicaoGasto");
+        if (btnCancelar) btnCancelar.classList.add("hidden");
     }
 });

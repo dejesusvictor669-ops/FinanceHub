@@ -31,7 +31,7 @@ async function calcularTotais() {
     const lazerOrcamento = dados.lazerMensal || 0;
     const lazerRestante = lazerOrcamento - gastosLazer;
 
-    const saldo = rendaTotal - gastosNormais - totalCartoesMensal - lazerOrcamento;
+    const saldo = rendaTotal - gastosNormais - totalCartoesMensal - totalInvestimentos - totalReserva - lazerOrcamento;
 
     return {
         dados, rendaTotal, totalRendaExtra, saldo,
@@ -68,8 +68,8 @@ function renderizarResumoMes(t) {
             <span>🧾 Gastos lançados</span><strong style="color:var(--danger)">− ${formatarMoeda(t.gastosNormais)}</strong>
         </li>
         <li class="item-linha"><span>💳 Parcelas do cartão (mês)</span><strong style="color:var(--danger)">− ${formatarMoeda(t.totalCartoesMensal)}</strong></li>
-        <li class="item-linha"><span>📈 Investimentos registrados</span><strong style="color:var(--warning)">${formatarMoeda(t.totalInvestimentos)}</strong></li>
-        <li class="item-linha"><span>🛡️ Reserva registrada</span><strong style="color:var(--warning)">${formatarMoeda(t.totalReserva)}</strong></li>
+        <li class="item-linha"><span>📈 Investimentos registrados</span><strong style="color:var(--warning)">− ${formatarMoeda(t.totalInvestimentos)}</strong></li>
+        <li class="item-linha"><span>🛡️ Reserva registrada</span><strong style="color:var(--warning)">− ${formatarMoeda(t.totalReserva)}</strong></li>
         <li class="item-linha"><span>🍔 Orçamento de lazer</span><strong style="color:var(--warning)">− ${formatarMoeda(t.lazerOrcamento)}</strong></li>
         <li class="item-linha" style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;margin-top:4px;">
             <span><strong>💰 Saldo disponível</strong></span>

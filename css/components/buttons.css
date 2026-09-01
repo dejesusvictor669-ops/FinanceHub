@@ -17,6 +17,12 @@
     opacity: 0.9;
 }
 
+.btn-secundario {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
 .hidden { display: none !important; }
 
 .calculadora-overlay {
@@ -31,10 +37,12 @@
 }
 
 .calculadora {
-    width: min(100%, 340px);
+    width: min(100%, 390px);
+    max-height: 90vh;
+    overflow: auto;
     padding: 20px;
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 18px;
     background: var(--card);
     box-shadow: 0 20px 60px rgba(0, 0, 0, .4);
 }
@@ -70,8 +78,9 @@
     border-radius: 10px;
     background: var(--bg);
     color: var(--text);
-    font-size: 25px;
+    font-size: clamp(22px, 4vw, 28px);
     text-align: right;
+    overflow-x: auto;
 }
 
 .calculadora-botoes {
@@ -110,6 +119,45 @@
 }
 
 .page { width: 100%; }
+
+.form-gasto-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.acao-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: .2s ease;
+    padding: 0;
+    flex-shrink: 0;
+    background: transparent;
+}
+
+.acao-btn:hover {
+    transform: translateY(-1px);
+}
+
+.acao-btn.editar {
+    color: var(--primary);
+    background: rgba(99, 102, 241, 0.08);
+    border-color: rgba(99, 102, 241, 0.2);
+}
+
+.acao-btn.excluir {
+    color: var(--danger);
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.22);
+}
 
 .form-gasto {
     display: flex;
