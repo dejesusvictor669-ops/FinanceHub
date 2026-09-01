@@ -7,12 +7,12 @@ async function calcularTotais() {
     const rendaTotal = dados.salario + totalRendaExtra;
 
     const gastosNormais = dados.gastos
-        .filter(g => g.categoria !== "lazer")
-        .reduce((soma, g) => soma + g.valor, 0);
+        .filter(g => String(g.categoria || "").toLowerCase() !== "lazer")
+        .reduce((soma, g) => soma + (Number(g.valor) || 0), 0);
 
     const gastosLazer = dados.gastos
-        .filter(g => g.categoria === "lazer")
-        .reduce((soma, g) => soma + g.valor, 0);
+        .filter(g => String(g.categoria || "").toLowerCase() === "lazer")
+        .reduce((soma, g) => soma + (Number(g.valor) || 0), 0);
 
     const totalCartoesMensal = dados.cartoes
         .reduce((soma, c) => {

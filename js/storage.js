@@ -37,7 +37,7 @@ function validarDados(dados) {
         id: sanitizarId(g.id, 50),
         descricao: sanitizarTexto(g.descricao),
         valor: Math.abs(Number(g.valor) || 0),
-        categoria: sanitizarTexto(g.categoria, 50),
+        categoria: sanitizarTexto(g.categoria, 50).toLowerCase(),
         data: validarData(g.data),
         recorrente: Boolean(g.recorrente)
     }));

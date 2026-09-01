@@ -115,7 +115,7 @@ document.getElementById("formGasto").addEventListener("submit", async (evento) =
     try {
         const descricao = document.getElementById("gastoDescricao").value.trim();
         const valor = parseFloat(document.getElementById("gastoValor").value);
-        const categoria = document.getElementById("gastoCategoria").value;
+        const categoria = document.getElementById("gastoCategoria").value.toLowerCase();
         const data = validarData(document.getElementById("gastoData").value);
         const recorrente = document.getElementById("gastoRecorrente").checked;
 
