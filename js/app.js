@@ -68,13 +68,16 @@ linkEsqueceuSenha.addEventListener("click", async (e) => {
 
 formLogin.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const email = document.getElementById("loginEmail").value.trim();
-    const senha = document.getElementById("loginSenha").value;
-    const lembrarEmail = document.getElementById("lembrarEmail").checked;
     const btn = formLogin.querySelector("button");
     btn.textContent = "Entrando...";
     btn.disabled = true;
     try {
+        await inicializacao;
+        const emailInput = document.getElementById("loginEmail");
+        const senhaInput = document.getElementById("loginSenha");
+        const email = emailInput.value.trim();
+        const senha = senhaInput.value;
+        const lembrarEmail = document.getElementById("lembrarEmail").checked;
         if (lembrarEmail) {
             localStorage.setItem("financehub_email", email);
         } else {
@@ -83,7 +86,9 @@ formLogin.addEventListener("submit", async (e) => {
         await loginUsuario(email, senha);
         mostrarApp();
     } catch (err) {
-        toastErro("Erro ao entrar: " + err.message);
+        toastErro(err.message === "Invalid login credentials"
+            ? "Email ou senha incorretos. Confira os dados e tente novamente."
+            : "Erro ao entrar: " + err.message);
     } finally {
         btn.textContent = "Entrar";
         btn.disabled = false;
@@ -257,4 +262,4 @@ if (typeof registrarServiceWorker === "function") {
     registrarServiceWorker();
 }
 
-inicializar();
+const inicializacao = inicializar();
