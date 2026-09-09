@@ -4,12 +4,17 @@ const telaLogin = document.getElementById("telaLogin");
 const appContainer = document.getElementById("appContainer");
 
 async function inicializar() {
-    iniciarTema();
-    const logado = await verificarSessao();
-    if (logado) {
-        mostrarApp();
-    } else {
+    try {
+        iniciarTema();
+        const logado = await verificarSessao();
+        if (logado) {
+            await mostrarApp();
+        } else {
+            mostrarTelaLogin();
+        }
+    } catch (err) {
         mostrarTelaLogin();
+        toastErro("Não foi possível iniciar a sessão: " + err.message);
     }
 }
 
@@ -18,10 +23,10 @@ function mostrarTelaLogin() {
     appContainer.classList.add("hidden");
 }
 
-function mostrarApp() {
+async function mostrarApp() {
+    await iniciarApp();
     telaLogin.classList.add("hidden");
     appContainer.classList.remove("hidden");
-    iniciarApp();
 }
 
 // ======================================
@@ -84,7 +89,7 @@ formLogin.addEventListener("submit", async (e) => {
             localStorage.removeItem("financehub_email");
         }
         await loginUsuario(email, senha);
-        mostrarApp();
+        await mostrarApp();
     } catch (err) {
         toastErro(err.message === "Invalid login credentials"
             ? "Email ou senha incorretos. Confira os dados e tente novamente."
