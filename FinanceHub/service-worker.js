@@ -1,4 +1,4 @@
-const CACHE_NAME = "rendamais-v2";
+const CACHE_NAME = "rendamais-v3";
 
 const ARQUIVOS = [
     "/",
@@ -59,7 +59,21 @@ self.addEventListener("fetch", (event) => {
         return;
     }
 
-    // Cache first para arquivos locais
+    // CSS e HTML precisam refletir as alteracoes mais recentes.
+    if (event.request.method === "GET" && (url.pathname.endsWith(".css") || url.pathname.endsWith(".html") || url.pathname === "/")) {
+        event.respondWith(
+            fetch(event.request)
+                .then((response) => {
+                    const copia = response.clone();
+                    caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copia));
+                    return response;
+                })
+                .catch(() => caches.match(event.request))
+        );
+        return;
+    }
+
+    // Cache first para os demais arquivos locais
     event.respondWith(
         caches.match(event.request).then((cached) => {
             return cached || fetch(event.request).catch(() => cached);
