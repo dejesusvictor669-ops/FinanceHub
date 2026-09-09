@@ -75,7 +75,7 @@ document.getElementById("formInvestimento").addEventListener("submit", async (ev
         const valor = parseFloat(document.getElementById("investValor").value);
         const tipo = document.getElementById("investTipo").value;
 
-        if (!descricao || !banco || isNaN(valor) || valor <= 0) {
+        if (!descricao || !banco || isNaN(valor) || valor <= 0 || valor > 9999999) {
             toastErro("Preencha o que foi investido, o banco e o valor.");
             return;
         }
@@ -89,6 +89,9 @@ document.getElementById("formInvestimento").addEventListener("submit", async (ev
         await renderizarDashboard();
         toastSucesso("Aporte registrado!");
 
+    } catch (err) {
+        toastErro("Erro ao salvar investimento.");
+        console.error(err);
     } finally {
         _salvandoInvestimento = false;
         btn.textContent = "Adicionar";

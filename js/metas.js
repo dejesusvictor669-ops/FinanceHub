@@ -100,7 +100,7 @@ document.getElementById("formMeta").addEventListener("submit", async (evento) =>
         const valorAlvo = parseFloat(document.getElementById("metaValorAlvo").value);
         const valorAtual = parseFloat(document.getElementById("metaValorAtual").value) || 0;
 
-        if (!nome || isNaN(valorAlvo) || valorAlvo <= 0) {
+        if (!nome || isNaN(valorAlvo) || valorAlvo <= 0 || valorAlvo > 9999999 || isNaN(valorAtual) || valorAtual < 0 || valorAtual > 9999999) {
             toastErro("Preencha o nome e o valor alvo.");
             return;
         }

@@ -74,7 +74,10 @@ document.getElementById("formRenda").addEventListener("submit", async (evento) =
         const valor = parseFloat(document.getElementById("rendaValor").value);
         const data = validarData(document.getElementById("rendaData").value);
 
-        if (!descricao || isNaN(valor) || valor <= 0) return;
+        if (!descricao || isNaN(valor) || valor <= 0 || valor > 9999999) {
+            toastErro("Preencha a descrição e informe um valor válido.");
+            return;
+        }
 
         const dados = await carregarDados();
         dados.rendasExtras.push({ id: gerarId(), descricao, valor, data });
@@ -85,6 +88,9 @@ document.getElementById("formRenda").addEventListener("submit", async (evento) =
         await renderizarDashboard();
         toastSucesso("Renda adicionada!");
 
+    } catch (err) {
+        toastErro("Erro ao salvar renda extra.");
+        console.error(err);
     } finally {
         _salvandoRenda = false;
         btn.textContent = "Adicionar";

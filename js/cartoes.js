@@ -76,7 +76,7 @@ document.getElementById("formCartao").addEventListener("submit", async (evento) 
         const data = validarData(document.getElementById("cartaoData")?.value || "");
         const nome = document.getElementById("cartaoNome").value.trim();
 
-        if (!descricao || !nome || isNaN(valor) || valor <= 0 || isNaN(parcelas) || parcelas <= 0) {
+        if (!descricao || !nome || isNaN(valor) || valor <= 0 || valor > 9999999 || isNaN(parcelas) || parcelas <= 0 || parcelas > 360) {
             toastErro("Preencha todos os campos corretamente.");
             return;
         }
