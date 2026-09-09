@@ -31,7 +31,6 @@ function sanitizar(texto) {
     return div.innerHTML;
 }
 
-// MOVIDO de storage.js para utils.js para garantir disponibilidade global
 function sanitizarTexto(valor, maxLength = 200) {
     return String(valor || "").substring(0, maxLength);
 }

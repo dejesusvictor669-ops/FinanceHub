@@ -33,14 +33,12 @@ async function adicionarValorMeta(id) {
     if (!input) return;
 
     const valor = parseFloat(input.value);
-
     if (isNaN(valor) || valor <= 0) {
         toastErro("Digite um valor válido.");
         return;
     }
 
     const dados = await carregarDados();
-    // Busca pelo id sanitizado ou pelo id original
     const meta = dados.metas.find(m => sanitizarId(m.id) === id || m.id === id);
     if (!meta) return;
 
@@ -74,6 +72,7 @@ async function renderizarMetas() {
     document.querySelectorAll(".excluir-meta").forEach((botao) => {
         botao.addEventListener("click", () => excluirMeta(botao.getAttribute("data-id")));
     });
+
     document.querySelectorAll(".adicionar-meta").forEach((botao) => {
         botao.addEventListener("click", () => adicionarValorMeta(botao.getAttribute("data-id")));
     });

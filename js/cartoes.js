@@ -2,12 +2,6 @@ console.log("carregou: cartoes.js");
 
 let _salvandoCartao = false;
 
-// Define data padrão ao carregar
-window.addEventListener("load", () => {
-    const campo = document.getElementById("cartaoData");
-    if (campo && !campo.value) campo.value = hojeISO();
-});
-
 async function renderizarCartoes() {
     const dados = await carregarDados();
     const lista = document.getElementById("listaCartoes");
@@ -41,12 +35,13 @@ async function renderizarCartoes() {
         valor.textContent = formatarMoeda(compra.valor);
 
         const botao = document.createElement("button");
-        botao.className = "excluir";
+        botao.type = "button";
+        botao.className = "acao-btn excluir";
         botao.innerHTML = `<i class="fa-solid fa-trash"></i>`;
         botao.addEventListener("click", () => excluirCartao(compra.id));
 
         const acoes = document.createElement("div");
-        acoes.style.cssText = "display:flex;align-items:center;gap:15px;";
+        acoes.style.cssText = "display:flex;align-items:center;gap:10px;";
         acoes.appendChild(valor);
         acoes.appendChild(botao);
 
@@ -78,7 +73,7 @@ document.getElementById("formCartao").addEventListener("submit", async (evento) 
         const descricao = document.getElementById("cartaoDescricao").value.trim();
         const valor = parseFloat(document.getElementById("cartaoValor").value);
         const parcelas = parseInt(document.getElementById("cartaoParcelas").value);
-        const data = validarData(document.getElementById("cartaoData").value);
+        const data = validarData(document.getElementById("cartaoData")?.value || "");
         const nome = document.getElementById("cartaoNome").value.trim();
 
         if (!descricao || !nome || isNaN(valor) || valor <= 0 || isNaN(parcelas) || parcelas <= 0) {
@@ -91,10 +86,6 @@ document.getElementById("formCartao").addEventListener("submit", async (evento) 
         await salvarDados(dados);
 
         document.getElementById("formCartao").reset();
-        // Restaura data padrão após reset
-        const campoData = document.getElementById("cartaoData");
-        if (campoData) campoData.value = hojeISO();
-
         await renderizarCartoes();
         await renderizarDashboard();
         toastSucesso("Compra adicionada!");

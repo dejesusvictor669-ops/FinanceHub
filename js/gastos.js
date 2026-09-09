@@ -37,14 +37,14 @@ async function renderizarGastos() {
         const botaoEditar = document.createElement("button");
         botaoEditar.type = "button";
         botaoEditar.className = "acao-btn editar";
-        botaoEditar.title = "Editar gasto";
+        botaoEditar.title = "Editar";
         botaoEditar.innerHTML = `<i class="fa-solid fa-pen"></i>`;
         botaoEditar.addEventListener("click", () => iniciarEdicaoGasto(gasto));
 
         const botaoExcluir = document.createElement("button");
         botaoExcluir.type = "button";
         botaoExcluir.className = "acao-btn excluir";
-        botaoExcluir.title = "Excluir gasto";
+        botaoExcluir.title = "Excluir";
         botaoExcluir.innerHTML = `<i class="fa-solid fa-trash"></i>`;
         botaoExcluir.addEventListener("click", () => excluirGasto(gasto.id));
 
@@ -69,26 +69,21 @@ function iniciarEdicaoGasto(gasto) {
     document.getElementById("gastoData").value = gasto.data;
     document.getElementById("gastoRecorrente").checked = !!gasto.recorrente;
 
-    const form = document.getElementById("formGasto");
-    const btn = form.querySelector("button[type='submit']");
-    btn.textContent = "Salvar edição";
-    btn.style.background = "var(--warning)";
+    const btn = document.querySelector("#formGasto button[type='submit']");
+    if (btn) { btn.textContent = "Salvar edição"; btn.style.background = "var(--warning)"; }
 
     const btnCancelar = document.getElementById("btnCancelarEdicaoGasto");
     if (btnCancelar) btnCancelar.classList.remove("hidden");
 
     document.getElementById("gastoDescricao").focus();
-    form.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("formGasto").scrollIntoView({ behavior: "smooth" });
 }
 
 function cancelarEdicaoGasto() {
     _editandoGastoId = null;
     document.getElementById("formGasto").reset();
     const btn = document.querySelector("#formGasto button[type='submit']");
-    if (btn) {
-        btn.textContent = "Adicionar";
-        btn.style.background = "";
-    }
+    if (btn) { btn.textContent = "Adicionar"; btn.style.background = ""; }
     const btnCancelar = document.getElementById("btnCancelarEdicaoGasto");
     if (btnCancelar) btnCancelar.classList.add("hidden");
 }
@@ -109,13 +104,12 @@ document.getElementById("formGasto").addEventListener("submit", async (evento) =
     _salvandoGasto = true;
 
     const btn = evento.target.querySelector("button[type='submit']");
-    const textoOriginal = btn ? btn.textContent : "Adicionar";
     if (btn) { btn.textContent = "Salvando..."; btn.disabled = true; }
 
     try {
         const descricao = document.getElementById("gastoDescricao").value.trim();
         const valor = parseFloat(document.getElementById("gastoValor").value);
-        const categoria = document.getElementById("gastoCategoria").value.toLowerCase();
+        const categoria = document.getElementById("gastoCategoria").value;
         const data = validarData(document.getElementById("gastoData").value);
         const recorrente = document.getElementById("gastoRecorrente").checked;
 
