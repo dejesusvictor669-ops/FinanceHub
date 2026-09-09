@@ -1,10 +1,6 @@
 const CACHE_NAME = "rendamais-v3";
 
 const ARQUIVOS = [
-    "/",
-    "/index.html",
-    "/landing.html",
-    "/css/style.css",
     "/js/utils.js",
     "/js/storage.js",
     "/js/supabase.js",

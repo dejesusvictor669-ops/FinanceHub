@@ -34,6 +34,12 @@ function financeHubLegacyPlugin() {
           source: fs.readFileSync(filePath)
         });
       }
+
+      this.emitFile({
+        type: "asset",
+        fileName: "service-worker.js",
+        source: fs.readFileSync(path.join(root, "service-worker.js"))
+      });
     }
   };
 }
