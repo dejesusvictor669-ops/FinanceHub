@@ -84,7 +84,7 @@ async function criarPerfil() {
     `;
     document.body.appendChild(modal);
     const form = modal.querySelector("form");
-    const fechar = () => modal.remove();
+    const fechar = () => fecharModalPerfil(modal);
     modal.querySelector("#cancelarNovoPerfil").addEventListener("click", fechar);
     modal.querySelector("div").addEventListener("click", (event) => {
         if (event.target === event.currentTarget) fechar();
@@ -110,4 +110,10 @@ async function criarPerfil() {
         }
         location.reload();
     });
+}
+
+function fecharModalPerfil(modal) {
+    if (!modal || modal.classList.contains("modal-saindo")) return;
+    modal.classList.add("modal-saindo");
+    setTimeout(() => modal.remove(), 180);
 }

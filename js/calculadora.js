@@ -3,7 +3,7 @@ console.log("carregou: calculadora.js");
 function abrirCalculadora() {
     const existente = document.getElementById("modalCalculadora");
     if (existente) {
-        existente.remove();
+        fecharModalComAnimacao(existente);
         return;
     }
 
@@ -117,9 +117,15 @@ function abrirCalculadora() {
         });
     });
 
-    const fechar = () => modal.remove();
+    const fechar = () => fecharModalComAnimacao(modal);
     modal.querySelector(".calculadora-fechar").addEventListener("click", fechar);
     modal.querySelector(".calculadora-overlay").addEventListener("click", event => {
         if (event.target === event.currentTarget) fechar();
     });
+}
+
+function fecharModalComAnimacao(modal) {
+    if (!modal || modal.classList.contains("modal-saindo")) return;
+    modal.classList.add("modal-saindo");
+    setTimeout(() => modal.remove(), 180);
 }

@@ -27,6 +27,11 @@ async function mostrarApp() {
     await iniciarApp();
     telaLogin.classList.add("hidden");
     appContainer.classList.remove("hidden");
+    const dashboard = document.getElementById("page-visao-geral");
+    if (dashboard) {
+        dashboard.classList.remove("page-entrando");
+        requestAnimationFrame(() => dashboard.classList.add("page-entrando"));
+    }
 }
 
 // ======================================
@@ -77,7 +82,6 @@ formLogin.addEventListener("submit", async (e) => {
     btn.textContent = "Entrando...";
     btn.disabled = true;
     try {
-        await inicializacao;
         const emailInput = document.getElementById("loginEmail");
         const senhaInput = document.getElementById("loginSenha");
         const email = emailInput.value.trim();
@@ -129,7 +133,10 @@ const paginas = document.querySelectorAll(".page");
 function mostrarPagina(nomePagina) {
     paginas.forEach((p) => p.classList.add("hidden"));
     const paginaAtiva = document.getElementById("page-" + nomePagina);
-    if (paginaAtiva) paginaAtiva.classList.remove("hidden");
+    if (paginaAtiva) {
+        paginaAtiva.classList.remove("hidden", "page-entrando");
+        requestAnimationFrame(() => paginaAtiva.classList.add("page-entrando"));
+    }
 
     links.forEach((l) => l.classList.remove("active"));
     const linkAtivo = document.querySelector(`nav a[data-page="${nomePagina}"]`);
@@ -141,7 +148,7 @@ function mostrarPagina(nomePagina) {
         if (nomePagina === "cartoes") await renderizarCartoes();
         if (nomePagina === "investimentos") await renderizarInvestimentos();
         if (nomePagina === "metas") await renderizarMetas();
-        if (nomePagina === "rendas") await renderizarRendas();
+        if (nomePagina === "entradas") await renderizarRendas();
         if (nomePagina === "compras") await renderizarCompras();
         if (nomePagina === "graficos") {
             await renderizarGraficos();

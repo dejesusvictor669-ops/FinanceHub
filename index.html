@@ -95,13 +95,13 @@
                     <i class="fa-solid fa-house"></i>
                     Visão Geral
                 </a>
+                <a data-page="entradas">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    Entradas
+                </a>
                 <a data-page="compras">
                     <i class="fa-solid fa-cart-shopping"></i>
                     Lista de Compras
-                </a>
-                <a data-page="rendas">
-                    <i class="fa-solid fa-money-bill-trend-up"></i>
-                    Rendas Extras
                 </a>
                 <a data-page="gastos">
                     <i class="fa-solid fa-money-bill-wave"></i>
@@ -187,7 +187,18 @@
                 </div>
 
                 <div class="card" style="margin-top:25px;">
-                    <h3>⚙️ Configurações</h3>
+                    <h3>🎯 Metas em andamento</h3>
+                    <ul id="listaMetasResumo" class="lista-itens"></ul>
+                </div>
+            </section>
+
+            <!-- ENTRADAS -->
+            <section class="page hidden" id="page-entradas">
+                <div class="card" style="margin-bottom:25px;">
+                    <h2>💼 Entradas e planejamento</h2>
+                    <p style="color:var(--gray);font-size:13px;margin-top:5px;margin-bottom:15px;">
+                        Cadastre sua renda principal e ajuste os valores que orientam o seu orçamento.
+                    </p>
                     <form id="formConfig" class="form-gasto">
                         <input type="number" id="configSalario" placeholder="Salário / renda mensal (R$)" step="0.01">
                         <input type="number" id="configLazer" placeholder="Orçamento de lazer (R$)" step="0.01">
@@ -196,9 +207,22 @@
                     </form>
                 </div>
 
-                <div class="card" style="margin-top:25px;">
-                    <h3>🎯 Metas em andamento</h3>
-                    <ul id="listaMetasResumo" class="lista-itens"></ul>
+                <div class="card" style="margin-bottom:25px;">
+                    <h3>💵 Nova renda extra</h3>
+                    <p style="color:var(--gray); font-size:13px; margin-top:5px; margin-bottom:10px;">
+                        Freelance, horas extras, bônus e outros valores além da renda principal.
+                    </p>
+                    <form id="formRenda" class="form-gasto">
+                        <input type="text" id="rendaDescricao" placeholder="Descrição (ex: Freelance, hora extra)" required>
+                        <input type="number" id="rendaValor" placeholder="Valor (R$)" step="0.01" required>
+                        <input type="date" id="rendaData">
+                        <button type="submit" class="btn">Adicionar</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3>📋 Rendas extras cadastradas</h3>
+                    <ul id="listaRendas" class="lista-itens"></ul>
                 </div>
             </section>
 
@@ -212,26 +236,6 @@
                     </form>
                 </div>
                 <div id="containerListas"></div>
-            </section>
-
-            <!-- RENDAS EXTRAS -->
-            <section class="page hidden" id="page-rendas">
-                <div class="card" style="margin-bottom:25px;">
-                    <h3>💵 Nova renda extra</h3>
-                    <p style="color:var(--gray); font-size:13px; margin-top:5px; margin-bottom:10px;">
-                        Freelance, horas extras, bônus — qualquer valor além do salário.
-                    </p>
-                    <form id="formRenda" class="form-gasto">
-                        <input type="text" id="rendaDescricao" placeholder="Descrição (ex: Freelance,Hora extra)" required>
-                        <input type="number" id="rendaValor" placeholder="Valor (R$)" step="0.01" required>
-                        <input type="date" id="rendaData">
-                        <button type="submit" class="btn">Adicionar</button>
-                    </form>
-                </div>
-                <div class="card">
-                    <h3>📋 Rendas extras cadastradas</h3>
-                    <ul id="listaRendas" class="lista-itens"></ul>
-                </div>
             </section>
 
             <!-- GASTOS -->
@@ -276,7 +280,10 @@
                         <input type="number" id="cartaoParcelas" placeholder="Nº de parcelas" min="1" value="1" required>
                         <input type="date" id="cartaoData" required>
                         <input type="text" id="cartaoNome" placeholder="Cartão (ex: Nubank)" required>
-                        <button type="submit" class="btn">Adicionar</button>
+                        <div class="form-gasto-acoes">
+                            <button type="submit" class="btn">Adicionar</button>
+                            <button type="button" id="btnCancelarEdicaoCartao" class="btn btn-secundario hidden">Cancelar</button>
+                        </div>
                     </form>
                 </div>
                 <div class="card">

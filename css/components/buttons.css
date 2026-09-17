@@ -4,7 +4,7 @@
     cursor: pointer;
     background: var(--primary);
     color: white;
-    transition: .25s;
+    transition: transform 160ms ease, opacity 160ms ease, box-shadow 160ms ease;
     border: none;
     font-family: inherit;
     font-size: 14px;
@@ -13,7 +13,7 @@
 }
 
 .btn:hover {
-    transform: scale(1.03);
+    transform: translateY(-1px);
     opacity: 0.9;
 }
 
@@ -21,6 +21,20 @@
     background: transparent;
     color: var(--text);
     border: 1px solid var(--border);
+}
+
+.btn:active,
+.acao-btn:active,
+.botao-tema:active,
+.botao-menu:active,
+.calculadora-botoes button:active { transform: scale(.97); }
+
+.btn:focus-visible,
+.acao-btn:focus-visible,
+.calculadora-fechar:focus-visible,
+.calculadora-botoes button:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
 }
 
 .hidden { display: none !important; }
@@ -34,6 +48,7 @@
     justify-content: center;
     padding: 20px;
     background: rgba(0, 0, 0, .62);
+    animation: modalFundoEntrar 180ms ease-out both;
 }
 
 .calculadora {
@@ -45,7 +60,27 @@
     border-radius: 18px;
     background: var(--card);
     box-shadow: 0 20px 60px rgba(0, 0, 0, .4);
+    animation: modalConteudoEntrar 240ms cubic-bezier(.22, 1, .36, 1) both;
 }
+
+#modalNovoPerfil > div,
+#modalDoacao { animation: modalFundoEntrar 180ms ease-out both; }
+
+#modalNovoPerfil form,
+#modalDoacao > div { animation: modalConteudoEntrar 240ms cubic-bezier(.22, 1, .36, 1) both; }
+
+.modal-saindo .calculadora-overlay,
+.modal-saindo#modalNovoPerfil > div,
+.modal-saindo#modalDoacao { animation: modalFundoSair 180ms ease-in both; }
+
+.modal-saindo .calculadora,
+.modal-saindo#modalNovoPerfil form,
+.modal-saindo#modalDoacao > div { animation: modalConteudoSair 180ms ease-in both; }
+
+@keyframes modalFundoEntrar { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modalConteudoEntrar { from { opacity: 0; transform: translateY(10px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes modalFundoSair { from { opacity: 1; } to { opacity: 0; } }
+@keyframes modalConteudoSair { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(6px) scale(.985); } }
 
 .calculadora-topo {
     display: flex;
@@ -98,6 +133,7 @@
     cursor: pointer;
     font: inherit;
     font-size: 16px;
+    transition: transform 150ms ease, border-color 150ms ease, background-color 150ms ease;
 }
 
 .calculadora-botoes button:hover {
@@ -222,6 +258,24 @@
     border-radius: 12px;
     border: 1px solid var(--border);
     gap: 10px;
+    transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.item-linha:hover { transform: translateX(2px); }
+
+.page-entrando .lista-itens .item-linha,
+.page-entrando #containerListas > * { animation: revelarItem 260ms ease-out both; }
+
+.page-entrando .lista-itens .item-linha:nth-child(2),
+.page-entrando #containerListas > *:nth-child(2) { animation-delay: 35ms; }
+.page-entrando .lista-itens .item-linha:nth-child(3),
+.page-entrando #containerListas > *:nth-child(3) { animation-delay: 70ms; }
+.page-entrando .lista-itens .item-linha:nth-child(4),
+.page-entrando #containerListas > *:nth-child(4) { animation-delay: 105ms; }
+
+@keyframes revelarItem {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .item-linha .info {

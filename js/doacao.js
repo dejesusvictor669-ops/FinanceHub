@@ -109,7 +109,9 @@ function abrirModalDoacao() {
 
 function fecharModalDoacao() {
     const modal = document.getElementById("modalDoacao");
-    if (modal) modal.remove();
+    if (!modal || modal.classList.contains("modal-saindo")) return;
+    modal.classList.add("modal-saindo");
+    setTimeout(() => modal.remove(), 180);
 }
 
 function renderizarPaginaDoacao() {
