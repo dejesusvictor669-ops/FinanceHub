@@ -32,11 +32,16 @@ async function pedirPermissaoNotificacao() {
 // ======================================
 
 function notificar(titulo, mensagem) {
-    if (Notification.permission !== "granted") return;
+    // iPhone (Safari fora do app instalado) não tem Notification
+    if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
 
-    new Notification(titulo, {
-        body: mensagem
-    });
+    try {
+        new Notification(titulo, {
+            body: mensagem
+        });
+    } catch (err) {
+        console.warn("Notificação indisponível neste aparelho:", err);
+    }
 }
 
 // ======================================
@@ -44,7 +49,7 @@ function notificar(titulo, mensagem) {
 // ======================================
 
 async function verificarAlertas() {
-    if (Notification.permission !== "granted") return;
+    if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
 
     const dados = await carregarDados();
     const t = await calcularTotais();
