@@ -99,7 +99,9 @@ formLogin.addEventListener("submit", async (e) => {
     } catch (err) {
         toastErro(err.message === "Invalid login credentials"
             ? "Email ou senha incorretos. Confira os dados e tente novamente."
-            : "Erro ao entrar: " + err.message);
+            : err.message.startsWith("Muitas tentativas")
+                ? err.message
+                : "Erro ao entrar: " + err.message);
     } finally {
         btn.textContent = "Entrar";
         btn.disabled = false;

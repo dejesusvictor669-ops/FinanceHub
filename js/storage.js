@@ -241,9 +241,67 @@ async function salvarDados(dados) {
 // AUTH
 // ======================================
 
+// ----- Limite de tentativas de login (freia força bruta pelo app) -----
+const LOGIN_CHAVE_LIMITE = "renda_login_limite";
+const LOGIN_MAX_FALHAS = 5;                          // falhas até bloquear
+const LOGIN_BLOQUEIOS_SEG = [60, 300, 900, 1800, 3600]; // 1 min, 5, 15, 30, 1 h (escalona)
+
+function lerLimiteLogin() {
+    try { return JSON.parse(localStorage.getItem(LOGIN_CHAVE_LIMITE) || "{}") || {}; } catch (e) { return {}; }
+}
+function gravarLimiteLogin(mapa) {
+    try { localStorage.setItem(LOGIN_CHAVE_LIMITE, JSON.stringify(mapa)); } catch (e) { /* ignora */ }
+}
+function textoTempoLogin(seg) {
+    return seg >= 60 ? Math.ceil(seg / 60) + " min" : seg + " s";
+}
+// segundos restantes de bloqueio para este email OU para o aparelho todo
+function segundosBloqueadoLogin(email) {
+    const mapa = lerLimiteLogin();
+    const agora = Date.now();
+    const restos = [email.toLowerCase(), "*"].map((k) => Math.ceil(((mapa[k]?.ate || 0) - agora) / 1000));
+    return Math.max(0, ...restos);
+}
+function registrarFalhaLogin(email) {
+    const mapa = lerLimiteLogin();
+    // por email: LOGIN_MAX_FALHAS; por aparelho (qualquer email): o dobro
+    [[email.toLowerCase(), LOGIN_MAX_FALHAS], ["*", LOGIN_MAX_FALHAS * 2]].forEach(([k, max]) => {
+        const r = mapa[k] || { n: 0, nivel: 0, ate: 0 };
+        if (r.ate && r.ate < Date.now()) r.ate = 0;
+        r.n += 1;
+        if (r.n >= max) {
+            r.ate = Date.now() + LOGIN_BLOQUEIOS_SEG[Math.min(r.nivel, LOGIN_BLOQUEIOS_SEG.length - 1)] * 1000;
+            r.nivel += 1;
+            r.n = 0;
+        }
+        mapa[k] = r;
+    });
+    gravarLimiteLogin(mapa);
+}
+function limparFalhasLogin(email) {
+    const mapa = lerLimiteLogin();
+    delete mapa[email.toLowerCase()];
+    delete mapa["*"];
+    gravarLimiteLogin(mapa);
+}
+
 async function loginUsuario(email, senha) {
+    const espera = segundosBloqueadoLogin(email);
+    if (espera > 0) {
+        throw new Error("Muitas tentativas incorretas. Por segurança, aguarde " + textoTempoLogin(espera) + " para tentar de novo.");
+    }
     const { data, error } = await obterSupabase().auth.signInWithPassword({ email, password: senha });
-    if (error) throw new Error(error.message);
+    if (error) {
+        if (/invalid login credentials/i.test(error.message)) {
+            registrarFalhaLogin(email);
+            const novaEspera = segundosBloqueadoLogin(email);
+            if (novaEspera > 0) {
+                throw new Error("Muitas tentativas incorretas. Por segurança, aguarde " + textoTempoLogin(novaEspera) + " para tentar de novo.");
+            }
+        }
+        throw new Error(error.message);
+    }
+    limparFalhasLogin(email);
     _usuarioAtual = data.user;
     _dadosCache = null;
     return data.user;
