@@ -39,15 +39,22 @@ const LISTA_ATALHOS = [
 const CHAVE_SECRETA = "renda_atalho_chave";
 const ACOES_AUTOMATICAS = ["gasto", "renda", "cartao", "aporte"];
 
-function obterChaveAtalho() {
-    try { return localStorage.getItem(CHAVE_SECRETA) || ""; } catch (e) { return ""; }
+// A chave fica na CONTA (user_metadata), então vale em qualquer aparelho/navegador
+async function obterChaveAtalho() {
+    try {
+        const { data } = await obterSupabase().auth.getUser();
+        return data?.user?.user_metadata?.[CHAVE_SECRETA] || "";
+    } catch (e) { return ""; }
 }
 
-function gerarChaveAtalho() {
+async function gerarChaveAtalho() {
     const bytes = new Uint8Array(12);
     crypto.getRandomValues(bytes);
     const chave = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
-    try { localStorage.setItem(CHAVE_SECRETA, chave); } catch (e) { return ""; }
+    try {
+        const { error } = await obterSupabase().auth.updateUser({ data: { [CHAVE_SECRETA]: chave } });
+        if (error) return "";
+    } catch (e) { return ""; }
     return chave;
 }
 
@@ -131,7 +138,7 @@ async function aplicarAtalhoPendente() {
         setTimeout(() => cartao.classList.remove("atalho-destaque"), 3000);
     }
     // Modo automático: chave correta + ação de registro + valor e descrição presentes
-    const minhaChave = obterChaveAtalho();
+    const minhaChave = dados.chave ? await obterChaveAtalho() : "";
     const chaveOk = !!dados.chave && !!minhaChave && dados.chave === minhaChave;
     const completo = cfg.campos.descricao && cfg.campos.valor &&
         document.getElementById(cfg.campos.descricao)?.value &&
@@ -176,13 +183,14 @@ async function copiarTexto(texto) {
     }
 }
 
-function renderizarAtalhos() {
+async function renderizarAtalhos() {
     const lista = document.getElementById("listaAtalhos");
     if (!lista) return;
     const base = baseUrlAtalhos();
     lista.textContent = "";
 
-    const chave = obterChaveAtalho() || gerarChaveAtalho();
+    const chave = (await obterChaveAtalho()) || (await gerarChaveAtalho());
+    lista.textContent = "";
 
     const aviso = document.createElement("div");
     aviso.className = "atalho-dica";
@@ -198,9 +206,9 @@ function renderizarAtalhos() {
     novaChave.className = "btn btn-secundario atalho-btn";
     novaChave.style.marginTop = "10px";
     novaChave.innerHTML = '<i class="fa-solid fa-rotate"></i> Gerar nova chave';
-    novaChave.addEventListener("click", () => {
-        gerarChaveAtalho();
-        renderizarAtalhos();
+    novaChave.addEventListener("click", async () => {
+        await gerarChaveAtalho();
+        await renderizarAtalhos();
         toastSucesso("Nova chave gerada. Copie os links de novo no atalho.");
     });
     avisoTxt.appendChild(novaChave);
