@@ -185,8 +185,8 @@
 
 .acao-btn.editar {
     color: var(--primary);
-    background: rgba(99, 102, 241, 0.08);
-    border-color: rgba(99, 102, 241, 0.2);
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.2);
 }
 
 .acao-btn.excluir {

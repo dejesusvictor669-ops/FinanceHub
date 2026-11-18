@@ -56,12 +56,12 @@ function renderizarGraficoMensal(dados) {
         },
         options: {
             responsive: true,
-            plugins: { legend: { labels: { color: "#F8FAFC" } } },
+            plugins: { legend: { labels: { color: coresGrafico().texto } } },
             scales: {
-                x: { ticks: { color: "#94A3B8" }, grid: { color: "rgba(255,255,255,0.05)" } },
+                x: { ticks: { color: coresGrafico().suave }, grid: { color: coresGrafico().grade } },
                 y: {
-                    ticks: { color: "#94A3B8", callback: (v) => "R$ " + v.toFixed(0) },
-                    grid: { color: "rgba(255,255,255,0.05)" }
+                    ticks: { color: coresGrafico().suave, callback: (v) => "R$ " + v.toFixed(0) },
+                    grid: { color: coresGrafico().grade }
                 }
             }
         }
@@ -88,7 +88,7 @@ function renderizarGraficoCategoria(dados) {
 
     const labels = Object.keys(gastosPorCategoria).map((k) => emojis[k] || k);
     const valores = Object.values(gastosPorCategoria);
-    const cores = ["#2563EB","#22C55E","#F59E0B","#EF4444","#8B5CF6","#EC4899"];
+    const cores = ["#2563EB","#22C55E","#F59E0B","#EF4444","#06B6D4","#F97316"];
 
     if (graficoCategoriaInstance) graficoCategoriaInstance.destroy();
 
@@ -99,14 +99,14 @@ function renderizarGraficoCategoria(dados) {
             datasets: [{
                 data: valores.length > 0 ? valores : [1],
                 backgroundColor: cores,
-                borderColor: "#1E293B",
+                borderColor: coresGrafico().fundo,
                 borderWidth: 3
             }]
         },
         options: {
             responsive: true,
             plugins: {
-                legend: { position: "bottom", labels: { color: "#F8FAFC", padding: 15 } },
+                legend: { position: "bottom", labels: { color: coresGrafico().texto, padding: 15 } },
                 tooltip: {
                     callbacks: {
                         label: (ctx) => {

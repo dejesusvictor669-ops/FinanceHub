@@ -14,7 +14,7 @@
 .logo-text {
     font-size: 24px;
     font-weight: 800;
-    background: linear-gradient(135deg, var(--primary), #EC4899);
+    background: linear-gradient(135deg, var(--primary), #22D3EE);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -146,18 +146,6 @@ nav .active {
 .botao-menu i::before { top: -7px; }
 .botao-menu i::after { top: 7px; }
 
-.botao-tema i {
-    font-size: 0;
-}
-
-.botao-tema i.fa-calculator::before { content: "🧮" !important; }
-.botao-tema i.fa-palette::before { content: "🎨" !important; }
-.botao-tema i.fa-calculator,
-.botao-tema i.fa-palette {
-    font-family: "Segoe UI Emoji", sans-serif !important;
-    font-size: 20px;
-    font-style: normal;
-}
 
 .overlay-menu {
     display: none;

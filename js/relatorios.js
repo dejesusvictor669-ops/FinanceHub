@@ -8,10 +8,6 @@ const MESES = [
 let graficoRelatorioInstance = null;
 let graficoComparacaoInstance = null;
 
-// ======================================
-// FECHAR MÊS
-// ======================================
-
 async function fecharMes() {
     const dados = await carregarDados();
     if (!dados.relatorios) dados.relatorios = [];
@@ -200,7 +196,7 @@ function renderizarGraficoRelatorio(r) {
         r.reserva,
         Math.max(r.saldo, 0)
     ];
-    const cores = ["#EF4444","#F59E0B","#EC4899","#2563EB","#8B5CF6","#22C55E"];
+    const cores = ["#EF4444","#F59E0B","#F97316","#2563EB","#06B6D4","#22C55E"];
 
     graficoRelatorioInstance = new Chart(ctx, {
         type: "doughnut",
@@ -209,7 +205,7 @@ function renderizarGraficoRelatorio(r) {
             datasets: [{
                 data: valores,
                 backgroundColor: cores,
-                borderColor: "#1E293B",
+                borderColor: coresGrafico().fundo,
                 borderWidth: 3
             }]
         },
@@ -218,7 +214,7 @@ function renderizarGraficoRelatorio(r) {
             plugins: {
                 legend: {
                     position: "bottom",
-                    labels: { color: "#F8FAFC", padding: 15 }
+                    labels: { color: coresGrafico().texto, padding: 15 }
                 },
                 tooltip: {
                     callbacks: {
@@ -301,7 +297,7 @@ async function renderizarGraficoComparacao(relatorios, ano) {
         options: {
             responsive: true,
             plugins: {
-                legend: { labels: { color: "#F8FAFC" } },
+                legend: { labels: { color: coresGrafico().texto } },
                 tooltip: {
                     callbacks: {
                         label: (ctx) => ` ${ctx.dataset.label}: ${formatarMoeda(ctx.raw)}`
@@ -309,10 +305,10 @@ async function renderizarGraficoComparacao(relatorios, ano) {
                 }
             },
             scales: {
-                x: { ticks: { color: "#94A3B8" }, grid: { color: "rgba(255,255,255,0.05)" } },
+                x: { ticks: { color: coresGrafico().suave }, grid: { color: coresGrafico().grade } },
                 y: {
-                    ticks: { color: "#94A3B8", callback: (v) => "R$ " + v.toFixed(0) },
-                    grid: { color: "rgba(255,255,255,0.05)" }
+                    ticks: { color: coresGrafico().suave, callback: (v) => "R$ " + v.toFixed(0) },
+                    grid: { color: coresGrafico().grade }
                 }
             }
         }

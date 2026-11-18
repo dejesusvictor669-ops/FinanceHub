@@ -19,13 +19,13 @@ async function renderizarSeletorPerfil() {
                 <div onclick="ativarPerfil('${p.id}')" style="
                     display:flex; align-items:center; gap:10px;
                     padding:10px 12px; border-radius:10px; cursor:pointer;
-                    background:${p.id === dados.perfilAtivo ? 'rgba(99,102,241,0.15)' : 'none'};
-                    border:1px solid ${p.id === dados.perfilAtivo ? 'rgba(99,102,241,0.3)' : 'transparent'};
+                    background:${p.id === dados.perfilAtivo ? 'rgba(16,185,129,0.15)' : 'none'};
+                    border:1px solid ${p.id === dados.perfilAtivo ? 'rgba(16,185,129,0.3)' : 'transparent'};
                     margin-bottom:5px; transition:.2s;
                 ">
                     <div style="
                         width:32px;height:32px;border-radius:50%;
-                        background:linear-gradient(135deg,var(--primary),#EC4899);
+                        background:linear-gradient(135deg,var(--primary),#22D3EE);
                         display:flex;align-items:center;justify-content:center;
                         font-size:14px;font-weight:700;
                     ">${sanitizar(p.nome.charAt(0).toUpperCase())}</div>

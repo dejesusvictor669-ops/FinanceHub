@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Renda+ | Controle Financeiro</title>
-    <meta name="theme-color" content="#6366F1">
+    <meta name="theme-color" content="#050E1A">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Renda+">
     <link rel="manifest" href="manifest.json">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -29,7 +29,7 @@
             <p style="color:var(--gray); margin-bottom:20px; font-size:13px;">Seu controle financeiro inteligente</p>
 
             <div class="login-descricao">
-                <h3>💡 O que você pode fazer aqui:</h3>
+                <h3>O que você pode fazer aqui:</h3>
                 <ul>
                     <li>💰 Controlar saldo e rendas</li>
                     <li>🧾 Lançar gastos por categoria</li>
@@ -123,9 +123,9 @@
                     <i class="fa-solid fa-chart-bar"></i>
                     Relatórios
                 </a>
-                                <a data-page="doacao">
+                <a data-page="doacao">
                     <i class="fa-solid fa-heart"></i>
-                    Apoiar ❤️
+                    Apoiar
                 </a>
             </nav>
 
@@ -161,33 +161,33 @@
             <section class="page" id="page-visao-geral">
                 <section class="cards">
                     <div class="card green">
-                        <h3>💰 Saldo disponível</h3>
+                        <h3><span class="card-icon"><i class="fa-solid fa-wallet"></i></span>Saldo disponível</h3>
                         <h2 id="saldo"></h2>
                     </div>
                     <div class="card blue">
-                        <h3>📈 Investimentos</h3>
+                        <h3><span class="card-icon"><i class="fa-solid fa-chart-line"></i></span>Investimentos</h3>
                         <h2 id="investimentos"></h2>
                     </div>
                     <div class="card">
-                        <h3>🛡️ Reserva de emergência</h3>
+                        <h3><span class="card-icon"><i class="fa-solid fa-shield-halved"></i></span>Reserva de emergência</h3>
                         <h2 id="reserva"></h2>
                         <div class="progress">
                             <span id="barraReserva"></span>
                         </div>
                     </div>
                     <div class="card red">
-                        <h3>🍔 Lazer restante</h3>
+                        <h3><span class="card-icon"><i class="fa-solid fa-champagne-glasses"></i></span>Lazer restante</h3>
                         <h2 id="lazer"></h2>
                     </div>
                 </section>
 
                 <div class="card" style="margin-top:25px;">
-                    <h3>📊 Resumo do mês</h3>
+                    <h3>Resumo do mês</h3>
                     <ul class="lista-itens" id="resumoMes"></ul>
                 </div>
 
                 <div class="card" style="margin-top:25px;">
-                    <h3>🎯 Metas em andamento</h3>
+                    <h3>Metas em andamento</h3>
                     <ul id="listaMetasResumo" class="lista-itens"></ul>
                 </div>
             </section>
@@ -195,7 +195,7 @@
             <!-- ENTRADAS -->
             <section class="page hidden" id="page-entradas">
                 <div class="card" style="margin-bottom:25px;">
-                    <h2>💼 Entradas e planejamento</h2>
+                    <h2>Entradas e planejamento</h2>
                     <p style="color:var(--gray);font-size:13px;margin-top:5px;margin-bottom:15px;">
                         Cadastre sua renda principal e ajuste os valores que orientam o seu orçamento.
                     </p>
@@ -208,7 +208,7 @@
                 </div>
 
                 <div class="card" style="margin-bottom:25px;">
-                    <h3>💵 Nova renda extra</h3>
+                    <h3>Nova renda extra</h3>
                     <p style="color:var(--gray); font-size:13px; margin-top:5px; margin-bottom:10px;">
                         Freelance, horas extras, bônus e outros valores além da renda principal.
                     </p>
@@ -221,7 +221,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>📋 Rendas extras cadastradas</h3>
+                    <h3>Rendas extras cadastradas</h3>
                     <ul id="listaRendas" class="lista-itens"></ul>
                 </div>
             </section>
@@ -229,7 +229,7 @@
             <!-- LISTA DE COMPRAS -->
             <section class="page hidden" id="page-compras">
                 <div class="card" style="margin-bottom:25px;">
-                    <h3>🛒 Nova lista de compras</h3>
+                    <h3>Nova lista de compras</h3>
                     <form id="formNovaLista" class="form-gasto">
                         <input type="text" id="nomeLista" placeholder="Nome da lista (ex: Mercado semana)" required>
                         <button type="submit" class="btn">Criar lista</button>
@@ -241,7 +241,7 @@
             <!-- GASTOS -->
             <section class="page hidden" id="page-gastos">
                 <div class="card" style="margin-bottom:25px;">
-                    <h3>➕ Novo gasto</h3>
+                    <h3>Novo gasto</h3>
                     <form id="formGasto" class="form-gasto">
                         <input type="text" id="gastoDescricao" placeholder="Descrição (ex: Mercado)" required>
                         <input type="number" id="gastoValor" placeholder="Valor (R$)" step="0.01" required>
@@ -265,7 +265,7 @@
                     </form>
                 </div>
                 <div class="card">
-                    <h3>📋 Gastos lançados</h3>
+                    <h3>Gastos lançados</h3>
                     <ul id="listaGastos" class="lista-itens"></ul>
                 </div>
             </section>
@@ -273,7 +273,7 @@
             <!-- CARTÕES -->
             <section class="page hidden" id="page-cartoes">
                 <div class="card" style="margin-bottom:25px;">
-                    <h3>➕ Nova compra no cartão</h3>
+                    <h3>Nova compra no cartão</h3>
                     <form id="formCartao" class="form-gasto">
                         <input type="text" id="cartaoDescricao" placeholder="Descrição (ex: Lazer e etc)" required>
                         <input type="number" id="cartaoValor" placeholder="Valor total (R$)" step="0.01" required>
@@ -287,7 +287,7 @@
                     </form>
                 </div>
                 <div class="card">
-                    <h3>💳 Compras parceladas</h3>
+                    <h3>Compras parceladas</h3>
                     <p style="color:var(--gray);font-size:13px;margin-top:5px;margin-bottom:10px;">
                         A parcela mensal é descontada automaticamente do saldo.
                     </p>
@@ -298,7 +298,7 @@
             <!-- INVESTIMENTOS -->
             <section class="page hidden" id="page-investimentos">
                 <div class="card" style="margin-bottom:25px;">
-                    <h3>➕ Novo aporte</h3>
+                    <h3>Novo aporte</h3>
                     <p style="color:var(--gray);font-size:13px;margin-top:5px;margin-bottom:10px;">
                         Aportes de <strong>Reserva de emergência</strong> aparecem no card de Reserva.
                     </p>
@@ -317,7 +317,7 @@
                     </form>
                 </div>
                 <div class="card">
-                    <h3>📈 Aportes realizados</h3>
+                    <h3>Aportes realizados</h3>
                     <ul id="listaInvestimentos" class="lista-itens"></ul>
                 </div>
             </section>
@@ -325,7 +325,7 @@
             <!-- METAS -->
             <section class="page hidden" id="page-metas">
                 <div class="card" style="margin-bottom:25px;">
-                    <h3>🎯 Nova meta</h3>
+                    <h3>Nova meta</h3>
                     <form id="formMeta" class="form-gasto">
                         <input type="text" id="metaNome" placeholder="Nome da meta (ex: Viagem, Carro)" required>
                         <input type="number" id="metaValorAlvo" placeholder="Valor alvo (R$)" step="0.01" required>
@@ -334,7 +334,7 @@
                     </form>
                 </div>
                 <div class="card">
-                    <h3>📋 Metas em andamento</h3>
+                    <h3>Metas em andamento</h3>
                     <ul id="listaMetas" class="lista-itens"></ul>
                 </div>
             </section>
@@ -342,7 +342,7 @@
             <!-- RELATÓRIOS -->
             <section class="page hidden" id="page-graficos">
                 <div class="card" style="margin-bottom:25px;">
-                    <h2>📊 Central de Relatórios</h2>
+                    <h2>Central de Relatórios</h2>
                     <br>
                     <div style="display:flex;gap:15px;flex-wrap:wrap;align-items:center;">
                         <button class="btn" onclick="fecharMes()">💾 Fechar mês atual</button>
@@ -350,21 +350,21 @@
                     </div>
                 </div>
                 <div class="card" style="margin-bottom:25px;">
-                    <h3>📅 Histórico Mensal</h3>
+                    <h3>Histórico Mensal</h3>
                     <div id="calendarioRelatorios" class="calendario-relatorios"></div>
                 </div>
                 <div class="card" style="margin-bottom:25px;display:none;" id="cardComparacao">
-                    <h3>📈 Comparativo anual</h3>
+                    <h3>Comparativo anual</h3>
                     <p style="color:var(--gray);font-size:13px;margin-bottom:15px;">Receita vs Gastos vs Saldo mês a mês</p>
                     <canvas id="graficoComparacao" height="120"></canvas>
                 </div>
                 <div id="dashboardHistorico"></div>
                 <div class="card" style="margin-top:25px;">
-                    <h3>📅 Gastos por mês (atual)</h3>
+                    <h3>Gastos por mês (atual)</h3>
                     <canvas id="graficoMensal" height="120"></canvas>
                 </div>
                 <div class="card" style="margin-top:25px;">
-                    <h3>🗂️ Gastos por categoria (atual)</h3>
+                    <h3>Gastos por categoria (atual)</h3>
                     <canvas id="graficoCategoria" height="120"></canvas>
                 </div>
             </section>
@@ -391,7 +391,7 @@
                 </div>
 
                 <div class="card" style="text-align:center;">
-                    <h3 style="margin-bottom:10px;">🤖 Desenvolvido com IA</h3>
+                    <h3 style="margin-bottom:10px;">Desenvolvido com IA</h3>
                     <p style="color:var(--gray); font-size:14px; line-height:1.6;">
                         Este sistema foi desenvolvido por <strong style="color:var(--text);">Victor</strong> com o auxílio de Inteligência Artificial.<br>
                         Todo o código foi construído colaborativamente entre humano e IA.
