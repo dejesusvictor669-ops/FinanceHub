@@ -1,6 +1,6 @@
 :root {
-    --primary: #10B981;
-    --primary-dark: #059669;
+    --primary: #2F7BFF;
+    --primary-dark: #1D5FE0;
     --bg: #0A0A0F;
     --sidebar: #0F0F18;
     --card: #13131A;
@@ -16,8 +16,8 @@
 }
 
 /* TEMAS */
+[data-tema="oceano"]   { --primary: #2F7BFF; --primary-dark: #1D5FE0; }
 [data-tema="esmeralda"]{ --primary: #10B981; --primary-dark: #059669; }
-[data-tema="oceano"]   { --primary: #3B82F6; --primary-dark: #2563EB; }
 [data-tema="ciano"]    { --primary: #06B6D4; --primary-dark: #0891B2; }
 [data-tema="laranja"]  { --primary: #F97316; --primary-dark: #EA580C; }
 [data-tema="vermelho"] { --primary: #EF4444; --primary-dark: #DC2626; }

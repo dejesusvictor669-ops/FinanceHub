@@ -1,31 +1,37 @@
 console.log("carregou: temas.js");
 
 const TEMAS = [
-    { id: "esmeralda", nome: "Esmeralda", cor: "#10B981" },
-    { id: "oceano",    nome: "Oceano",    cor: "#3B82F6" },
+    { id: "oceano",    nome: "Azul",      cor: "#2F7BFF" },
     { id: "ciano",     nome: "Ciano",     cor: "#06B6D4" },
+    { id: "esmeralda", nome: "Esmeralda", cor: "#10B981" },
     { id: "laranja",   nome: "Laranja",   cor: "#F97316" },
     { id: "vermelho",  nome: "Vermelho",  cor: "#EF4444" },
     { id: "ambar",     nome: "Âmbar",     cor: "#F59E0B" }
 ];
 
 function aplicarTema(temaId, claro) {
-    document.documentElement.setAttribute("data-tema", temaId || "esmeralda");
+    document.documentElement.setAttribute("data-tema", temaId || "oceano");
     if (claro) {
         document.body.classList.add("tema-claro");
     } else {
         document.body.classList.remove("tema-claro");
     }
-    localStorage.setItem("renda_tema", temaId || "esmeralda");
+    localStorage.setItem("renda_tema", temaId || "oceano");
     localStorage.setItem("renda_claro", claro ? "1" : "0");
 }
 
 // Nova identidade visual (v3, liquid glass): escuro + Esmeralda como padrão, uma única vez
 function migrarDesignV3() {
-    if (localStorage.getItem("renda_design_v3")) return;
-    localStorage.setItem("renda_tema", "esmeralda");
-    localStorage.setItem("renda_claro", "0");
-    localStorage.setItem("renda_design_v3", "1");
+    if (!localStorage.getItem("renda_design_v3")) {
+        localStorage.setItem("renda_claro", "0");
+        localStorage.setItem("renda_design_v3", "1");
+    }
+    // v4: azul vira a cor padrão (quem já escolheu outra cor mantém)
+    if (!localStorage.getItem("renda_design_v4")) {
+        const atual = localStorage.getItem("renda_tema");
+        if (!atual || atual === "esmeralda" || atual === "floresta") localStorage.setItem("renda_tema", "oceano");
+        localStorage.setItem("renda_design_v4", "1");
+    }
 }
 
 // Cores dos gráficos conforme o tema ativo
@@ -38,7 +44,7 @@ function coresGrafico() {
 
 function iniciarTema() {
     migrarDesignV3();
-    const temaId = localStorage.getItem("renda_tema") || "esmeralda";
+    const temaId = localStorage.getItem("renda_tema") || "oceano";
     const claro = localStorage.getItem("renda_claro") === "1";
     aplicarTema(temaId, claro);
     atualizarIconeTema(claro);
@@ -59,7 +65,7 @@ function abrirSeletorTema() {
         return;
     }
 
-    const temaAtual = localStorage.getItem("renda_tema") || "esmeralda";
+    const temaAtual = localStorage.getItem("renda_tema") || "oceano";
     const claro = localStorage.getItem("renda_claro") === "1";
 
     const seletor = document.createElement("div");
@@ -139,7 +145,7 @@ function selecionarTema(temaId) {
 
 function toggleClaro() {
     const claro = localStorage.getItem("renda_claro") !== "1";
-    const temaId = localStorage.getItem("renda_tema") || "esmeralda";
+    const temaId = localStorage.getItem("renda_tema") || "oceano";
     aplicarTema(temaId, claro);
     atualizarIconeTema(claro);
     document.getElementById("seletorTema")?.remove();
