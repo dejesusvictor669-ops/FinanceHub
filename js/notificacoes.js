@@ -52,7 +52,7 @@ async function verificarAlertas() {
     // Alerta de saldo negativo
     if (t.saldo < 0) {
         notificar(
-            "⚠️ Saldo negativo!",
+            "Saldo negativo!",
             `Seu saldo está em ${formatarMoeda(t.saldo)}. Revise seus gastos.`
         );
     }
@@ -60,7 +60,7 @@ async function verificarAlertas() {
     // Alerta de lazer estourado
     if (t.lazerRestante < 0) {
         notificar(
-            "🍔 Orçamento de lazer estourado!",
+            "Orçamento de lazer estourado!",
             `Você gastou ${formatarMoeda(Math.abs(t.lazerRestante))} a mais no lazer.`
         );
     }
@@ -70,13 +70,13 @@ async function verificarAlertas() {
         const pct = (meta.valorAtual / meta.valorAlvo) * 100;
         if (pct >= 90 && pct < 100) {
             notificar(
-                `🎯 Meta quase lá! "${meta.nome}"`,
+                `Meta quase lá! "${meta.nome}"`,
                 `Faltam apenas ${formatarMoeda(meta.valorAlvo - meta.valorAtual)} para concluir.`
             );
         }
         if (pct >= 100) {
             notificar(
-                `🎉 Meta concluída! "${meta.nome}"`,
+                `Meta concluída! "${meta.nome}"`,
                 `Parabéns! Você atingiu sua meta de ${formatarMoeda(meta.valorAlvo)}.`
             );
         }
@@ -87,7 +87,7 @@ async function verificarAlertas() {
         const pctReserva = (t.totalReserva / dados.metaReserva) * 100;
         if (pctReserva < 10) {
             notificar(
-                "🛡️ Reserva de emergência baixa",
+                "Reserva de emergência baixa",
                 `Sua reserva está em ${pctReserva.toFixed(0)}% da meta. Considere aportar mais.`
             );
         }

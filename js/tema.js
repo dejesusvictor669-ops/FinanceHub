@@ -85,7 +85,7 @@ function abrirSeletorTema() {
 
     seletor.innerHTML = `
         <p style="font-size:12px;color:var(--gray);margin-bottom:14px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">
-            🎨 Escolha seu tema
+            <i class="fa-solid fa-palette"></i> Escolha seu tema
         </p>
 
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:15px;">
@@ -105,7 +105,7 @@ function abrirSeletorTema() {
         </div>
 
         <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border);">
-            <span style="font-size:13px;color:var(--gray);">☀️ Tema claro</span>
+            <span style="font-size:13px;color:var(--gray);"><i class="fa-solid fa-sun"></i> Tema claro</span>
             <div onclick="toggleClaro()" style="
                 width:46px;height:26px;border-radius:999px;
                 background:${claro ? 'var(--primary)' : 'rgba(255,255,255,0.1)'};

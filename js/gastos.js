@@ -24,7 +24,7 @@ async function renderizarGastos() {
 
         const info = document.createElement("small");
         info.style.color = "var(--gray)";
-        info.textContent = `${gasto.categoria} • ${formatarData(gasto.data)}${gasto.recorrente ? " • 🔁 Recorrente" : ""}`;
+        info.textContent = `${gasto.categoria} • ${formatarData(gasto.data)}${gasto.recorrente ? " • Recorrente" : ""}`;
 
         const infoDiv = document.createElement("div");
         infoDiv.className = "info";

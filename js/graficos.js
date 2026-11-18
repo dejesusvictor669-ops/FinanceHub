@@ -78,12 +78,12 @@ function renderizarGraficoCategoria(dados) {
     });
 
     const emojis = {
-        moradia: "🏠 Moradia",
-        contas: "💡 Contas",
-        mercado: "🛒 Mercado",
-        lazer: "🎮 Lazer",
-        cartao: "💳 Cartão",
-        outros: "📦 Outros"
+        moradia: "Moradia",
+        contas: "Contas",
+        mercado: "Mercado",
+        lazer: "Lazer",
+        cartao: "Cartão",
+        outros: "Outros"
     };
 
     const labels = Object.keys(gastosPorCategoria).map((k) => emojis[k] || k);

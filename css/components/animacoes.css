@@ -7,11 +7,12 @@
 /* ======================================
    RESPEITO AO prefers-reduced-motion
 ====================================== */
+/* Quem pede menos movimento não vê animações automáticas (entradas, fundo).
+   Efeitos que respondem ao mouse/toque (hover, clique) continuam ativos. */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
     }
 }
 
@@ -108,10 +109,10 @@
    CARDS — entrada em cascata
 ====================================== */
 
-.cards .card:nth-child(1) { animation: fadeInUp 0.35s ease 0.05s both; }
-.cards .card:nth-child(2) { animation: fadeInUp 0.35s ease 0.12s both; }
-.cards .card:nth-child(3) { animation: fadeInUp 0.35s ease 0.19s both; }
-.cards .card:nth-child(4) { animation: fadeInUp 0.35s ease 0.26s both; }
+.cards .card:nth-child(1) { animation: fadeInUp 0.35s ease 0.05s backwards; }
+.cards .card:nth-child(2) { animation: fadeInUp 0.35s ease 0.12s backwards; }
+.cards .card:nth-child(3) { animation: fadeInUp 0.35s ease 0.19s backwards; }
+.cards .card:nth-child(4) { animation: fadeInUp 0.35s ease 0.26s backwards; }
 
 /* card genérico fora da grade principal */
 .card {

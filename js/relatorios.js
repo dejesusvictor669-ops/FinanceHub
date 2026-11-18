@@ -97,7 +97,7 @@ async function carregarRelatorios() {
             <div class="mes-relatorio ${fechado ? 'mes-fechado' : 'mes-aberto'}"
                  onclick="abrirRelatorio(${ano}, ${i})">
                 <h4>${MESES[i]}</h4>
-                <p>${fechado ? '✅ Fechado' : '📂 Em aberto'}</p>
+                <p>${fechado ? '<i class="fa-solid fa-circle-check"></i> Fechado' : '<i class="fa-solid fa-folder-open"></i> Em aberto'}</p>
                 ${fechado ? `<small>${sanitizar(rel.fechadoEm)}</small>` : ''}
             </div>
         `;
@@ -120,7 +120,7 @@ async function abrirRelatorio(ano, mes) {
     if (!r) {
         painel.innerHTML = `
             <div class="cardResumo">
-                <h3>📂 ${MESES[mes]} ${ano}</h3>
+                <h3><i class="fa-solid fa-folder-open"></i> ${MESES[mes]} ${ano}</h3>
                 <p>Este mês ainda não foi fechado.</p>
             </div>
         `;
@@ -136,38 +136,38 @@ async function abrirRelatorio(ano, mes) {
 
     painel.innerHTML = `
         <div class="cardResumo" style="grid-column:1/-1;">
-            <h2>📋 ${MESES[r.mes]} ${r.ano}</h2>
+            <h2><i class="fa-solid fa-clipboard-list"></i> ${MESES[r.mes]} ${r.ano}</h2>
             <p style="color:var(--gray)">Fechado em ${r.fechadoEm}</p>
         </div>
 
-        ${linha('💼', 'Salário base', r.salario, 'var(--success)')}
-        ${linha('💵', 'Rendas extras', r.rendaExtra, 'var(--success)')}
-        ${linha('🧾', 'Gastos normais', r.gastosNormais, 'var(--danger)')}
-        ${linha('🎮', 'Gastos de lazer', r.gastosLazer, 'var(--danger)')}
-        ${linha('💳', 'Parcelas cartão', r.cartoes, 'var(--danger)')}
-        ${linha('📈', 'Investimentos', r.investimentos, 'var(--warning)')}
-        ${linha('🛡️', 'Reserva', r.reserva, 'var(--warning)')}
-        ${linha('🍔', 'Orçamento lazer', r.lazerOrcamento, 'var(--warning)')}
-        ${linha('💰', 'Saldo final', r.saldo, r.saldo >= 0 ? 'var(--success)' : 'var(--danger)')}
+        ${linha('<i class="fa-solid fa-briefcase"></i>', 'Salário base', r.salario, 'var(--success)')}
+        ${linha('<i class="fa-solid fa-money-bill-wave"></i>', 'Rendas extras', r.rendaExtra, 'var(--success)')}
+        ${linha('<i class="fa-solid fa-receipt"></i>', 'Gastos normais', r.gastosNormais, 'var(--danger)')}
+        ${linha('<i class="fa-solid fa-gamepad"></i>', 'Gastos de lazer', r.gastosLazer, 'var(--danger)')}
+        ${linha('<i class="fa-solid fa-credit-card"></i>', 'Parcelas cartão', r.cartoes, 'var(--danger)')}
+        ${linha('<i class="fa-solid fa-chart-line"></i>', 'Investimentos', r.investimentos, 'var(--warning)')}
+        ${linha('<i class="fa-solid fa-shield-halved"></i>', 'Reserva', r.reserva, 'var(--warning)')}
+        ${linha('<i class="fa-solid fa-champagne-glasses"></i>', 'Orçamento lazer', r.lazerOrcamento, 'var(--warning)')}
+        ${linha('<i class="fa-solid fa-wallet"></i>', 'Saldo final', r.saldo, r.saldo >= 0 ? 'var(--success)' : 'var(--danger)')}
 
         <div class="cardResumo">
-            <h3>📊 Quantidades</h3>
-            <p>🧾 ${r.qtdGastos} gastos</p>
-            <p>💳 ${r.qtdCartoes} compras no cartão</p>
-            <p>📈 ${r.qtdInvestimentos} aportes</p>
-            <p>💵 ${r.qtdRendas} rendas extras</p>
-            <p>🎯 ${r.qtdMetas} metas</p>
+            <h3><i class="fa-solid fa-chart-pie"></i> Quantidades</h3>
+            <p><i class="fa-solid fa-receipt"></i> ${r.qtdGastos} gastos</p>
+            <p><i class="fa-solid fa-credit-card"></i> ${r.qtdCartoes} compras no cartão</p>
+            <p><i class="fa-solid fa-chart-line"></i> ${r.qtdInvestimentos} aportes</p>
+            <p><i class="fa-solid fa-money-bill-wave"></i> ${r.qtdRendas} rendas extras</p>
+            <p><i class="fa-solid fa-bullseye"></i> ${r.qtdMetas} metas</p>
         </div>
 
         <div class="cardResumo" style="grid-column:1/-1;">
-            <h3>📊 Distribuição do mês</h3>
+            <h3><i class="fa-solid fa-chart-pie"></i> Distribuição do mês</h3>
             <canvas id="graficoRelatorio" height="100"></canvas>
         </div>
 
         <div class="cardResumo">
-            <h3>⚙️ Ações</h3>
+            <h3><i class="fa-solid fa-gear"></i> Ações</h3>
             <button class="btn" onclick="reabrirMes(${r.ano}, ${r.mes})">
-                🔓 Reabrir este mês
+                <i class="fa-solid fa-lock-open"></i> Reabrir este mês
             </button>
         </div>
     `;

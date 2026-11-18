@@ -97,7 +97,7 @@ function abrirModalDoacao() {
     modal.innerHTML = `
         <div style="background:var(--card);border:1px solid var(--border);border-radius:24px;padding:35px 30px;max-width:380px;width:100%;text-align:center;position:relative;">
             <button onclick="fecharModalDoacao()" style="position:absolute;top:15px;right:15px;background:none;border:none;color:var(--gray);font-size:20px;cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-            <div style="font-size:40px;margin-bottom:15px;">☕</div>
+            <div class="doacao-icone"><i class="fa-solid fa-mug-hot"></i></div>
             <h2 style="font-size:20px;margin-bottom:10px;">Gostou do Renda+?</h2>
             <p style="color:var(--gray);font-size:14px;line-height:1.6;margin-bottom:20px;">Este sistema é <strong style="color:var(--text)">100% gratuito</strong>. Se ele está te ajudando, considere fazer uma doação!</p>
             <div id="qr-modal-doacao" style="margin-bottom:15px;"></div>

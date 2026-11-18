@@ -47,7 +47,7 @@ async function adicionarValorMeta(id) {
     await renderizarMetas();
 
     if (meta.valorAtual >= meta.valorAlvo) {
-        toastSucesso(`🎉 Meta "${meta.nome}" concluída!`);
+        toastSucesso(`Meta "${meta.nome}" concluída!`);
     } else {
         toastSucesso("Valor adicionado à meta!");
     }

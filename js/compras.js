@@ -18,7 +18,7 @@ async function renderizarCompras() {
     if (abertas.length > 0) {
         const titulo = document.createElement("h3");
         titulo.style.cssText = "margin-bottom:15px; color:var(--gray);";
-        titulo.textContent = "📂 Listas abertas";
+        titulo.textContent = "Listas abertas";
         container.appendChild(titulo);
         abertas.forEach(l => container.appendChild(montarCartaoLista(l)));
     }
@@ -26,7 +26,7 @@ async function renderizarCompras() {
     if (finalizadas.length > 0) {
         const titulo = document.createElement("h3");
         titulo.style.cssText = "margin:25px 0 15px; color:var(--gray);";
-        titulo.textContent = "✅ Listas finalizadas";
+        titulo.textContent = "Listas finalizadas";
         container.appendChild(titulo);
         finalizadas.forEach(l => container.appendChild(montarCartaoLista(l)));
     }
@@ -125,7 +125,7 @@ function montarCartaoLista(lista) {
         const btnFinalizar = document.createElement("button");
         btnFinalizar.className = "btn";
         btnFinalizar.style.background = "var(--success)";
-        btnFinalizar.textContent = "✅ Finalizar";
+        btnFinalizar.textContent = "Finalizar";
         btnFinalizar.addEventListener("click", () => finalizarLista(lista.id));
 
         const acoes = document.createElement("div");
@@ -200,7 +200,7 @@ async function finalizarLista(listaId) {
     if (valor > 0) {
         dados.gastos.push({
             id: gerarId(),
-            descricao: `🛒 ${lista.nome}`,
+            descricao: `${lista.nome}`,
             valor,
             categoria: "mercado",
             data: hojeISO()

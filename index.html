@@ -31,13 +31,13 @@
             <div class="login-descricao">
                 <h3>O que você pode fazer aqui:</h3>
                 <ul>
-                    <li>💰 Controlar saldo e rendas</li>
-                    <li>🧾 Lançar gastos por categoria</li>
-                    <li>💳 Acompanhar parcelas do cartão</li>
-                    <li>📈 Registrar investimentos</li>
-                    <li>🎯 Criar e acompanhar metas</li>
-                    <li>📊 Ver relatórios mensais</li>
-                    <li>☁️ Dados salvos na nuvem</li>
+                    <li><i class="fa-solid fa-wallet"></i> Controlar saldo e rendas</li>
+                    <li><i class="fa-solid fa-receipt"></i> Lançar gastos por categoria</li>
+                    <li><i class="fa-solid fa-credit-card"></i> Acompanhar parcelas do cartão</li>
+                    <li><i class="fa-solid fa-chart-line"></i> Registrar investimentos</li>
+                    <li><i class="fa-solid fa-bullseye"></i> Criar e acompanhar metas</li>
+                    <li><i class="fa-solid fa-chart-pie"></i> Ver relatórios mensais</li>
+                    <li><i class="fa-solid fa-cloud"></i> Dados salvos na nuvem</li>
                 </ul>
             </div>
 
@@ -159,23 +159,35 @@
 
             <!-- VISÃO GERAL -->
             <section class="page" id="page-visao-geral">
+                <div class="acoes-rapidas" aria-label="Ações rápidas">
+                    <button type="button" class="acao-rapida" data-ir="gastos" data-foco="gastoDescricao"><i class="fa-solid fa-receipt"></i>Novo gasto</button>
+                    <button type="button" class="acao-rapida" data-ir="entradas" data-foco="rendaDescricao"><i class="fa-solid fa-sack-dollar"></i>Nova renda</button>
+                    <button type="button" class="acao-rapida" data-ir="cartoes" data-foco="cartaoDescricao"><i class="fa-solid fa-credit-card"></i>Compra no cartão</button>
+                    <button type="button" class="acao-rapida" data-ir="investimentos" data-foco="investDescricao"><i class="fa-solid fa-seedling"></i>Novo aporte</button>
+                    <button type="button" class="acao-rapida" data-ir="metas" data-foco="metaNome"><i class="fa-solid fa-bullseye"></i>Nova meta</button>
+                    <button type="button" class="acao-rapida" data-ir="compras" data-foco="nomeLista"><i class="fa-solid fa-cart-shopping"></i>Lista de compras</button>
+                </div>
                 <section class="cards">
-                    <div class="card green">
+                    <div class="card green card-link" data-destino="menu:saldo" role="button" tabindex="0" aria-label="Saldo disponível">
+                        <i class="fa-solid fa-arrow-right card-seta" aria-hidden="true"></i>
                         <h3><span class="card-icon"><i class="fa-solid fa-wallet"></i></span>Saldo disponível</h3>
                         <h2 id="saldo"></h2>
                     </div>
-                    <div class="card blue">
+                    <div class="card blue card-link" data-destino="investimentos" role="button" tabindex="0" aria-label="Investimentos">
+                        <i class="fa-solid fa-arrow-right card-seta" aria-hidden="true"></i>
                         <h3><span class="card-icon"><i class="fa-solid fa-chart-line"></i></span>Investimentos</h3>
                         <h2 id="investimentos"></h2>
                     </div>
-                    <div class="card">
+                    <div class="card card-link" data-destino="investimentos" role="button" tabindex="0" aria-label="Reserva de emergência">
+                        <i class="fa-solid fa-arrow-right card-seta" aria-hidden="true"></i>
                         <h3><span class="card-icon"><i class="fa-solid fa-shield-halved"></i></span>Reserva de emergência</h3>
                         <h2 id="reserva"></h2>
                         <div class="progress">
                             <span id="barraReserva"></span>
                         </div>
                     </div>
-                    <div class="card red">
+                    <div class="card red card-link" data-destino="menu:lazer" role="button" tabindex="0" aria-label="Lazer restante">
+                        <i class="fa-solid fa-arrow-right card-seta" aria-hidden="true"></i>
                         <h3><span class="card-icon"><i class="fa-solid fa-champagne-glasses"></i></span>Lazer restante</h3>
                         <h2 id="lazer"></h2>
                     </div>
@@ -246,17 +258,17 @@
                         <input type="text" id="gastoDescricao" placeholder="Descrição (ex: Mercado)" required>
                         <input type="number" id="gastoValor" placeholder="Valor (R$)" step="0.01" required>
                         <select id="gastoCategoria">
-                            <option value="moradia">🏠 Moradia</option>
-                            <option value="contas">💡 Contas</option>
-                            <option value="mercado">🛒 Mercado</option>
-                            <option value="lazer">🎮 Lazer</option>
-                            <option value="cartao">💳 Cartão</option>
-                            <option value="outros">📦 Outros</option>
+                            <option value="moradia">Moradia</option>
+                            <option value="contas">Contas</option>
+                            <option value="mercado">Mercado</option>
+                            <option value="lazer">Lazer</option>
+                            <option value="cartao">Cartão</option>
+                            <option value="outros">Outros</option>
                         </select>
                         <input type="date" id="gastoData">
                         <label class="campo-recorrente">
                             <input type="checkbox" id="gastoRecorrente" style="width:16px;height:16px;accent-color:var(--primary);">
-                            🔁 Gasto recorrente
+                            <i class="fa-solid fa-repeat"></i> Gasto recorrente
                         </label>
                         <div class="form-gasto-acoes">
                             <button type="submit" class="btn">Adicionar</button>
@@ -309,8 +321,8 @@
                         <label for="investTipo" style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;width:100%;color:var(--gray);font-size:14px;">
                             <strong style="color:var(--text);">Tipo do investimento:</strong>
                             <select id="investTipo" style="flex:1 1 100%;min-width:0;">
-                            <option value="reserva">🛡️ Reserva de emergência</option>
-                            <option value="investimento">📈 Investimento</option>
+                            <option value="reserva">Reserva de emergência</option>
+                            <option value="investimento">Investimento</option>
                             </select>
                         </label>
                         <button type="submit" class="btn">Adicionar</button>
@@ -345,7 +357,7 @@
                     <h2>Central de Relatórios</h2>
                     <br>
                     <div style="display:flex;gap:15px;flex-wrap:wrap;align-items:center;">
-                        <button class="btn" onclick="fecharMes()">💾 Fechar mês atual</button>
+                        <button class="btn" onclick="fecharMes()"><i class="fa-solid fa-floppy-disk"></i> Fechar mês atual</button>
                         <select id="anoRelatorio" onchange="carregarRelatorios()" style="padding:12px;border-radius:12px;background:var(--bg);color:var(--text);min-width:120px;"></select>
                     </div>
                 </div>
@@ -372,11 +384,11 @@
             <section class="page hidden" id="page-doacao">
 
                 <div class="card" style="text-align:center; padding:40px 30px; margin-bottom:25px;">
-                    <div style="font-size:50px; margin-bottom:20px;">☕</div>
+                    <div class="doacao-icone"><i class="fa-solid fa-mug-hot"></i></div>
                     <h2 style="font-size:24px; font-weight:700; margin-bottom:12px;">Me pague um café!</h2>
                     <p style="color:var(--gray); font-size:15px; line-height:1.7; max-width:480px; margin:0 auto 25px;">
                         O <strong style="color:var(--text);">Renda+</strong> é gratuito e foi construído com muito esforço e com o auxílio de <strong style="color:var(--primary);">Inteligência Artificial</strong>.<br><br>
-                        Se o sistema está te ajudando a organizar sua vida financeira, considere fazer uma doação de qualquer valor. Cada contribuição me motiva a continuar melhorando! 💙
+                        Se o sistema está te ajudando a organizar sua vida financeira, considere fazer uma doação de qualquer valor. Cada contribuição me motiva a continuar melhorando!
                     </p>
 
                     <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:25px;" id="botoesValorDoacao">
