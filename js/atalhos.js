@@ -35,6 +35,22 @@ const LISTA_ATALHOS = [
     { acao: "calculadora", titulo: "Calculadora",    icone: "fa-calculator",     desc: "Abre a calculadora do app." }
 ];
 
+// ----- Chave secreta: só links com a SUA chave salvam sozinhos -----
+const CHAVE_SECRETA = "renda_atalho_chave";
+const ACOES_AUTOMATICAS = ["gasto", "renda", "cartao", "aporte"];
+
+function obterChaveAtalho() {
+    try { return localStorage.getItem(CHAVE_SECRETA) || ""; } catch (e) { return ""; }
+}
+
+function gerarChaveAtalho() {
+    const bytes = new Uint8Array(12);
+    crypto.getRandomValues(bytes);
+    const chave = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+    try { localStorage.setItem(CHAVE_SECRETA, chave); } catch (e) { return ""; }
+    return chave;
+}
+
 function atalhoTexto(valor) {
     return String(valor ?? "").replace(/[\u0000-\u001F\u007F<>]/g, "").trim().slice(0, 100);
 }
@@ -55,11 +71,11 @@ function capturarAtalhoDaURL() {
         const acao = p.get("acao");
         if (!acao || !MAPA_ATALHO[acao]) return;
         const dados = { acao, t: Date.now() };
-        for (const k of ["valor", "descricao", "categoria", "tipo"]) {
+        for (const k of ["valor", "descricao", "categoria", "tipo", "chave"]) {
             if (p.has(k)) dados[k] = p.get(k);
         }
         sessionStorage.setItem(CHAVE_ATALHO, JSON.stringify(dados));
-        ["acao", "valor", "descricao", "categoria", "tipo"].forEach((k) => p.delete(k));
+        ["acao", "valor", "descricao", "categoria", "tipo", "chave"].forEach((k) => p.delete(k));
         const resto = p.toString();
         history.replaceState(null, "", location.pathname + (resto ? "?" + resto : "") + location.hash);
     } catch (e) {
@@ -114,9 +130,23 @@ async function aplicarAtalhoPendente() {
         cartao.classList.add("atalho-destaque");
         setTimeout(() => cartao.classList.remove("atalho-destaque"), 3000);
     }
+    // Modo automático: chave correta + ação de registro + valor e descrição presentes
+    const minhaChave = obterChaveAtalho();
+    const chaveOk = !!dados.chave && !!minhaChave && dados.chave === minhaChave;
+    const completo = cfg.campos.descricao && cfg.campos.valor &&
+        document.getElementById(cfg.campos.descricao)?.value &&
+        document.getElementById(cfg.campos.valor)?.value;
+    if (chaveOk && ACOES_AUTOMATICAS.includes(dados.acao) && completo && formulario) {
+        formulario.requestSubmit();
+        if (typeof toastSucesso === "function") toastSucesso("Registrado automaticamente pelo atalho.");
+        return;
+    }
+    if (dados.chave && !chaveOk && typeof toastErro === "function") {
+        toastErro("Chave do atalho inválida. Copie o link de novo na página Atalhos.");
+    }
     primeiroVazio?.focus({ preventScroll: true });
 
-    if (typeof toastInfo === "function") {
+    if (typeof toastInfo === "function" && !(dados.chave && !chaveOk)) {
         toastInfo(preenchidos > 0
             ? "Atalho aplicado: confira os dados e toque em Adicionar."
             : "Atalho aberto: preencha os dados e toque em Adicionar.");
@@ -152,9 +182,35 @@ function renderizarAtalhos() {
     const base = baseUrlAtalhos();
     lista.textContent = "";
 
+    const chave = obterChaveAtalho() || gerarChaveAtalho();
+
+    const aviso = document.createElement("div");
+    aviso.className = "atalho-dica";
+    aviso.style.gridColumn = "1 / -1";
+    aviso.style.margin = "0";
+    const avisoIco = document.createElement("i");
+    avisoIco.className = "fa-solid fa-key";
+    const avisoTxt = document.createElement("div");
+    avisoTxt.innerHTML = "<strong>Modo automático:</strong> os links de gasto, renda, cartão e aporte já levam sua chave secreta e <em>salvam sozinhos</em>, sem tocar em Adicionar. " +
+        "Não compartilhe esses links. Abra esta página no mesmo navegador em que o atalho abre o app (Safari). ";
+    const novaChave = document.createElement("button");
+    novaChave.type = "button";
+    novaChave.className = "btn btn-secundario atalho-btn";
+    novaChave.style.marginTop = "10px";
+    novaChave.innerHTML = '<i class="fa-solid fa-rotate"></i> Gerar nova chave';
+    novaChave.addEventListener("click", () => {
+        gerarChaveAtalho();
+        renderizarAtalhos();
+        toastSucesso("Nova chave gerada. Copie os links de novo no atalho.");
+    });
+    avisoTxt.appendChild(novaChave);
+    aviso.append(avisoIco, avisoTxt);
+    lista.appendChild(aviso);
+
     LISTA_ATALHOS.forEach((a) => {
         const linkBasico = `${base}/?acao=${a.acao}`;
-        const linkExemplo = linkBasico + (a.extra || "");
+        const sufixoChave = ACOES_AUTOMATICAS.includes(a.acao) ? `&chave=${chave}` : "";
+        const linkExemplo = linkBasico + (a.extra || "") + sufixoChave;
 
         const item = document.createElement("div");
         item.className = "atalho-item";
