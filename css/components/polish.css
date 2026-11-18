@@ -742,3 +742,113 @@ body:has(.tela-login:not(.hidden)) .watermark { display: none; }
 
 body.tema-claro .destinos-overlay { background: rgba(120, 160, 190, .35); }
 body.tema-claro .page:has(.card:not(:has(form, canvas, input, select)):hover) > .card:not(:hover) { opacity: .8; }
+
+/* ======================================
+   PÃGINA DE ATALHOS DO IPHONE
+====================================== */
+.atalho-intro { color: var(--gray); font-size: 14.5px; line-height: 1.65; margin: 0; }
+.atalho-intro strong, .atalho-intro em { color: var(--text); font-style: normal; }
+
+.passos { list-style: none; display: flex; flex-direction: column; gap: 12px; margin: 4px 0 0; padding: 0; counter-reset: passo; }
+.passos li {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--gray);
+}
+.passos li strong { color: var(--text); }
+.passos li em { color: var(--text); font-style: normal; font-weight: 600; }
+.passo-num {
+    flex: none;
+    width: 30px; height: 30px;
+    border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--primary), var(--accent-2));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 6px 14px color-mix(in srgb, var(--primary) 35%, transparent);
+}
+
+.atalho-dica {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin: 16px 0 0;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--primary) 9%, transparent);
+    border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+    color: var(--gray);
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+.atalho-dica i { color: var(--primary); margin-top: 3px; }
+.atalho-dica strong, .atalho-dica em { color: var(--text); font-style: normal; }
+.atalho-dica code, .atalho-intro code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    padding: 1px 6px;
+    border-radius: 6px;
+    background: var(--surface-2);
+    color: var(--text);
+}
+
+.atalho-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+.atalho-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 20px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
+    min-width: 0;
+}
+.atalho-topo { display: flex; align-items: center; gap: 12px; }
+.atalho-txt { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.atalho-txt strong { font-size: 15px; font-weight: 700; }
+.atalho-txt small { color: var(--gray); font-size: 12.5px; line-height: 1.4; }
+.atalho-link {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, .18);
+    border: 1px solid var(--border);
+    color: var(--gray);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 11.5px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    user-select: all;
+    -webkit-user-select: all;
+}
+body.tema-claro .atalho-link { background: rgba(11, 31, 51, .05); }
+.atalho-acoes { display: flex; gap: 8px; flex-wrap: wrap; }
+.atalho-btn { flex: 1; padding: 10px 14px; font-size: 13px; }
+.atalho-btn i { margin-right: 6px; }
+
+/* FormulÃ¡rio preenchido por um atalho: pulso de destaque */
+.card.atalho-destaque {
+    border-color: color-mix(in srgb, var(--primary) 70%, transparent);
+    animation: atalhoPulso 1.1s ease-in-out 3;
+}
+@keyframes atalhoPulso {
+    0%, 100% { box-shadow: var(--glass-shadow), 0 0 0 0 color-mix(in srgb, var(--primary) 0%, transparent); }
+    50%      { box-shadow: var(--glass-shadow), 0 0 0 6px color-mix(in srgb, var(--primary) 32%, transparent), 0 0 42px color-mix(in srgb, var(--primary) 40%, transparent); }
+}
+
+@media (max-width: 700px) {
+    .atalho-lista { grid-template-columns: 1fr; }
+    .passos li { padding: 13px 14px; }
+    .atalho-btn { min-height: 46px; }
+}
+

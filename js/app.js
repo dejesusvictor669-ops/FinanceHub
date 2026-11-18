@@ -27,6 +27,8 @@ async function mostrarApp() {
     await iniciarApp();
     telaLogin.classList.add("hidden");
     appContainer.classList.remove("hidden");
+    // Se o app foi aberto por um Atalho do iPhone, vai direto para a tela certa
+    aplicarAtalhoPendente();
     const dashboard = document.getElementById("page-visao-geral");
     if (dashboard) {
         dashboard.classList.remove("page-entrando");
@@ -150,6 +152,7 @@ function mostrarPagina(nomePagina) {
         if (nomePagina === "metas") await renderizarMetas();
         if (nomePagina === "entradas") await renderizarRendas();
         if (nomePagina === "compras") await renderizarCompras();
+        if (nomePagina === "atalhos") renderizarAtalhos();
         if (nomePagina === "graficos") {
             await renderizarGraficos();
             await carregarRelatorios();

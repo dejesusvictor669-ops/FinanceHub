@@ -1,10 +1,60 @@
 {
-    "name": "FinanceHub",
-    "short_name": "FinanceHub",
-    "description": "Seu controle financeiro pessoal",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#0F172A",
-    "theme_color": "#2563EB",
-    "orientation": "portrait"
+  "name": "Renda+ | Controle Financeiro",
+  "short_name": "Renda+",
+  "description": "Seu controle financeiro pessoal",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#050E1A",
+  "theme_color": "#050E1A",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Registrar gasto",
+      "short_name": "Gasto",
+      "url": "/?acao=gasto",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Nova renda",
+      "short_name": "Renda",
+      "url": "/?acao=renda",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Compra no cartão",
+      "short_name": "Cartão",
+      "url": "/?acao=cartao",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
 }
