@@ -8,7 +8,7 @@ Aplicativo web de controle financeiro pessoal, com visual "liquid glass" e insta
 - **Entradas e gastos:** renda extra, gastos por categoria e compras no cartão.
 - **Investimentos e metas:** aportes (reserva ou investimento) e metas com progresso.
 - **Relatórios e gráficos**, lista de compras e calculadora.
-- **Atalhos do iPhone:** links que abrem o app já preenchido, ou que salvam sozinhos com uma chave secreta da sua conta (página *Atalhos* dentro do app).
+- **Atalhos (iPhone e Android):** no Android, atalhos ao segurar o ícone do app instalado; no iPhone, Siri e toque nas costas. Usam links que abrem o app já preenchido, ou que salvam sozinhos com uma chave secreta da sua conta (página *Atalhos* dentro do app).
 - **Segurança de login:** limite de tentativas com bloqueio progressivo.
 - Temas de cor (azul por padrão), modo escuro e claro.
 
