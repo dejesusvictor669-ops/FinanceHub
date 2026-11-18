@@ -4,5 +4,9 @@ import financeHubLegacyPlugin from "./vite-plugin-financehub.js";
 export default defineConfig({
   plugins: [financeHubLegacyPlugin()],
   publicDir: "assets",
-  build: { outDir: "dist", emptyOutDir: true }
+  build: {
+    outDir: "dist",
+    emptyOutDir: true,
+    rollupOptions: { input: { main: "index.html", landing: "landing.html" } }
+  }
 });
