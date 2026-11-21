@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade | Renda+</title>
+    <meta name="description" content="Como o Renda+ coleta, usa e protege seus dados pessoais, conforme a LGPD (Lei 13.709/2018).">
+    <meta name="theme-color" content="#050E1A">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #2F7BFF; --accent: #22D3EE; --bg: #050E1A; --text: #F2F7FF; --gray: #93A8C4; --border: rgba(255,255,255,.12); }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            background: var(--bg); color: var(--text); line-height: 1.75; -webkit-font-smoothing: antialiased;
+        }
+        body::before {
+            content: ''; position: fixed; inset: -20%; z-index: -1; pointer-events: none;
+            background:
+                radial-gradient(40% 40% at 15% 15%, rgba(47,123,255,.30), transparent 70%),
+                radial-gradient(35% 35% at 85% 10%, rgba(34,211,238,.18), transparent 70%);
+        }
+        .topo {
+            max-width: 860px; margin: 0 auto; padding: 22px 20px 0;
+            display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+        }
+        .topo a { color: var(--gray); text-decoration: none; font-size: 14px; font-weight: 500; }
+        .topo a:hover { color: var(--text); }
+        .logo { font-weight: 800; font-size: 20px; color: var(--text) !important; }
+        main {
+            max-width: 860px; margin: 24px auto 40px; padding: 38px 34px; border-radius: 28px;
+            background: linear-gradient(160deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+            border: 1px solid var(--border);
+            box-shadow: 0 24px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.14);
+            -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+        }
+        h1 { font-size: clamp(28px, 5vw, 40px); font-weight: 800; letter-spacing: -.02em; line-height: 1.15; margin-bottom: 8px; }
+        .meta { color: var(--gray); font-size: 14px; margin-bottom: 26px; }
+        h2 { font-size: 19px; font-weight: 700; margin: 30px 0 10px; color: #fff; }
+        h2 span { color: var(--accent); margin-right: 6px; }
+        p, li { color: #C9D7EA; font-size: 15px; }
+        p { margin-bottom: 12px; }
+        ul { margin: 6px 0 14px 22px; }
+        li { margin-bottom: 6px; }
+        strong { color: var(--text); }
+        a { color: #7FB0FF; }
+        .destaque {
+            padding: 14px 16px; border-radius: 16px; margin: 14px 0;
+            background: rgba(47,123,255,.10); border: 1px solid rgba(47,123,255,.30); font-size: 14.5px;
+        }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0 16px; font-size: 14px; }
+        th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: #C9D7EA; }
+        th { color: var(--text); font-weight: 600; }
+        .rolar { overflow-x: auto; }
+        footer { max-width: 860px; margin: 0 auto; padding: 0 20px 50px; text-align: center; color: var(--gray); font-size: 13px; }
+        footer a { color: var(--gray); margin: 0 8px; }
+        @media (max-width: 560px) { main { padding: 26px 18px; border-radius: 22px; margin: 16px 12px 30px; } }
+    </style>
+</head>
+<body>
+    <div class="topo">
+        <a class="logo" href="landing.html">Renda+</a>
+        <div><a href="termos.html">Termos de Uso</a> &nbsp;·&nbsp; <a href="index.html">Voltar ao app</a></div>
+    </div>
+
+    <main>
+        <h1>Política de Privacidade</h1>
+        <p class="meta">Última atualização: 21 de novembro de 2026</p>
+
+        <p>O <strong>Renda+</strong> é um aplicativo de controle financeiro pessoal. Esta política explica, de forma simples, quais dados pessoais tratamos, para quê, com quem os compartilhamos e quais são os seus direitos, em conformidade com a <strong>Lei Geral de Proteção de Dados (LGPD, Lei nº 13.709/2018)</strong>.</p>
+
+        <div class="destaque"><strong>Resumo:</strong> usamos seus dados só para o app funcionar, não vendemos seus dados, não temos publicidade nem rastreadores de análise, e você pode baixar ou apagar tudo a qualquer momento dentro do app (menu <strong>Privacidade</strong>).</div>
+
+        <h2><span>1.</span>Quem é o responsável (controlador)</h2>
+        <p>O controlador dos dados é <strong>Victor de Jesus</strong>, pessoa física responsável pelo Renda+. Contato para assuntos de privacidade e encarregado (DPO): <strong>[seu-email-de-contato]</strong>.</p>
+
+        <h2><span>2.</span>Quais dados coletamos</h2>
+        <div class="rolar">
+        <table>
+            <tr><th>Categoria</th><th>Dados</th><th>De onde vêm</th></tr>
+            <tr><td>Conta</td><td>Nome, e-mail e senha. A senha é guardada apenas em formato criptografado (hash) pelo serviço de autenticação; nós nunca a vemos.</td><td>Você, no cadastro</td></tr>
+            <tr><td>Dados financeiros</td><td>Salário e rendas extras, gastos, compras e parcelas de cartão (descrição e valor), investimentos, metas, listas de compras, relatórios e perfis familiares.</td><td>Você, ao usar o app</td></tr>
+            <tr><td>Preferências e segurança</td><td>Tema de cores, opção "lembrar e-mail", contador de tentativas de login e a chave secreta dos atalhos.</td><td>O app, no seu aparelho e na sua conta</td></tr>
+            <tr><td>Dados técnicos</td><td>Endereço IP, tipo de navegador/aparelho, data e hora de acesso (registros mantidos pelos provedores de hospedagem e de banco de dados).</td><td>Automático</td></tr>
+        </table>
+        </div>
+        <p><strong>Não solicitamos dados pessoais sensíveis</strong> (art. 5º, II, da LGPD) nem documentos. <strong>Não digite números de cartão, CVV, senhas bancárias ou CPF</strong> nos campos de descrição: o app não precisa deles.</p>
+
+        <h2><span>3.</span>Para que usamos e em qual base legal</h2>
+        <ul>
+            <li><strong>Criar e manter sua conta e fazer o app funcionar</strong> (salvar e mostrar seus gastos, saldos, metas e relatórios): execução de contrato (art. 7º, V).</li>
+            <li><strong>Segurança</strong> (limite de tentativas de login, prevenção a fraudes e acessos indevidos): legítimo interesse (art. 7º, IX).</li>
+            <li><strong>Registro do seu aceite</strong> aos Termos e a esta Política: consentimento (art. 7º, I) e cumprimento de obrigação legal ou regulatória, quando aplicável (art. 7º, II).</li>
+            <li><strong>Atender seus pedidos</strong> de acesso, correção, portabilidade ou exclusão: cumprimento de obrigação legal (art. 7º, II).</li>
+        </ul>
+        <p>Não usamos seus dados para publicidade, perfilamento comercial nem decisões automatizadas.</p>
+
+        <h2><span>4.</span>Com quem compartilhamos</h2>
+        <p>Não vendemos nem alugamos seus dados. Usamos prestadores (operadores) que tratam dados em nosso nome apenas para entregar o serviço:</p>
+        <ul>
+            <li><strong>Supabase</strong>: autenticação e banco de dados onde ficam sua conta e seus dados financeiros. Cada usuário só acessa os próprios dados (segurança em nível de linha, RLS).</li>
+            <li><strong>Vercel</strong>: hospedagem do site e do app.</li>
+            <li><strong>Google Fonts, cdnjs (Cloudflare) e jsDelivr</strong>: entrega de fontes, ícones e bibliotecas. Ao carregar a página, esses serviços recebem seu endereço IP e dados do navegador.</li>
+        </ul>
+        <p>Também podemos compartilhar dados se houver <strong>obrigação legal</strong> ou ordem de autoridade competente.</p>
+
+        <h2><span>5.</span>Transferência internacional</h2>
+        <p>Os servidores dos provedores acima podem estar localizados fora do Brasil. Nesses casos, a transferência ocorre para prestadores que adotam medidas de segurança e cláusulas contratuais de proteção de dados, conforme o art. 33 da LGPD.</p>
+
+        <h2><span>6.</span>Armazenamento no seu aparelho (cookies)</h2>
+        <p>O Renda+ <strong>não usa cookies de publicidade nem de análise</strong>. Usamos o armazenamento do navegador (localStorage/sessionStorage) apenas para itens essenciais: manter sua sessão de login, lembrar o tema e, se você marcar, o seu e-mail, controlar tentativas de login e guardar temporariamente dados de um atalho. Você pode limpar isso nas configurações do navegador, o que pode encerrar sua sessão.</p>
+
+        <h2><span>7.</span>Por quanto tempo guardamos</h2>
+        <p>Mantemos seus dados enquanto sua conta existir. Quando você <strong>apagar seus dados ou excluir a conta</strong>, removemos as informações financeiras e, se solicitado, a conta de acesso. Cópias de segurança e registros técnicos dos provedores podem permanecer por um curto período até serem sobrescritos, ou pelo prazo exigido em lei.</p>
+
+        <h2><span>8.</span>Seus direitos (art. 18 da LGPD)</h2>
+        <p>Você pode, a qualquer momento: confirmar que tratamos seus dados; acessá-los; corrigi-los; pedir anonimização, bloqueio ou eliminação de dados desnecessários; solicitar a <strong>portabilidade</strong>; pedir a <strong>eliminação</strong> dos dados tratados com base no consentimento; saber com quem compartilhamos; ser informado sobre a possibilidade de não consentir e suas consequências; e <strong>revogar o consentimento</strong>.</p>
+        <p><strong>Como exercer:</strong> dentro do app, no menu <strong>Privacidade</strong>, você pode <strong>baixar todos os seus dados</strong> (arquivo JSON) e <strong>apagar seus dados e sua conta</strong>. Para os demais pedidos, escreva para <strong>[seu-email-de-contato]</strong>. Responderemos em até <strong>15 dias</strong>. Você também pode reclamar à <strong>Autoridade Nacional de Proteção de Dados (ANPD)</strong>: <a href="https://www.gov.br/anpd" target="_blank" rel="noopener">gov.br/anpd</a>.</p>
+
+        <h2><span>9.</span>Segurança</h2>
+        <ul>
+            <li>Conexão criptografada (HTTPS) e senhas armazenadas apenas em formato hash.</li>
+            <li>Regras de banco de dados que impedem um usuário de acessar dados de outro.</li>
+            <li>Limite de tentativas de login com bloqueio progressivo contra ataques de força bruta.</li>
+            <li>Links de atalho que salvam dados automaticamente exigem uma chave secreta exclusiva da sua conta.</li>
+        </ul>
+        <p>Nenhum sistema é 100% seguro. Se ocorrer um incidente que possa causar risco ou dano relevante, comunicaremos você e a ANPD nos termos do art. 48 da LGPD. Use uma senha forte e exclusiva e não compartilhe seus links de atalho.</p>
+
+        <h2><span>10.</span>Crianças e adolescentes</h2>
+        <p>O Renda+ é destinado a <strong>maiores de 18 anos</strong>. Não coletamos intencionalmente dados de menores. Se identificarmos uma conta de menor sem o consentimento de um responsável legal, ela poderá ser excluída.</p>
+
+        <h2><span>11.</span>Alterações nesta política</h2>
+        <p>Podemos atualizar esta política para refletir mudanças no app ou na lei. A data de atualização fica no topo da página e, em mudanças relevantes, avisaremos dentro do app.</p>
+
+        <h2><span>12.</span>Fale com a gente</h2>
+        <p>Dúvidas, pedidos ou reclamações sobre privacidade: <strong>[seu-email-de-contato]</strong>.</p>
+    </main>
+
+    <footer>
+        <a href="landing.html">Início</a> · <a href="termos.html">Termos de Uso</a> · <a href="index.html">Entrar</a>
+        <p style="margin-top:10px;color:var(--gray);font-size:12.5px;">© 2026 Renda+</p>
+    </footer>
+</body>
+</html>

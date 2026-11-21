@@ -7,6 +7,6 @@ export default defineConfig({
   build: {
     outDir: "dist",
     emptyOutDir: true,
-    rollupOptions: { input: { main: "index.html", landing: "landing.html" } }
+    rollupOptions: { input: { main: "index.html", landing: "landing.html", termos: "termos.html", privacidade: "privacidade.html" } }
   }
 });

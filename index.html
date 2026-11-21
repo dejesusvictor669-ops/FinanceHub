@@ -68,6 +68,10 @@
                 <input type="text" id="cadastroNome" placeholder="Seu nome" required>
                 <input type="email" id="cadastroEmail" placeholder="Seu email" required>
                 <input type="password" id="cadastroSenha" placeholder="Senha (mín. 6 caracteres)" required>
+                <label style="display:flex;align-items:flex-start;gap:8px;margin:10px 0;color:var(--gray);font-size:13px;line-height:1.5;cursor:pointer;text-align:left;">
+                    <input type="checkbox" id="aceiteTermos" required style="width:18px;height:18px;flex:none;margin:1px 0 0;padding:0;">
+                    <span>Li e aceito os <a href="termos.html" target="_blank" rel="noopener" style="color:var(--primary);">Termos de Uso</a> e a <a href="privacidade.html" target="_blank" rel="noopener" style="color:var(--primary);">Política de Privacidade</a>. Tenho 18 anos ou mais.</span>
+                </label>
                 <button type="submit" class="btn">Criar conta grátis</button>
                 <p style="margin-top:10px; color:var(--gray); font-size:13px;">
                     Já tem conta?
@@ -78,6 +82,10 @@
             <a href="landing.html" style="display:block; text-align:center; margin-top:20px; font-size:12px; color:var(--gray);">
                 ← Conhecer o Renda+
             </a>
+            <p style="text-align:center; margin-top:10px; font-size:12px; color:var(--gray);">
+                <a href="termos.html" style="color:var(--gray);">Termos de Uso</a> ·
+                <a href="privacidade.html" style="color:var(--gray);">Política de Privacidade</a>
+            </p>
         </div>
     </div>
 
@@ -130,6 +138,10 @@
                 <a data-page="atalhos">
                     <i class="fa-solid fa-bolt"></i>
                     Atalhos
+                </a>
+                <a data-page="privacidade">
+                    <i class="fa-solid fa-user-shield"></i>
+                    Privacidade
                 </a>
                 <a data-page="doacao">
                     <i class="fa-solid fa-heart"></i>
@@ -446,6 +458,34 @@
                         servem só de modelo: troque pelos seus.
                     </p>
                     <div id="listaAtalhos" class="atalho-lista"></div>
+                </div>
+            </section>
+
+            <!-- PÁGINA: PRIVACIDADE (LGPD) -->
+            <section class="page hidden" id="page-privacidade">
+                <div class="card" style="margin-bottom:25px;">
+                    <h2><i class="fa-solid fa-user-shield"></i> Privacidade e meus dados</h2>
+                    <p class="atalho-intro">
+                        Seus dados são seus. Aqui você exerce os direitos da <strong>LGPD</strong>: ver o que guardamos, levar uma cópia e apagar tudo.
+                        Leia também os <a href="termos.html" target="_blank" rel="noopener">Termos de Uso</a> e a
+                        <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.
+                    </p>
+                </div>
+
+                <div class="card" style="margin-bottom:25px;">
+                    <h3><i class="fa-solid fa-download"></i> Baixar meus dados</h3>
+                    <p style="color:var(--gray);font-size:13.5px;margin:6px 0 14px;">
+                        Gera um arquivo (JSON) com sua conta e todos os seus dados financeiros: gastos, cartões, investimentos, metas e relatórios.
+                    </p>
+                    <button type="button" class="btn" id="btnBaixarDados"><i class="fa-solid fa-file-arrow-down"></i> Baixar meus dados</button>
+                </div>
+
+                <div class="card" style="margin-bottom:25px;">
+                    <h3><i class="fa-solid fa-trash-can"></i> Apagar meus dados e minha conta</h3>
+                    <p style="color:var(--gray);font-size:13.5px;margin:6px 0 14px;">
+                        Remove para sempre tudo o que você registrou e encerra sua conta. Não dá para desfazer. Baixe uma cópia antes, se quiser.
+                    </p>
+                    <button type="button" class="btn btn-secundario" id="btnApagarConta" style="border-color:rgba(239,68,68,.55);color:#FCA5A5;"><i class="fa-solid fa-triangle-exclamation"></i> Apagar tudo</button>
                 </div>
             </section>
 

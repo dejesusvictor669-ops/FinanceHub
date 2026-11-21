@@ -9,6 +9,7 @@ Aplicativo web de controle financeiro pessoal, com visual "liquid glass" e insta
 - **Investimentos e metas:** aportes (reserva ou investimento) e metas com progresso.
 - **Relatórios e gráficos**, lista de compras e calculadora.
 - **Atalhos (iPhone e Android):** no Android, atalhos ao segurar o ícone do app instalado; no iPhone, Siri e toque nas costas. Usam links que abrem o app já preenchido, ou que salvam sozinhos com uma chave secreta da sua conta (página *Atalhos* dentro do app).
+- **LGPD:** Termos de Uso, Política de Privacidade, aceite obrigatório no cadastro e menu *Privacidade* para baixar ou apagar os próprios dados.
 - **Segurança de login:** limite de tentativas com bloqueio progressivo.
 - Temas de cor (azul por padrão), modo escuro e claro.
 
@@ -34,7 +35,8 @@ npm run build    # gera a pasta dist/
 ## Banco de dados (Supabase)
 
 1. Crie a tabela `dados_financeiros` (uma linha por usuário, colunas JSONB para gastos, cartões, investimentos etc.).
-2. Rode o arquivo [`database/seguranca.sql`](database/seguranca.sql) no SQL Editor para ativar o RLS, de modo que cada usuário veja apenas os próprios dados.
+2. (Opcional) Rode [`database/excluir_conta.sql`](database/excluir_conta.sql) para permitir que o usuário exclua a própria conta pelo app.
+3. Rode o arquivo [`database/seguranca.sql`](database/seguranca.sql) no SQL Editor para ativar o RLS, de modo que cada usuário veja apenas os próprios dados.
 3. Coloque a URL do projeto e a chave **pública** (`anon`) em `js/supabase.js`.
 
 ## Segurança

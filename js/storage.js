@@ -311,7 +311,8 @@ async function cadastrarUsuario(nome, email, senha) {
     const { data, error } = await obterSupabase().auth.signUp({
         email,
         password: senha,
-        options: { data: { nome } }
+        // registra o aceite dos Termos/Política (prova do consentimento, LGPD)
+        options: { data: { nome, aceite_termos_em: new Date().toISOString(), versao_termos: "2026-11-21" } }
     });
     if (error) throw new Error(error.message);
     _usuarioAtual = data.user;

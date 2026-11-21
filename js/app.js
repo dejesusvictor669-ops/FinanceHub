@@ -115,6 +115,10 @@ formCadastro.addEventListener("submit", async (e) => {
     const senha = document.getElementById("cadastroSenha").value;
     const btn = formCadastro.querySelector("button");
     if (senha.length < 6) { toastErro("Senha precisa ter pelo menos 6 caracteres."); return; }
+    if (!document.getElementById("aceiteTermos")?.checked) {
+        toastErro("Para criar a conta, aceite os Termos de Uso e a Política de Privacidade.");
+        return;
+    }
     btn.textContent = "Criando conta...";
     btn.disabled = true;
     try {

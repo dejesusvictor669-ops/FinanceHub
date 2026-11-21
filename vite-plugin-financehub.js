@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const jsOrder = ["supabase.js", "utils.js", "storage.js", "toast.js", "calculadora.js", "tema.js", "perfis.js", "dashboard.js", "gastos.js", "cartoes.js", "investimentos.js", "metas.js", "compras.js", "rendas.js", "graficos.js", "relatorios.js", "doacao.js", "notificacoes.js", "atalhos.js", "app.js"];
+const jsOrder = ["supabase.js", "utils.js", "storage.js", "toast.js", "calculadora.js", "tema.js", "perfis.js", "dashboard.js", "gastos.js", "cartoes.js", "investimentos.js", "metas.js", "compras.js", "rendas.js", "graficos.js", "relatorios.js", "doacao.js", "notificacoes.js", "atalhos.js", "privacidade.js", "app.js"];
 const browserAssets = ["supabase.js", "chart.umd.min.js", "qrcode.min.js"];
 const legacyId = "\0financehub-legacy";
 
